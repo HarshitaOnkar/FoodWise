@@ -1,0 +1,1416 @@
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f7f9f5;
+    color: #183d25;
+}
+
+body {
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 60px;
+    background-color: #1b452a;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.nav-links a:hover {
+    color: #7ce360;
+}
+
+
+/* =========================================================
+   GENERAL HEADINGS
+========================================================= */
+
+h1 {
+    font-size: 48px;
+    margin: 0 0 8px;
+    color: #183d25;
+}
+
+h2 {
+    font-size: 32px;
+    margin: 0 0 8px;
+    color: #183d25;
+}
+
+p {
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    text-align: center;
+    padding: 38px 20px 32px;
+    background-color: #f7f9f5;
+}
+
+.hero h1 {
+    margin-bottom: 6px;
+}
+
+.hero h2 {
+    margin-bottom: 7px;
+    font-weight: normal;
+    color: #4b5f50;
+}
+
+.hero p {
+    margin: 0 0 18px;
+    color: #4b5f50;
+}
+
+
+/* =========================================================
+   GET STARTED BUTTON
+========================================================= */
+
+.get-started {
+    display: inline-block;
+    background-color: #4ebc62;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.get-started:hover {
+    background-color: #3f8552;
+}
+
+
+/* =========================================================
+   HOW FOODWISE WORKS
+========================================================= */
+
+.how-it-works {
+    padding: 28px 40px 28px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.how-it-works h2 {
+    font-size: 34px;
+    margin: 0 0 3px;
+    color: #183d25;
+}
+
+
+/* =========================================================
+   SECTION DIVIDER
+========================================================= */
+
+.section-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.section-divider span {
+    display: block;
+    width: 54px;
+    height: 2px;
+    background: #4ebc62;
+}
+
+.section-divider svg {
+    display: block;
+    width: 26px;
+    height: 26px;
+}
+
+
+/* =========================================================
+   CARDS CONTAINER
+========================================================= */
+
+.cards {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card {
+    flex: 1;
+    max-width: 340px;
+
+    min-height: 190px;
+
+    padding: 22px 25px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e1eadf;
+    border-radius: 18px;
+
+    box-shadow: 0 8px 25px rgba(40, 80, 45, 0.10);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 12px 30px rgba(40, 80, 45, 0.15);
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.card span {
+    display: block;
+
+    width: 42px;
+    height: 42px;
+
+    line-height: 42px;
+
+    margin: 0 auto 10px;
+
+    border-radius: 50%;
+
+    background-color: #e8f1e4;
+
+    color: #3f8552;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   CARD ICON
+========================================================= */
+
+.card-icon {
+    width: 45px;
+    height: 45px;
+
+    margin: 0 auto 7px;
+}
+
+.card-icon svg {
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+
+    stroke: #1b452a;
+
+    stroke-width: 3;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   CARD HEADING
+========================================================= */
+
+.card h3 {
+    font-size: 24px;
+
+    margin: 0 0 8px;
+
+    color: #183d25;
+}
+
+
+/* =========================================================
+   CARD PARAGRAPH
+========================================================= */
+
+.card p {
+    font-size: 15px;
+
+    line-height: 1.4;
+
+    color: #526057;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    background-color: #183d25;
+
+    color: white;
+
+    width: 100%;
+
+    height: 55px;
+
+    padding: 0 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    box-sizing: border-box;
+
+    margin: 0;
+}
+
+footer .footer-brand {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+footer .footer-tagline {
+    font-size: 14px;
+    color: white;
+}
+
+footer .footer-copy {
+    font-size: 14px;
+}
+
+footer .footer-name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    nav {
+        padding: 14px 25px;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .hero {
+        padding: 35px 20px 30px;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    .how-it-works {
+        padding: 30px 20px;
+    }
+
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 80%;
+        max-width: 400px;
+    }
+
+    footer {
+        height: auto;
+        padding: 15px 25px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    footer .footer-brand,
+    footer .footer-tagline,
+    footer .footer-copy,
+    footer .footer-name {
+        font-size: 13px;
+    }
+}
+
+/* =========================================================
+   SIGN UP PAGE
+========================================================= */
+
+.signup-container {
+    width: 450px;
+    margin: 55px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(40, 80, 45, 0.10);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.signup-container h1 {
+    font-size: 36px;
+    margin: 0 0 10px;
+    color: #183d25;
+}
+
+.signup-container > p {
+    color: #526057;
+    margin-bottom: 30px;
+}
+
+.signup-container .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.signup-container .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #183d25;
+}
+
+.signup-container .form-group input {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #d5dfd2;
+    border-radius: 7px;
+    font-size: 16px;
+}
+
+.signup-container .form-group input:focus {
+    outline: none;
+    border-color: #4ebc62;
+}
+
+.signup-button {
+    width: 100%;
+    background-color: #4ebc62;
+    color: white;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.signup-button:hover {
+    background-color: #3f8552;
+}
+
+.login-link {
+    margin-top: 25px;
+    color: #526057;
+}
+
+.login-link a {
+    color: #3f8552;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+.form-error {
+    color: #b3261e;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.form-error ul {
+    margin: 5px 0 0;
+    padding-left: 18px;
+}
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+.login-container {
+    width: 400px;
+    margin: 70px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(40, 80, 45, 0.10);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.login-container h1 {
+    font-size: 36px;
+    margin: 0 0 10px;
+    color: #183d25;
+}
+
+.login-container > p {
+    color: #526057;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #183d25;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #d5dfd2;
+    border-radius: 7px;
+    font-size: 16px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4ebc62;
+}
+
+.login-button {
+    width: 100%;
+    background-color: #4ebc62;
+    color: white;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #3f8552;
+}
+
+.signup-link {
+    margin-top: 25px;
+    color: #526057;
+}
+
+.signup-link a {
+    color: #3f8552;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #b3261e;
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   FOODWISE DASHBOARD
+========================================================= */
+
+.dashboard-page {
+    margin: 0;
+    padding: 0;
+
+    background: #f8faf8;
+    color: #17221b;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.dashboard-header {
+    height: 76px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e9e5;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 30px;
+
+    box-sizing: border-box;
+}
+
+.dashboard-logo {
+    width: 205px;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    color: #14532d;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.logo-leaf {
+    color: #42b96a;
+
+    font-size: 25px;
+}
+
+.menu-button {
+    border: none;
+
+    background: transparent;
+
+    font-size: 25px;
+
+    color: #25322a;
+
+    cursor: pointer;
+}
+
+.header-right {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+.notification {
+    font-size: 23px;
+}
+
+.restaurant-user {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    text-align: right;
+}
+
+.restaurant-user strong {
+    font-size: 14px;
+}
+
+.restaurant-user small {
+    color: #6b756e;
+
+    font-size: 12px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+
+    background: #dfe9df;
+
+    color: #14532d;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+.dropdown {
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   DASHBOARD LAYOUT
+========================================================= */
+
+.dashboard-layout {
+    display: flex;
+
+    min-height: calc(100vh - 76px);
+
+    width: 100%;
+}
+
+/* =========================================================
+   FINAL SIDEBAR OVERRIDE
+========================================================= */
+
+body.dashboard-page .sidebar {
+    width: 230px !important;
+    min-width: 230px !important;
+    min-height: calc(100vh - 76px) !important;
+
+    background: #ffffff !important;
+
+    padding: 24px 14px !important;
+
+    border-right: 1px solid #e5e9e5 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Sidebar nav */
+
+body.dashboard-page .sidebar nav {
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    background: #ffffff !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    gap: 6px !important;
+}
+
+
+/* Every sidebar link */
+
+body.dashboard-page .sidebar a.sidebar-link {
+    width: 100% !important;
+    height: 50px !important;
+
+    padding: 0 16px !important;
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    gap: 13px !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 8px !important;
+
+    background: transparent !important;
+
+    color: #344238 !important;
+
+    text-decoration: none !important;
+
+    font-family: Arial, Helvetica, sans-serif !important;
+
+    font-size: 15px !important;
+    font-weight: 500 !important;
+
+    white-space: nowrap !important;
+
+    line-height: normal !important;
+}
+
+
+/* Sidebar icons */
+
+body.dashboard-page .sidebar a.sidebar-link > span {
+    width: 22px !important;
+    min-width: 22px !important;
+
+    height: 22px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex-shrink: 0 !important;
+
+    font-size: 17px !important;
+
+    color: #344238 !important;
+}
+
+
+/* Active Dashboard */
+
+body.dashboard-page .sidebar a.sidebar-link.active {
+    width: 100% !important;
+    height: 50px !important;
+
+    background: #21834a !important;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
+
+    border-radius: 8px !important;
+}
+
+
+/* Active icon */
+
+body.dashboard-page .sidebar a.sidebar-link.active > span {
+    color: #ffffff !important;
+}
+
+
+/* Hover */
+
+body.dashboard-page .sidebar a.sidebar-link:hover {
+    background: #e8f4eb !important;
+
+    color: #176336 !important;
+
+    text-decoration: none !important;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.dashboard-main {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 32px 40px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.dashboard-welcome {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 28px;
+}
+
+.dashboard-welcome h1 {
+    margin: 0 0 7px;
+
+    font-size: 25px;
+
+    font-weight: 650;
+}
+
+.dashboard-welcome p {
+    margin: 0;
+
+    color: #707970;
+
+    font-size: 14px;
+}
+
+.add-surplus-btn {
+    text-decoration: none;
+
+    background: #146b38;
+
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.add-surplus-btn:hover {
+    background: #0f552c;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.summary-cards {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+.summary-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e9e5;
+
+    border-radius: 10px;
+
+    padding: 22px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
+}
+
+.summary-icon {
+    width: 60px;
+    height: 60px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+
+    flex-shrink: 0;
+}
+
+.green-icon {
+    background: #edf8ed;
+
+    color: #18753b;
+}
+
+.orange-icon {
+    background: #fff5e8;
+
+    color: #e58916;
+}
+
+.purple-icon {
+    background: #f3edff;
+
+    color: #6739bb;
+}
+
+.summary-card h2 {
+    margin: 0 0 6px;
+
+    font-size: 28px;
+}
+
+.summary-card h2 small {
+    font-size: 14px;
+
+    font-weight: normal;
+}
+
+.summary-card p {
+    margin: 0 0 8px;
+
+    font-size: 13px;
+
+    color: #252b27;
+}
+
+.summary-card span {
+    font-size: 11px;
+}
+
+.green-text {
+    color: #18833d;
+}
+
+.orange-text {
+    color: #df8513;
+}
+
+.purple-text {
+    color: #6739bb;
+}
+
+
+/* =========================================================
+   MIDDLE SECTION
+========================================================= */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 24px;
+
+    margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   GENERAL DASHBOARD CARD
+========================================================= */
+
+.dashboard-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e9e5;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
+
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 18px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.card-header h2 {
+    margin: 0;
+
+    font-size: 16px;
+
+    font-weight: 650;
+}
+
+.card-header h2 span {
+    font-weight: 400;
+}
+
+.card-header a {
+    color: #18833d;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   SURPLUS FOOD
+========================================================= */
+
+.surplus-list {
+    padding: 0 20px 10px;
+}
+
+.surplus-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 13px 0;
+
+    border-top: 1px solid #edf0ed;
+}
+
+.food-image {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 7px;
+
+    background: #f1f4ef;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+
+    flex-shrink: 0;
+}
+
+.food-info {
+    flex: 1;
+}
+
+.food-info strong {
+    display: block;
+
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+.food-info p {
+    margin: 0;
+
+    color: #727a74;
+
+    font-size: 11px;
+}
+
+.status {
+    padding: 5px 10px;
+
+    border-radius: 6px;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+.available,
+.delivered {
+    background: #edf8ed;
+
+    color: #18753b;
+}
+
+
+/* =========================================================
+   DONATION CHART
+========================================================= */
+
+.chart {
+    padding: 10px 25px 20px;
+
+    height: 300px;
+
+    box-sizing: border-box;
+
+    position: relative;
+}
+
+.chart-line {
+    position: absolute;
+
+    left: 25px;
+    right: 25px;
+
+    top: 25px;
+    bottom: 55px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+.chart-line span {
+    border-top: 1px solid #edf0ed;
+
+    width: 100%;
+}
+
+.chart-area {
+    position: absolute;
+
+    left: 45px;
+    right: 35px;
+
+    top: 40px;
+    bottom: 55px;
+}
+
+.chart-path {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 50%;
+
+    height: 50%;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(66, 185, 106, 0.18),
+        rgba(66, 185, 106, 0.02)
+    );
+
+    clip-path: polygon(
+        0 80%,
+        12% 72%,
+        25% 48%,
+        38% 48%,
+        50% 35%,
+        62% 35%,
+        75% 18%,
+        88% 8%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+}
+
+.chart-labels {
+    position: absolute;
+
+    left: 35px;
+    right: 25px;
+
+    bottom: 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #626b64;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   DONATIONS TABLE
+========================================================= */
+
+.donations-card {
+    margin-bottom: 30px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+thead {
+    background: #fafbfa;
+}
+
+th,
+td {
+    padding: 13px 20px;
+
+    text-align: left;
+
+    border-top: 1px solid #edf0ed;
+
+    font-size: 12px;
+}
+
+th {
+    color: #626b64;
+
+    font-weight: 600;
+}
+
+td {
+    color: #404940;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .sidebar {
+        width: 70px;
+        min-width: 70px;
+    }
+
+    .sidebar-link {
+        justify-content: center;
+    }
+
+    .sidebar-link {
+        font-size: 0;
+    }
+
+    .sidebar-link span {
+        font-size: 20px;
+    }
+
+    .dashboard-logo {
+        width: auto;
+    }
+
+    .restaurant-user {
+        display: none;
+    }
+
+    .dashboard-main {
+        padding: 20px;
+    }
+
+    .summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-welcome {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 18px;
+    }
+}
+
+
+.rescued-amounts{
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.rescued-amounts .rescued-unit {
+    font-size: 28px;
+}
+
+
+
+
+/* =========================================================
+   REDUCE FOOD WASTE
+========================================================= */
+
+.reduce-section {
+    margin-bottom: 24px;
+}
+
+.reduce-card {
+    padding-bottom: 20px;
+}
+
+.reduce-period {
+    color: #737873;
+    font-size: 12px;
+}
+
+.reduce-content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 5px 20px 0;
+}
+
+.reduce-stat {
+    padding: 18px;
+    background: #f7faf8;
+    border: 1px solid #edf0ed;
+    border-radius: 9px;
+}
+
+.reduce-label {
+    display: block;
+    color: #737873;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.reduce-stat strong {
+    display: block;
+    color: #183d25;
+    font-size: 24px;
+}
+
+.reduction-percentage strong {
+    color: #2f9e57;
+}
+
+@media (max-width: 900px) {
+    .reduce-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 550px) {
+    .reduce-content {
+        grid-template-columns: 1fr;
+    }
+}

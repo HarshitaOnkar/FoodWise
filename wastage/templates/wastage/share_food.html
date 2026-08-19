@@ -1,0 +1,275 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Share Surplus Food - FoodWise</title>
+
+  <link
+    rel="stylesheet"
+    href="{% static 'wastage/style.css' %}"
+  />
+
+  <style>
+    .share-page {
+      min-height: 100vh;
+      background: #f7faf8;
+    }
+
+    .share-card {
+      max-width: 850px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 14px;
+      padding: 30px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .share-header {
+      margin-bottom: 25px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #edf0ee;
+    }
+
+    .share-header h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      color: #26342b;
+    }
+
+    .share-header p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .share-form p {
+      margin-bottom: 20px;
+    }
+
+    .share-form label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #34423a;
+    }
+
+    .share-form input,
+    .share-form select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+
+      border: 1px solid #dce3df;
+      border-radius: 8px;
+
+      background: white;
+      font-size: 14px;
+      color: #333;
+      outline: none;
+    }
+
+    .share-form input:focus,
+    .share-form select:focus {
+      border-color: #42b96a;
+
+      box-shadow:
+        0 0 0 3px rgba(66, 185, 106, 0.12);
+    }
+
+    .share-form .errorlist {
+      margin: 5px 0 8px;
+      padding: 0;
+      list-style: none;
+      color: #d9534f;
+      font-size: 13px;
+    }
+
+    .share-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      margin-top: 28px;
+      padding-top: 22px;
+
+      border-top: 1px solid #edf0ee;
+    }
+
+    .save-share-btn {
+      border: none;
+      cursor: pointer;
+
+      padding: 12px 22px;
+      border-radius: 8px;
+
+      background: #42b96a;
+      color: white;
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .save-share-btn:hover {
+      background: #35a95d;
+    }
+
+    .cancel-share-btn {
+      display: inline-block;
+
+      padding: 11px 20px;
+
+      border: 1px solid #d9e0dc;
+      border-radius: 8px;
+
+      color: #59635d;
+      background: white;
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .cancel-share-btn:hover {
+      background: #f5f7f5;
+    }
+  </style>
+
+</head>
+
+
+<body class="dashboard-page share-page">
+
+
+  <!-- HEADER -->
+
+  <header class="dashboard-header">
+
+    <div class="dashboard-logo">
+
+      <span class="logo-leaf">
+        ◉
+      </span>
+
+      FoodWise
+
+    </div>
+
+
+    <div class="header-right">
+
+      <div class="restaurant-user">
+
+        <strong>
+          {{ restaurant.restaurant_name }}
+        </strong>
+
+        <small>
+          Owner
+        </small>
+
+      </div>
+
+
+      <div class="user-avatar">
+
+        {{ restaurant.restaurant_name|first|upper }}
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- MAIN -->
+
+  <main class="dashboard-main">
+
+
+    <div class="dashboard-welcome">
+
+      <div>
+
+        <h1>
+          Share Surplus Food
+        </h1>
+
+        <p>
+          Share leftover food with your restaurant staff.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- FORM CARD -->
+
+    <div class="share-card">
+
+
+      <div class="share-header">
+
+        <h2>
+          Share Details
+        </h2>
+
+        <p>
+          Select the surplus food and record how many people benefited.
+        </p>
+
+      </div>
+
+
+
+      <form
+        method="POST"
+        class="share-form"
+      >
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+
+        <div class="share-actions">
+
+          <button
+            type="submit"
+            class="save-share-btn"
+          >
+            Save Share Record
+          </button>
+
+
+          <a
+            href="{% url 'dashboard' %}"
+            class="cancel-share-btn"
+          >
+            Cancel
+          </a>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </main>
+
+
+</body>
+
+</html>

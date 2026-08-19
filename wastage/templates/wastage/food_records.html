@@ -1,0 +1,284 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Food Records - FoodWise</title>
+
+  <link
+    rel="stylesheet"
+    href="{% static 'wastage/style.css' %}"
+  />
+
+  <style>
+    .records-page {
+      min-height: 100vh;
+      background: #f7faf8;
+    }
+
+    .records-card {
+      margin-top: 25px;
+      background: white;
+      border-radius: 14px;
+      padding: 25px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+      overflow-x: auto;
+    }
+
+    .records-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .records-table th {
+      text-align: left;
+      padding: 14px 12px;
+      background: #f4f8f5;
+      color: #4d5b52;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .records-table td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #edf0ee;
+      color: #4a544d;
+      font-size: 14px;
+    }
+
+    .records-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .remaining-value {
+      font-weight: 600;
+      color: #2f9e57;
+    }
+
+    .empty-records {
+      text-align: center;
+      padding: 45px 20px;
+      color: #7a827c;
+    }
+
+    .records-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .track-more-btn {
+      display: inline-block;
+      padding: 11px 18px;
+      border-radius: 8px;
+      background: #42b96a;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .dashboard-back-btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid #d9e0dc;
+      background: white;
+      color: #59635d;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+
+</head>
+
+
+<body class="dashboard-page records-page">
+
+
+  <!-- HEADER -->
+
+  <header class="dashboard-header">
+
+    <div class="dashboard-logo">
+
+      <span class="logo-leaf">
+        ◉
+      </span>
+
+      FoodWise
+
+    </div>
+
+
+    <div class="header-right">
+
+      <div class="restaurant-user">
+
+        <strong>
+          {{ restaurant.restaurant_name }}
+        </strong>
+
+        <small>
+          Owner
+        </small>
+
+      </div>
+
+
+      <div class="user-avatar">
+
+        {{ restaurant.restaurant_name|first|upper }}
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- MAIN CONTENT -->
+
+  <main class="dashboard-main">
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="dashboard-welcome">
+
+      <div>
+
+        <h1>
+          Food Records
+        </h1>
+
+        <p>
+          View your restaurant's daily food preparation and sales records.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- RECORDS CARD -->
+
+    <div class="records-card">
+
+      {% if records %}
+
+      <table class="records-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Food Item
+            </th>
+
+            <th>
+              Date
+            </th>
+
+            <th>
+              Quantity Prepared
+            </th>
+
+            <th>
+              Quantity Sold
+            </th>
+
+            <th>
+              Remaining Food
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          {% for record in records %}
+
+          <tr>
+
+            <td>
+              {{ record.food_item.dish_name }}
+            </td>
+
+            <td>
+              {{ record.date|date:"d M, Y" }}
+            </td>
+
+            <td>
+              {{ record.quantity_prepared }}
+            </td>
+
+            <td>
+              {{ record.quantity_sold }}
+            </td>
+
+            <td class="remaining-value">
+              {{ record.remaining }}
+            </td>
+
+          </tr>
+
+          {% endfor %}
+
+        </tbody>
+
+      </table>
+
+
+      {% else %}
+
+      <div class="empty-records">
+
+        <h3>
+          No food records yet
+        </h3>
+
+        <p>
+          Start tracking your daily food preparation and sales.
+        </p>
+
+      </div>
+
+      {% endif %}
+
+
+
+      <!-- ACTIONS -->
+
+      <div class="records-actions">
+
+        <a
+          href="{% url 'track_food' %}"
+          class="track-more-btn"
+        >
+          + Track Food
+        </a>
+
+        <a
+          href="{% url 'dashboard' %}"
+          class="dashboard-back-btn"
+        >
+          Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

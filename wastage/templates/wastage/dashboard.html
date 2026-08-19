@@ -1,0 +1,1071 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>FoodWise Dashboard</title>
+
+  <link rel="stylesheet" href="{% static 'wastage/style.css' %}" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
+
+
+<body class="dashboard-page">
+
+
+  <!-- TOP BAR -->
+  <header class="dashboard-header">
+
+    <div class="dashboard-logo">
+      <span class="logo-leaf">◉</span>
+      FoodWise
+    </div>
+
+    <button class="menu-button">☰</button>
+
+    <div class="header-right">
+
+      <span class="notification">♧</span>
+
+      <div class="restaurant-user">
+        <strong>{{ restaurant.restaurant_name }}</strong>
+        <small>Owner</small>
+      </div>
+
+      <div class="user-avatar">
+        {{ restaurant.restaurant_name|first|upper }}
+      </div>
+
+      <span class="dropdown">⌄</span>
+
+    </div>
+
+  </header>
+
+
+
+  <div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <nav>
+
+        <a href="{% url 'dashboard' %}" class="sidebar-link active">
+          <span>
+            <i class="fa-solid fa-table-cells-large"></i>
+          </span>
+          Dashboard
+        </a>
+
+
+        <a href="#" class="sidebar-link">
+          <span>
+            <i class="fa-solid fa-bowl-food"></i>
+          </span>
+          Surplus Food
+        </a>
+
+
+        <a href="#" class="sidebar-link">
+          <span>
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </span>
+          Donations
+        </a>
+
+
+        <a href="#" class="sidebar-link">
+          <span>
+            <i class="fa-solid fa-clipboard-list"></i>
+          </span>
+          Requests
+        </a>
+
+
+        <a href="#" class="sidebar-link">
+          <span>
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </span>
+          History
+        </a>
+
+
+        <a href="#" class="sidebar-link">
+          <span>
+            <i class="fa-solid fa-seedling"></i>
+          </span>
+          Impact
+        </a>
+
+
+        <a href="#" class="sidebar-link">
+          <span>
+            <i class="fa-solid fa-user"></i>
+          </span>
+          Profile
+        </a>
+
+      </nav>
+
+
+      <a href="{% url 'logout' %}" class="sidebar-link logout-link">
+
+        <span>
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </span>
+
+        Logout
+
+      </a>
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+
+
+      <!-- WELCOME -->
+      <div class="dashboard-welcome">
+
+        <div>
+
+          <h1>
+            Welcome back, {{ restaurant.restaurant_name }}! 👋
+          </h1>
+
+          <p>
+            Here's what's happening with your surplus food.
+          </p>
+
+        </div>
+
+
+        <a
+          href="{% url 'add_surplus' %}"
+          class="add-surplus-btn"
+        >
+          + Add Surplus Food
+        </a>
+
+      </div>
+
+
+
+      <!-- SUMMARY CARDS -->
+      <section class="summary-cards">
+
+
+        <!-- SURPLUS FOOD -->
+        <div class="summary-card">
+
+          <div class="summary-icon green-icon">
+            ♧
+          </div>
+
+          <div>
+
+            <h2>
+              {{ surplus_count }}
+            </h2>
+
+            <p>
+              Surplus Food Items
+            </p>
+
+            <span class="green-text">
+              Active
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- DONATIONS -->
+        <div class="summary-card">
+
+          <div class="summary-icon orange-icon">
+            ♧
+          </div>
+
+          <div>
+
+            <h2>
+              {{ donation_count }}
+            </h2>
+
+            <p>
+              Donations Made
+            </p>
+
+            <span class="orange-text">
+              This Month
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- PEOPLE HELPED -->
+        <div class="summary-card">
+
+          <div class="summary-icon purple-icon">
+            ♧
+          </div>
+
+          <div>
+
+            <h2>
+              {{ needy_people_helped }}
+            </h2>
+
+            <p>
+              Needy People
+            </p>
+
+            <h2>
+              {{ staff_people_helped }}
+            </h2>
+
+            <p>
+              Staff
+            </p>
+
+            <span class="purple-text">
+              This Month
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FOOD SAVED -->
+        <div class="summary-card">
+
+          <div class="summary-icon green-icon">
+            ♧
+          </div>
+
+          <div>
+
+            <h2 class="rescued-amounts">
+              {% for unit, amount in rescued_by_unit.items %}
+              <span class="rescued-unit">
+                {{ amount|floatformat:0 }}
+                {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
+                L
+                {% else %}
+                {{ unit|lower }}
+                {% endif %}
+              </span>
+              {% if not forloop.last %}
+              <br>
+              {% endif %}
+              {% empty %}
+              <span class="rescued-unit">0 kg</span>
+              {% endfor %}
+            </h2>
+            <p>
+              Food Rescued
+            </p>
+
+            <span class="green-text">
+              This Month
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <section class="reduce-section">
+
+    <div class="dashboard-card reduce-card">
+
+        <div class="card-header">
+            <h2>Reduce Food Waste</h2>
+            <span class="reduce-period">Overall</span>
+        </div>
+
+        <div class="reduce-content">
+
+            <!-- TOTAL SURPLUS -->
+            <div class="reduce-stat">
+
+                <span class="reduce-label">
+                    Total Surplus
+                </span>
+
+                <strong>
+                    {% for unit, amount in surplus_by_unit.items %}
+                        {{ amount|floatformat:2 }}
+                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
+                            L
+                        {% else %}
+                            {{ unit|lower }}
+                        {% endif %}
+
+                        {% if not forloop.last %}
+                            <br>
+                        {% endif %}
+                    {% empty %}
+                        0 kg
+                    {% endfor %}
+                </strong>
+
+            </div>
+
+
+            <!-- FOOD RESCUED -->
+            <div class="reduce-stat">
+
+                <span class="reduce-label">
+                    Food Rescued
+                </span>
+
+                <strong>
+                    {% for unit, amount in rescued_by_unit.items %}
+                        {{ amount|floatformat:2 }}
+                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
+                            L
+                        {% else %}
+                            {{ unit|lower }}
+                        {% endif %}
+
+                        {% if not forloop.last %}
+                            <br>
+                        {% endif %}
+                    {% empty %}
+                        0 kg
+                    {% endfor %}
+                </strong>
+
+            </div>
+
+
+            <!-- FOOD WASTED -->
+            <div class="reduce-stat">
+
+                <span class="reduce-label">
+                    Food Wasted
+                </span>
+
+                <strong>
+                    {% for unit, amount in wasted_by_unit.items %}
+                        {{ amount|floatformat:2 }}
+                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
+                            L
+                        {% else %}
+                            {{ unit|lower }}
+                        {% endif %}
+
+                        {% if not forloop.last %}
+                            <br>
+                        {% endif %}
+                    {% empty %}
+                        0 kg
+                    {% endfor %}
+                </strong>
+
+            </div>
+
+
+            <!-- WASTE REDUCTION -->
+            <div class="reduce-stat reduction-percentage">
+
+                <span class="reduce-label">
+                    Waste Reduction
+                </span>
+
+                <strong>
+                    {% for unit, percentage in reduction_by_unit.items %}
+
+                        {{ percentage|floatformat:1 }}%
+
+                        {% if not forloop.last %}
+                            <br>
+                        {% endif %}
+
+                    {% empty %}
+                        0%
+                    {% endfor %}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+      <!-- MIDDLE SECTION -->
+      <section class="dashboard-grid">
+
+
+        <!-- RECENT SURPLUS FOOD -->
+        <div class="dashboard-card">
+
+          <div class="card-header">
+
+            <h2>
+              Recent Surplus Food
+            </h2>
+
+            <a href="#">
+              View All
+            </a>
+
+          </div>
+
+
+          <div class="surplus-list">
+
+            {% for record in recent_surplus %}
+
+            <div class="surplus-item">
+
+              <div class="food-image">
+                🍲
+              </div>
+
+
+              <div class="food-info">
+
+                <strong>
+                  {{ record.food_item.dish_name }}
+                </strong>
+
+                <p>
+
+                  Quantity:
+                  {{ record.quantity }}
+                  {{ record.get_unit_display }}
+
+                  &nbsp;
+
+                  Recorded:
+                  {{ record.recorded_at|date:"d M, Y" }}
+
+                </p>
+
+              </div>
+
+
+              <span class="status available">
+
+                {{ record.get_action_display }}
+
+              </span>
+
+            </div>
+
+
+            {% empty %}
+
+            <div class="surplus-item">
+
+              <div class="food-info">
+
+                <strong>
+                  No surplus food recorded yet.
+                </strong>
+
+                <p>
+                  Add your first surplus food item
+                  to see it here.
+                </p>
+
+              </div>
+
+            </div>
+
+            {% endfor %}
+
+          </div>
+
+        </div>
+
+
+
+        <!-- DONATION OVERVIEW -->
+        <div class="dashboard-card">
+
+          <div class="card-header">
+
+            <h2>
+              Donation Overview
+              <span>(This Month)</span>
+            </h2>
+
+          </div>
+
+
+          <!-- GRAPH -->
+          <div
+            class="donation-chart-container"
+            style="
+              position: relative;
+              width: 100%;
+              height: 285px;
+              margin-top: 5px;
+              box-sizing: border-box;
+            "
+          >
+
+            {{ donation_counts|json_script:"donation-data" }}
+
+
+            <!-- Y AXIS TITLE -->
+            <div
+              style="
+                position: absolute;
+                left: 0px;
+                top: 50%;
+                transform: translateY(-50%) rotate(-90deg);
+                transform-origin: center;
+                font-size: 12px;
+                color: #737873;
+                white-space: nowrap;
+              "
+            >
+              Number of Donations
+            </div>
+
+
+
+            <!-- Y AXIS NUMBERS -->
+            <div
+              id="y-axis"
+              style="
+                position: absolute;
+                left: 45px;
+                top: 25px;
+                bottom: 50px;
+                width: 25px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-end;
+                font-size: 11px;
+                color: #737873;
+              "
+            >
+            </div>
+
+
+
+            <!-- GRAPH + GRID -->
+            <div
+              id="graph-area"
+              style="
+                position: absolute;
+
+                /* Keeps graph toward the Recent Surplus side */
+                left: 80px;
+
+                right: 25px;
+
+                top: 25px;
+
+                bottom: 50px;
+              "
+            >
+
+
+              <!-- GRID LINES -->
+              <div
+                id="grid-lines"
+                style="
+                  position: absolute;
+                  inset: 0;
+
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+
+                  pointer-events: none;
+                "
+              >
+              </div>
+
+
+
+              <!-- GRAPH -->
+              <svg
+                id="donation-chart"
+                viewBox="0 0 700 190"
+                preserveAspectRatio="none"
+                style="
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+
+                  width: 100%;
+                  height: 100%;
+
+                  overflow: visible;
+                "
+              >
+
+                <!-- LIGHT GREEN AREA -->
+                <polygon
+                  id="donation-area"
+                  fill="#eaf7ed"
+                  points=""
+                >
+                </polygon>
+
+
+                <!-- GREEN LINE -->
+                <polyline
+                  id="donation-line"
+                  fill="none"
+                  stroke="#42b96a"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points=""
+                >
+                </polyline>
+
+
+                <!-- POINTS -->
+                <g
+                  id="donation-points"
+                  fill="#42b96a"
+                >
+                </g>
+
+              </svg>
+
+            </div>
+
+
+
+            <!-- X AXIS -->
+            <div
+              style="
+                position: absolute;
+
+                left: 80px;
+                right: 25px;
+
+                bottom: 15px;
+
+                height: 25px;
+
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                font-size: 11px;
+                color: #737873;
+              "
+            >
+
+              <span>
+                1 {{ current_month_name }}
+              </span>
+
+              <span>
+                7 {{ current_month_name }}
+              </span>
+
+              <span>
+                14 {{ current_month_name }}
+              </span>
+
+              <span>
+                21 {{ current_month_name }}
+              </span>
+
+              <span>
+                28 {{ current_month_name }}
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- GRAPH JAVASCRIPT -->
+          <script>
+
+            const donationData = JSON.parse(
+              document.getElementById("donation-data").textContent
+            );
+
+
+            /*
+             * Find highest donation count.
+             *
+             * Minimum scale = 2
+             * so the graph remains clean
+             * even when there is only 1 donation.
+             */
+
+            const actualMax = Math.max(
+              ...donationData,
+              0
+            );
+
+
+            const maxValue = Math.max(
+              actualMax + 1,
+              2
+            );
+
+
+            const chartWidth = 700;
+
+            const chartHeight = 190;
+
+
+
+            /*
+             * Y AXIS
+             */
+
+            const yAxis =
+              document.getElementById("y-axis");
+
+
+            const gridLines =
+              document.getElementById("grid-lines");
+
+
+            yAxis.innerHTML = "";
+
+            gridLines.innerHTML = "";
+
+
+
+            /*
+             * CREATE Y AXIS
+             */
+
+            for (
+              let value = maxValue;
+              value >= 0;
+              value--
+            ) {
+
+              const label =
+                document.createElement("span");
+
+
+              label.textContent = value;
+
+
+              yAxis.appendChild(label);
+
+
+
+              /*
+               * Horizontal grid line
+               */
+
+              const line =
+                document.createElement("div");
+
+
+              line.style.width = "100%";
+
+              line.style.borderTop =
+                "1px solid #eef1ee";
+
+
+              gridLines.appendChild(line);
+
+            }
+
+
+
+            /*
+             * GRAPH POINTS
+             */
+
+            const points = [];
+
+
+            donationData.forEach(
+              (value, index) => {
+
+                const x =
+                  (index /
+                    (donationData.length - 1)) *
+                  chartWidth;
+
+
+                const y =
+                  chartHeight -
+                  (value / maxValue) *
+                    (chartHeight - 10);
+
+
+                points.push(
+                  `${x},${y}`
+                );
+
+              }
+            );
+
+
+
+            /*
+             * GREEN LINE
+             */
+
+            document
+              .getElementById("donation-line")
+              .setAttribute(
+                "points",
+                points.join(" ")
+              );
+
+
+
+            /*
+             * LIGHT GREEN AREA
+             */
+
+            const areaPoints =
+              `0,${chartHeight} ` +
+              points.join(" ") +
+              ` ${chartWidth},${chartHeight}`;
+
+
+            document
+              .getElementById("donation-area")
+              .setAttribute(
+                "points",
+                areaPoints
+              );
+
+
+
+            /*
+             * DATA POINTS
+             */
+
+            const pointGroup =
+              document.getElementById(
+                "donation-points"
+              );
+
+
+            donationData.forEach(
+              (value, index) => {
+
+                if (value > 0) {
+
+                  const x =
+                    (index /
+                      (donationData.length - 1)) *
+                    chartWidth;
+
+
+                  const y =
+                    chartHeight -
+                    (value / maxValue) *
+                      (chartHeight - 10);
+
+
+                  const circle =
+                    document.createElementNS(
+                      "http://www.w3.org/2000/svg",
+                      "circle"
+                    );
+
+
+                  circle.setAttribute(
+                    "cx",
+                    x
+                  );
+
+
+                  circle.setAttribute(
+                    "cy",
+                    y
+                  );
+
+
+                  circle.setAttribute(
+                    "r",
+                    "4"
+                  );
+
+
+                  pointGroup.appendChild(
+                    circle
+                  );
+
+                }
+
+              }
+            );
+
+          </script>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- RECENT DONATIONS -->
+      <section class="dashboard-card donations-card">
+
+
+        <div class="card-header">
+
+          <h2>
+            Recent Donations
+          </h2>
+
+          <a href="#">
+            View All
+          </a>
+
+        </div>
+
+
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Food Item
+                </th>
+
+                <th>
+                  Quantity
+                </th>
+
+                <th>
+                  Donated To
+                </th>
+
+                <th>
+                  Date
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+
+            <tbody>
+
+              {% for donation in recent_donations %}
+
+              <tr>
+
+                <td>
+
+                  🍚
+                  {{ donation.food_item.dish_name }}
+
+                </td>
+
+
+                <td>
+                  {{ donation.quantity }}
+                </td>
+
+
+                <td>
+
+                  {% if donation.donation_organization %}
+
+                    {{ donation.donation_organization.organization_name }}
+
+                  {% else %}
+
+                    Not specified
+
+                  {% endif %}
+
+                </td>
+
+
+                <td>
+
+                  {{ donation.recorded_at|date:"d M, Y" }}
+
+                </td>
+
+
+                <td>
+
+                  <span class="status delivered">
+                    Delivered
+                  </span>
+
+                </td>
+
+              </tr>
+
+
+              {% empty %}
+
+              <tr>
+
+                <td colspan="5">
+                  No donations recorded yet.
+                </td>
+
+              </tr>
+
+              {% endfor %}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+
+</body>
+
+</html>

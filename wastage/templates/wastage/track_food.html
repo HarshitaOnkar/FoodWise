@@ -1,0 +1,361 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Track Food - FoodWise</title>
+
+  <link
+    rel="stylesheet"
+    href="{% static 'wastage/style.css' %}"
+  />
+
+  <style>
+
+    .track-page {
+      min-height: 100vh;
+      background: #f7faf8;
+    }
+
+    .track-form-card {
+      max-width: 850px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 14px;
+      padding: 30px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .track-form-header {
+      margin-bottom: 25px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #edf0ee;
+    }
+
+    .track-form-header h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      color: #26342b;
+    }
+
+    .track-form-header p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .track-form p {
+      margin-bottom: 20px;
+    }
+
+    .track-form label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #34423a;
+    }
+
+    .track-form input,
+    .track-form select {
+      width: 100%;
+      box-sizing: border-box;
+
+      padding: 12px 14px;
+
+      border: 1px solid #dce3df;
+      border-radius: 8px;
+
+      background: #fff;
+
+      font-size: 14px;
+      color: #333;
+
+      outline: none;
+    }
+
+    .track-form input:focus,
+    .track-form select:focus {
+      border-color: #42b96a;
+
+      box-shadow:
+        0 0 0 3px rgba(66, 185, 106, 0.12);
+    }
+
+    .track-form .errorlist {
+      margin: 5px 0 8px;
+      padding: 0;
+
+      list-style: none;
+
+      color: #d9534f;
+      font-size: 13px;
+    }
+
+    .track-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      margin-top: 28px;
+      padding-top: 22px;
+
+      border-top: 1px solid #edf0ee;
+    }
+
+    .save-track-btn {
+      border: none;
+      cursor: pointer;
+
+      padding: 12px 22px;
+
+      border-radius: 8px;
+
+      background: #42b96a;
+      color: white;
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .save-track-btn:hover {
+      background: #35a95d;
+    }
+
+    .cancel-track-btn {
+      display: inline-block;
+
+      padding: 11px 20px;
+
+      border: 1px solid #d9e0dc;
+      border-radius: 8px;
+
+      color: #59635d;
+      background: white;
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .cancel-track-btn:hover {
+      background: #f5f7f5;
+    }
+
+    @media (max-width: 700px) {
+
+      .track-form-card {
+        margin: 20px 15px;
+        padding: 22px;
+      }
+
+      .track-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .save-track-btn,
+      .cancel-track-btn {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+      }
+
+    }
+
+    .remaining-food-box {
+        margin-top: 10px;
+        padding: 16px 18px;
+
+        border-radius: 10px;
+        background: #eaf7ed;
+        border: 1px solid #d4ecd9;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        color: #285b39;
+        font-size: 15px;
+    }
+
+    .remaining-food-box strong {
+        font-size: 20px;
+        color: #2f9e57;
+    }
+  </style>
+</head>
+
+
+<body class="dashboard-page track-page">
+
+  <!-- HEADER -->
+
+  <header class="dashboard-header">
+
+    <div class="dashboard-logo">
+
+      <span class="logo-leaf">
+        ◉
+      </span>
+
+      FoodWise
+
+    </div>
+
+
+    <div class="header-right">
+
+      <div class="restaurant-user">
+
+        <strong>
+          {{ restaurant.restaurant_name }}
+        </strong>
+
+        <small>
+          Owner
+        </small>
+
+      </div>
+
+
+      <div class="user-avatar">
+
+        {{ restaurant.restaurant_name|first|upper }}
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN -->
+
+  <main class="dashboard-main">
+
+
+    <div class="dashboard-welcome">
+
+      <div>
+
+        <h1>
+          Track Food
+        </h1>
+
+        <p>
+          Record how much food was prepared and sold.
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- FORM -->
+
+    <div class="track-form-card">
+      <div class="track-form-header">
+
+        <h2>
+          Daily Food Record
+        </h2>
+
+        <p>
+          Enter today's food preparation and sales details.
+        </p>
+
+      </div>
+
+      <form
+        method="POST"
+        class="track-form"
+      >
+
+        {% csrf_token %}
+
+        <div class="track-fields">
+
+            {% if form.non_field_errors %}
+            <div class="form-error">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+            
+            <div class="track-field">
+                {{ form.food_item.label_tag }}
+                {{ form.food_item }}
+                {{ form.food_item.errors }}
+            </div>
+
+            <div class="track-field">
+                {{ form.date.label_tag }}
+                {{ form.date }}
+                {{ form.date.errors }}
+            </div>
+
+            <div class="track-field">
+                {{ form.quantity_prepared.label_tag }}
+                {{ form.quantity_prepared }}
+                {{ form.quantity_prepared.errors }}
+            </div>
+
+            <div class="track-field">
+                {{ form.quantity_sold.label_tag }}
+                {{ form.quantity_sold }}
+                {{ form.quantity_sold.errors }}
+            </div>
+
+            <div class='remaining-food-box'>
+                <span>Remaining Food</span>
+                <strong id='remaining-food'>0</strong>
+            </div>
+        </div>
+
+        <div class="track-actions">
+
+          <button
+            type="submit"
+            class="save-track-btn"
+          >
+            Save Food Record
+          </button>
+
+          <a
+            href="{% url 'dashboard' %}"
+            class="cancel-track-btn"
+          >
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+  const preparedInput = document.getElementById("id_quantity_prepared");
+  const soldInput = document.getElementById("id_quantity_sold");
+  const remainingFood = document.getElementById("remaining-food");
+
+  function calculateRemaining() {
+    const prepared = parseFloat(preparedInput.value) || 0;
+    const sold = parseFloat(soldInput.value) || 0;
+
+    const remaining = Math.max(prepared - sold, 0);
+
+    remainingFood.textContent = remaining;
+  }
+
+  preparedInput.addEventListener("input", calculateRemaining);
+  soldInput.addEventListener("input", calculateRemaining);
+
+  calculateRemaining();
+</script>
+</body>
+</html>

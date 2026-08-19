@@ -1,0 +1,258 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Donate Surplus Food - FoodWise</title>
+
+  <link
+    rel="stylesheet"
+    href="{% static 'wastage/style.css' %}"
+  />
+
+  <style>
+    .donation-page {
+      min-height: 100vh;
+      background: #f7faf8;
+    }
+
+    .donation-card {
+      max-width: 850px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 14px;
+      padding: 30px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .donation-header {
+      margin-bottom: 25px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #edf0ee;
+    }
+
+    .donation-header h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      color: #26342b;
+    }
+
+    .donation-header p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .donation-form p {
+      margin-bottom: 20px;
+    }
+
+    .donation-form label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #34423a;
+    }
+
+    .donation-form input,
+    .donation-form select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+
+      border: 1px solid #dce3df;
+      border-radius: 8px;
+
+      background: white;
+      font-size: 14px;
+      color: #333;
+      outline: none;
+    }
+
+    .donation-form input:focus,
+    .donation-form select:focus {
+      border-color: #42b96a;
+
+      box-shadow:
+        0 0 0 3px rgba(66, 185, 106, 0.12);
+    }
+
+    .donation-form .errorlist {
+      margin: 5px 0 8px;
+      padding: 0;
+      list-style: none;
+      color: #d9534f;
+      font-size: 13px;
+    }
+
+    .donation-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      margin-top: 28px;
+      padding-top: 22px;
+
+      border-top: 1px solid #edf0ee;
+    }
+
+    .save-donation-btn {
+      border: none;
+      cursor: pointer;
+
+      padding: 12px 22px;
+      border-radius: 8px;
+
+      background: #42b96a;
+      color: white;
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .save-donation-btn:hover {
+      background: #35a95d;
+    }
+
+    .cancel-donation-btn {
+      display: inline-block;
+
+      padding: 11px 20px;
+
+      border: 1px solid #d9e0dc;
+      border-radius: 8px;
+
+      color: #59635d;
+      background: white;
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .cancel-donation-btn:hover {
+      background: #f5f7f5;
+    }
+  </style>
+
+</head>
+
+
+<body class="dashboard-page donation-page">
+
+
+  <!-- HEADER -->
+
+  <header class="dashboard-header">
+
+    <div class="dashboard-logo">
+
+      <span class="logo-leaf">
+        ◉
+      </span>
+
+      FoodWise
+
+    </div>
+
+
+    <div class="header-right">
+
+      <div class="restaurant-user">
+
+        <strong>
+          {{ restaurant.restaurant_name }}
+        </strong>
+
+        <small>
+          Owner
+        </small>
+
+      </div>
+
+
+      <div class="user-avatar">
+
+        {{ restaurant.restaurant_name|first|upper }}
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- MAIN -->
+
+  <main class="dashboard-main">
+
+
+    <div class="dashboard-welcome">
+
+      <div>
+
+        <h1>
+          Donate Surplus Food
+        </h1>
+
+        <p>
+          Connect your surplus food with a food rescue organization.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- FORM CARD -->
+
+    <div class="donation-card">
+      <div class="donation-header">
+        <h2>
+          Donation Details
+        </h2>
+        <p>
+          Select the surplus food and organization receiving the donation.
+        </p>
+      </div>
+
+      <form
+        method="POST"
+        class="donation-form"
+      >
+
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="donation-actions">
+
+          <button
+            type="submit"
+            class="save-donation-btn"
+          >
+            Save Donation
+          </button>
+
+          <a
+            href="{% url 'dashboard' %}"
+            class="cancel-donation-btn"
+          >
+            Cancel
+        </a>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
