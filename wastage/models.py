@@ -86,18 +86,24 @@ class LeftoverRecord(models.Model):
 
     def clean(self):
         from django.core.exceptions import ValidationError
+        from django.db.models import Sum
+        
+        remaining_food = (
+            self.daily_record.quantity_prepared
+            - self.daily_record.quantity_sold
+        )
 
-        existing_quantity = LeftoverRecord.objects.filter(
-            daily_record=self.daily_record
-        ).exclude(pk=self.pk).aggregate(
-            total=models.Sum('quantity')
-        )['total'] or 0
-
-        if existing_quantity + self.quantity > (
-            self.daily_record.quantity_prepared - self.daily_record.quantity_sold
-        ):
+        existing_used = (
+            LeftoverRecord.objects
+            .filter(daily_record=self.daily_record)
+            .exclude(pk=self.pk)
+            .aggregate(total=Sum('quantity_used'))['total'] or 0
+        )
+        
+        if existing_used + self.quantity > remaining_food:
             raise ValidationError(
-                "The total Leftover quantity cannot exceed the actual remaining food."
+                f"Only {remaining_food - existing_used} "
+                f"of this food is still available."
             )
 
 

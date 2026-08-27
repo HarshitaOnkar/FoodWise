@@ -221,32 +221,79 @@ def add_surplus(request):
     restaurant = request.user.restaurant
 
     if request.method == 'POST':
-        form = LeftoverRecordForm(request.POST, restaurant=restaurant)
+        form = LeftoverRecordForm(
+            request.POST,
+            restaurant=restaurant
+        )
 
         if form.is_valid():
-            leftover = form.save(commit=False)
-            leftover.restaurant = restaurant
-            leftover.save()
+            food_item = form.cleaned_data['food_item']
+            daily_record = form.cleaned_data['daily_record']
+            quantity = form.cleaned_data['quantity']
+            unit = form.cleaned_data['unit']
+            action = form.cleaned_data['action']
 
-            if leftover.action == 'DISCOUNTED':
-                return redirect('discounted_sale')
+            # Food remaining after sales
+            remaining_food = (
+                daily_record.quantity_prepared
+                - daily_record.quantity_sold
+            )
 
-            elif leftover.action == 'STORED':
-                return redirect('storage_record')
+            # Find how much surplus has already been used
+            used_quantity = (
+                LeftoverRecord.objects
+                .filter(daily_record=daily_record)
+                .aggregate(
+                    total=models.Sum('quantity_used')
+                )['total'] or 0
+            )
 
-            elif leftover.action == 'DONATED':
-                return redirect('donation', leftover_id=leftover.id)
+            # Calculate what is still available
+            unallocated_quantity = (
+                remaining_food - used_quantity
+            )
 
-            elif leftover.action == 'STAFF':
-                return redirect('share_food')
+            # Make sure requested quantity is available
+            if quantity > unallocated_quantity:
+                form.add_error(
+                    'quantity',
+                    f'Only {unallocated_quantity} '
+                    f'{unit} of surplus food is available.'
+                )
 
-            elif leftover.action == 'WASTED':
-                return redirect('waste_food')
+            else:
+                # Create the action record
+                leftover = form.save(commit=False)
 
-            return redirect('dashboard')
+                leftover.restaurant = restaurant
+                leftover.quantity_used = 0
+
+                leftover.save()
+
+                if leftover.action == 'DISCOUNTED':
+                    return redirect('discounted_sale')
+
+                elif leftover.action == 'STORED':
+                    return redirect('storage_record')
+
+                elif leftover.action == 'DONATED':
+                    return redirect(
+                        'donation',
+                        leftover_id=leftover.id
+                    )
+
+                elif leftover.action == 'STAFF':
+                    return redirect('share_food')
+
+                elif leftover.action == 'WASTED':
+                    return redirect('waste_food')
+
+                return redirect('dashboard')
 
     else:
-        form = LeftoverRecordForm(restaurant=restaurant)
+        form = LeftoverRecordForm(
+            restaurant=restaurant
+        )
 
     return render(
         request,
