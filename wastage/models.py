@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 
 
 class Restaurant(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='restaurant')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name='restaurant')
     restaurant_name = models.CharField(max_length=150)
     owner_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -54,7 +55,7 @@ class LeftoverRecord(models.Model):
         ('G', 'Grams'),
         ('L', 'Litres'),
         ('ML', 'Millilitres'),
-        ('PCS','pieces'),
+        ('PCS', 'pieces'),
     ]
     WASTE_REASON_CHOICES = [
         ('OVERPRODUCTION', 'Overproduction'),
@@ -68,17 +69,20 @@ class LeftoverRecord(models.Model):
     food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     daily_record = models.ForeignKey(DailyFoodRecord, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=8, decimal_places=2)
-    unit = models.CharField(max_length=10, choices=UNIT_CHOICES, default='KG')
+    quantity_used = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    unit = models.CharField(max_length=10, choices=UNIT_CHOICES,default='KG')
     people_helped = models.PositiveIntegerField(default=0)
     action = models.CharField(max_length=20, choices=ACTION_CHOICES)
-    waste_reason = models.CharField(
-        max_length=30, choices=WASTE_REASON_CHOICES, blank=True)
-    donation_organization = models.ForeignKey(
-        'FoodRescueOrganization', on_delete=models.SET_NULL, null=True, blank=True)
+    waste_reason = models.CharField(max_length=30, choices=WASTE_REASON_CHOICES, blank=True)
+    donation_organization = models.ForeignKey('FoodRescueOrganization', on_delete=models.SET_NULL, null=True, blank=True)
     recorded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.food_item.dish_name} - {self.action}"
+    
+    @property
+    def remaining_quantity(self):
+        return self.quantity - self.quantity_used
 
     def clean(self):
         from django.core.exceptions import ValidationError

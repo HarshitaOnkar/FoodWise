@@ -1,0 +1,267 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>History - FoodWise</title>
+
+    <link rel="stylesheet" href="{% static 'wastage/style.css' %}">
+
+    <style>
+        .history-page {
+            min-height: 100vh;
+            background: #f7faf8;
+        }
+
+        .history-card {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            overflow-x: auto;
+        }
+
+        .history-header {
+            margin-bottom: 25px;
+        }
+
+        .history-header h1 {
+            margin: 0 0 8px;
+            color: #26342b;
+        }
+
+        .history-header p {
+            margin: 0;
+            color: #777;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #edf0ee;
+            vertical-align: top;
+        }
+
+        .history-table th {
+            color: #34423a;
+            font-size: 14px;
+            background: #f7faf8;
+        }
+
+        .history-table td {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .action-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #eaf7ee;
+            color: #27864a;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .details {
+            line-height: 1.6;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .details strong {
+            color: #34423a;
+        }
+
+        .empty-history {
+            padding: 30px;
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body class="dashboard-page history-page">
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-logo">
+            <span class="logo-leaf">◉</span>
+            FoodWise
+        </div>
+
+        <div class="header-right">
+
+            <div class="restaurant-user">
+                <strong>
+                    {{ restaurant.restaurant_name }}
+                </strong>
+
+                <small>
+                    Owner
+                </small>
+            </div>
+
+            <div class="user-avatar">
+                {{ restaurant.restaurant_name|first|upper }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="dashboard-main">
+
+        <div class="history-card">
+
+            <div class="history-header">
+
+                <h1>Food History</h1>
+
+                <p>
+                    View all surplus food activities recorded by your restaurant.
+                </p>
+
+            </div>
+
+
+            {% if records %}
+
+            <table class="history-table">
+
+                <thead>
+                    <tr>
+                        <th>Food Item</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Action</th>
+                        <th>Details</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for record in records %}
+
+                    <tr>
+
+                        <td>
+                            {{ record.food_item.dish_name }}
+                        </td>
+
+                        <td>
+                            {{ record.quantity }}
+                        </td>
+
+                        <td>
+                            {{ record.get_unit_display }}
+                        </td>
+
+                        <td>
+                            <span class="action-badge">
+                                {{ record.get_action_display }}
+                            </span>
+                        </td>
+
+                        <td class="details">
+
+                            {% if record.action == 'DISCOUNTED' %}
+
+                                {% for sale in record.discountedsale_set.all %}
+                                    <strong>Sold:</strong>
+                                    {{ sale.quantity_sold }}<br>
+
+                                    <strong>Original:</strong>
+                                    ₹{{ sale.original_price }}<br>
+
+                                    <strong>Discounted:</strong>
+                                    ₹{{ sale.discounted_price }}
+                                {% empty %}
+                                    Sale details not recorded.
+                                {% endfor %}
+
+                            {% elif record.action == 'DONATED' %}
+
+                                {% if record.donation_organization %}
+                                    <strong>Organization:</strong>
+                                    {{ record.donation_organization.organization_name }}<br>
+                                {% endif %}
+
+                                <strong>People helped:</strong>
+                                {{ record.people_helped }}
+
+                            {% elif record.action == 'STORED' %}
+
+                                {% for storage in record.storagerecord_set.all %}
+                                    <strong>Method:</strong>
+                                    {{ storage.storage_method }}<br>
+
+                                    <strong>Quantity stored:</strong>
+                                    {{ storage.quantity_stored }}<br>
+
+                                    <strong>Use by:</strong>
+                                    {{ storage.use_by_date|date:"d M, Y" }}
+                                {% empty %}
+                                    Storage details not recorded.
+                                {% endfor %}
+
+                            {% elif record.action == 'STAFF' %}
+
+                                <strong>People helped:</strong>
+                                {{ record.people_helped }}
+
+                            {% elif record.action == 'WASTED' %}
+
+                                {% if record.waste_reason %}
+                                    <strong>Reason:</strong>
+                                    {{ record.get_waste_reason_display }}
+                                {% else %}
+                                    Waste reason not recorded.
+                                {% endif %}
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ record.recorded_at|date:"d M, Y" }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <div class="empty-history">
+                No food history recorded yet.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

@@ -38,9 +38,11 @@ class LeftoverRecordForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if restaurant:
-            self.fields['daily_record'].queryset = DailyFoodRecord.objects.filter(restaurant=restaurant)
-            self.fields['food_item'].queryset = FoodItem.objects.filter(restaurant=restaurant)
-            
+            self.fields['daily_record'].queryset = DailyFoodRecord.objects.filter(
+                restaurant=restaurant)
+            self.fields['food_item'].queryset = FoodItem.objects.filter(
+                restaurant=restaurant)
+
     class Meta:
         model = LeftoverRecord
         fields = [
@@ -84,7 +86,7 @@ class DailyFoodRecordForm(forms.ModelForm):
                 restaurant=restaurant,
                 is_active=True
             )
-            
+
     def clean(self):
         cleaned_data = super().clean()
         prepared = cleaned_data.get('quantity_prepared')
@@ -95,7 +97,7 @@ class DailyFoodRecordForm(forms.ModelForm):
                     "Quantity sold cannot be greater than quantity prepared."
                 )
             return cleaned_data
-        
+
 
 class FoodItemForm(forms.ModelForm):
 
@@ -123,8 +125,8 @@ class FoodItemForm(forms.ModelForm):
                 attrs={'min': 0, 'step': '0.01'}
             ),
         }
-        
-        
+
+
 class DiscountedSaleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -159,7 +161,7 @@ class DiscountedSaleForm(forms.ModelForm):
                 attrs={'min': 0, 'step': '0.01'}
             ),
         }
-        
+
     def clean(self):
         cleaned_data = super().clean()
 
@@ -167,29 +169,32 @@ class DiscountedSaleForm(forms.ModelForm):
         quantity_sold = cleaned_data.get('quantity_sold')
 
         if leftover and quantity_sold:
-
+            
             already_sold = (
                 DiscountedSale.objects
                 .filter(leftover_record=leftover)
                 .exclude(pk=self.instance.pk)
-                .aggregate(total=Sum('quantity_sold'))['total'] or 0
+                .aggregate(total=Sum('quantity_sold'))
+                ['total'] or 0
             )
-
-            if already_sold + quantity_sold > leftover.quantity:
+                
+            available_quantity = (
+                leftover.quantity - leftover.quantity_used
+            )
+            if quantity_sold > available_quantity:
                 raise forms.ValidationError(
-                    f"Only {leftover.quantity - already_sold} "
+                    f"Only {available_quantity} "
                     f"of this leftover food is still available for sale."
                 )
-
         return cleaned_data
 
 
 class StorageRecordForm(forms.ModelForm):
-    
+
     storage_method = forms.ChoiceField(
         choices=[
-            ('REFRIGERATION','Refrigeration'),
-            ('FREEZING','Freezing'),
+            ('REFRIGERATION', 'Refrigeration'),
+            ('FREEZING', 'Freezing'),
             ('DRY_STORAGE', 'Dry Storage'),
             ('AIRTIGHT_CONTAINER', 'Airtight Container'),
         ]
@@ -224,8 +229,31 @@ class StorageRecordForm(forms.ModelForm):
                 attrs={'type': 'date'}
             ),
         }
-        
-        
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        leftover = cleaned_data.get('leftover_record')
+        quantity_stored = cleaned_data.get('quantity_stored')
+
+        if leftover and quantity_stored:
+
+            already_stored = (
+                StorageRecord.objects
+                .filter(leftover_record=leftover)
+                .exclude(pk=self.instance.pk)
+                .aggregate(total=Sum('quantity_stored'))['total'] or 0
+            )
+
+            if already_stored + quantity_stored > leftover.quantity:
+                raise forms.ValidationError(
+                    f"Only {leftover.quantity - already_stored} "
+                    f"of this leftover food is still available for storage."
+                )
+
+        return cleaned_data
+
+
 class DonationForm(forms.Form):
 
     leftover_record = forms.ModelChoiceField(
@@ -261,8 +289,8 @@ class DonationForm(forms.Form):
 
         if leftover:
             self.fields['leftover_record'].initial = leftover
-            
-            
+
+
 class ShareForm(forms.Form):
 
     leftover_record = forms.ModelChoiceField(
@@ -286,8 +314,8 @@ class ShareForm(forms.Form):
                     action='STAFF'
                 )
             )
-            
-            
+
+
 class WasteForm(forms.Form):
 
     leftover_record = forms.ModelChoiceField(
@@ -297,7 +325,7 @@ class WasteForm(forms.Form):
 
     waste_reason = forms.ChoiceField(
         choices=[
-            ('','- Select a reason -')
+            ('', '- Select a reason -')
         ] + list(LeftoverRecord.WASTE_REASON_CHOICES)
     )
 

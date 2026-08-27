@@ -1,1071 +1,1794 @@
 {% load static %}
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>FoodWise Dashboard</title>
+    <meta charset="UTF-8">
 
-  <link rel="stylesheet" href="{% static 'wastage/style.css' %}" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  />
+    <title>
+        FoodWise Dashboard
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'wastage/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
 </head>
 
 
 <body class="dashboard-page">
 
 
-  <!-- TOP BAR -->
-  <header class="dashboard-header">
+<!-- =====================================================
+     HEADER
+====================================================== -->
 
-    <div class="dashboard-logo">
-      <span class="logo-leaf">◉</span>
-      FoodWise
+<header class="dashboard-header">
+
+    <div class="header-left">
+
+        <div class="dashboard-logo">
+
+            <span class="logo-icon">
+                <i class="fa-solid fa-leaf"></i>
+            </span>
+
+            <span>
+                FoodWise
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="menu-toggle"
+            onclick="toggleSidebar()"
+            aria-label="Toggle sidebar"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
     </div>
 
-    <button class="menu-button">☰</button>
 
     <div class="header-right">
 
-      <span class="notification">♧</span>
+        <button
+            class="notification-button"
+            type="button"
+        >
 
-      <div class="restaurant-user">
-        <strong>{{ restaurant.restaurant_name }}</strong>
-        <small>Owner</small>
-      </div>
+            <i class="fa-regular fa-bell"></i>
 
-      <div class="user-avatar">
-        {{ restaurant.restaurant_name|first|upper }}
-      </div>
+            <span class="notification-dot"></span>
 
-      <span class="dropdown">⌄</span>
+        </button>
+
+
+        <div class="user-menu">
+
+    <button
+        type="button"
+        class="user-menu-button"
+        onclick="toggleUserMenu()"
+    >
+
+        <div class="restaurant-user">
+
+            <strong>
+                {{ restaurant.restaurant_name }}
+            </strong>
+
+            <small>
+                {{ restaurant.owner_name }}
+            </small>
+
+        </div>
+
+
+        <div class="user-avatar">
+
+            {{ restaurant.restaurant_name|first|upper }}
+
+        </div>
+
+
+        <span class="header-arrow">
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </span>
+
+    </button>
+
+
+    <div
+        class="user-dropdown"
+        id="userDropdown"
+    >
+
+        <a href="{% url 'profile' %}">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+
+        <a href="{% url 'history' %}">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            Food Activity
+        </a>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <a
+            href="{% url 'logout' %}"
+            class="logout-dropdown"
+        >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
 
     </div>
 
-  </header>
+</div>
+
+    </div>
+
+</header>
 
 
 
-  <div class="dashboard-layout">
+<!-- =====================================================
+     DASHBOARD LAYOUT
+====================================================== -->
+
+<div class="dashboard-layout">
 
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
 
-      <nav>
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
 
-        <a href="{% url 'dashboard' %}" class="sidebar-link active">
-          <span>
-            <i class="fa-solid fa-table-cells-large"></i>
-          </span>
-          Dashboard
-        </a>
-
-
-        <a href="#" class="sidebar-link">
-          <span>
-            <i class="fa-solid fa-bowl-food"></i>
-          </span>
-          Surplus Food
-        </a>
+        <nav class="sidebar-nav">
 
 
-        <a href="#" class="sidebar-link">
-          <span>
-            <i class="fa-solid fa-hand-holding-heart"></i>
-          </span>
-          Donations
-        </a>
+            <a
+                href="{% url 'dashboard' %}"
+                class="sidebar-link active"
+                title="Dashboard"
+            >
+
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                </span>
+
+                <span class="sidebar-text">
+                    Dashboard
+                </span>
+
+            </a>
 
 
-        <a href="#" class="sidebar-link">
-          <span>
-            <i class="fa-solid fa-clipboard-list"></i>
-          </span>
-          Requests
-        </a>
+            <a
+                href="{% url 'add_food_item' %}"
+                class="sidebar-link"
+                title="Add Food Item"
+            >
+
+                <span class="sidebar-icon">
+                    <i class="fas fa-utensils"></i>
+                </span>
+
+                <span class="sidebar-text">
+                    Add Food Item
+                </span>
+
+            </a>
+
+            <a href="{% url 'food_records' %}" class="sidebar-link">
+    <span class="sidebar-icon">
+        <i class="fas fa-file-alt"></i>
+    </span>
+    <span class="sidebar-text">Food Records</span>
+</a>
 
 
-        <a href="#" class="sidebar-link">
-          <span>
-            <i class="fa-solid fa-clock-rotate-left"></i>
-          </span>
-          History
-        </a>
+            <a
+                href="{% url 'add_surplus' %}"
+                class="sidebar-link"
+                title="Add Surplus Food"
+            >
+
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-bowl-food"></i>
+                </span>
+
+                <span class="sidebar-text">
+                    Add Surplus Food
+                </span>
+
+            </a>
 
 
-        <a href="#" class="sidebar-link">
-          <span>
-            <i class="fa-solid fa-seedling"></i>
-          </span>
-          Impact
-        </a>
+            <a
+                href="{% url 'donations' %}"
+                class="sidebar-link"
+                title="Donations"
+            >
+
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                </span>
+
+                <span class="sidebar-text">
+                    Donations
+                </span>
+
+            </a>
 
 
-        <a href="#" class="sidebar-link">
-          <span>
-            <i class="fa-solid fa-user"></i>
-          </span>
-          Profile
-        </a>
+            <a
+                href="#"
+                class="sidebar-link"
+                title="Requests"
+            >
 
-      </nav>
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </span>
+
+                <span class="sidebar-text">
+                    Requests
+                </span>
+
+            </a>
 
 
-      <a href="{% url 'logout' %}" class="sidebar-link logout-link">
+            <a
+                href="{% url 'history' %}"
+                class="sidebar-link"
+                title="History"
+            >
 
-        <span>
-          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        </span>
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </span>
 
-        Logout
+                <span class="sidebar-text">
+                    Food Activity
+                </span>
 
-      </a>
+            </a>
+
+
+            <a
+                href="{% url 'impact' %}"
+                class="sidebar-link"
+                title="Impact"
+            >
+
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-seedling"></i>
+                </span>
+
+                <span class="sidebar-text">
+                    Impact
+                </span>
+
+            </a>
+
+
+            <a
+                href="{% url 'profile' %}"
+                class="sidebar-link"
+                title="Profile"
+            >
+
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+
+                <span class="sidebar-text">
+                    Profile
+                </span>
+
+            </a>
+
+        </nav>
+
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+
+            <div class="impact-message">
+
+                <h3>
+                    You're making
+                    <br>
+                    a difference!
+                </h3>
+
+
+                <p>
+                    Every meal saved
+                    creates a better
+                    tomorrow.
+                </p>
+
+
+                <div class="impact-illustration">
+
+                    <i class="fa-solid fa-earth-americas"></i>
+
+
+                    <span class="leaf-one">
+                        <i class="fa-solid fa-leaf"></i>
+                    </span>
+
+
+                    <span class="leaf-two">
+                        <i class="fa-solid fa-leaf"></i>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{% url 'logout' %}"
+                class="sidebar-link logout-link"
+                title="Logout"
+            >
+
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </span>
+
+
+                <span class="sidebar-text">
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
 
     </aside>
 
 
 
-    <!-- MAIN CONTENT -->
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
     <main class="dashboard-main">
 
 
-      <!-- WELCOME -->
-      <div class="dashboard-welcome">
+        <!-- =================================================
+             WELCOME
+        ================================================== -->
 
-        <div>
+        <section class="dashboard-welcome">
 
-          <h1>
-            Welcome back, {{ restaurant.restaurant_name }}! 👋
-          </h1>
+            <div>
 
-          <p>
-            Here's what's happening with your surplus food.
-          </p>
+                <h1>
 
-        </div>
+                    Welcome back,
+                    {{ restaurant.restaurant_name }}!
 
+                    <span class="wave">
+                        👋
+                    </span>
 
-        <a
-          href="{% url 'add_surplus' %}"
-          class="add-surplus-btn"
-        >
-          + Add Surplus Food
-        </a>
-
-      </div>
+                </h1>
 
 
-
-      <!-- SUMMARY CARDS -->
-      <section class="summary-cards">
-
-
-        <!-- SURPLUS FOOD -->
-        <div class="summary-card">
-
-          <div class="summary-icon green-icon">
-            ♧
-          </div>
-
-          <div>
-
-            <h2>
-              {{ surplus_count }}
-            </h2>
-
-            <p>
-              Surplus Food Items
-            </p>
-
-            <span class="green-text">
-              Active
-            </span>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- DONATIONS -->
-        <div class="summary-card">
-
-          <div class="summary-icon orange-icon">
-            ♧
-          </div>
-
-          <div>
-
-            <h2>
-              {{ donation_count }}
-            </h2>
-
-            <p>
-              Donations Made
-            </p>
-
-            <span class="orange-text">
-              This Month
-            </span>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- PEOPLE HELPED -->
-        <div class="summary-card">
-
-          <div class="summary-icon purple-icon">
-            ♧
-          </div>
-
-          <div>
-
-            <h2>
-              {{ needy_people_helped }}
-            </h2>
-
-            <p>
-              Needy People
-            </p>
-
-            <h2>
-              {{ staff_people_helped }}
-            </h2>
-
-            <p>
-              Staff
-            </p>
-
-            <span class="purple-text">
-              This Month
-            </span>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- FOOD SAVED -->
-        <div class="summary-card">
-
-          <div class="summary-icon green-icon">
-            ♧
-          </div>
-
-          <div>
-
-            <h2 class="rescued-amounts">
-              {% for unit, amount in rescued_by_unit.items %}
-              <span class="rescued-unit">
-                {{ amount|floatformat:0 }}
-                {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
-                L
-                {% else %}
-                {{ unit|lower }}
-                {% endif %}
-              </span>
-              {% if not forloop.last %}
-              <br>
-              {% endif %}
-              {% empty %}
-              <span class="rescued-unit">0 kg</span>
-              {% endfor %}
-            </h2>
-            <p>
-              Food Rescued
-            </p>
-
-            <span class="green-text">
-              This Month
-            </span>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-
-      <section class="reduce-section">
-
-    <div class="dashboard-card reduce-card">
-
-        <div class="card-header">
-            <h2>Reduce Food Waste</h2>
-            <span class="reduce-period">Overall</span>
-        </div>
-
-        <div class="reduce-content">
-
-            <!-- TOTAL SURPLUS -->
-            <div class="reduce-stat">
-
-                <span class="reduce-label">
-                    Total Surplus
-                </span>
-
-                <strong>
-                    {% for unit, amount in surplus_by_unit.items %}
-                        {{ amount|floatformat:2 }}
-                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
-                            L
-                        {% else %}
-                            {{ unit|lower }}
-                        {% endif %}
-
-                        {% if not forloop.last %}
-                            <br>
-                        {% endif %}
-                    {% empty %}
-                        0 kg
-                    {% endfor %}
-                </strong>
+                <p>
+                    Here's what's happening with your surplus food.
+                </p>
 
             </div>
 
 
-            <!-- FOOD RESCUED -->
-            <div class="reduce-stat">
+            <a
+                href="{% url 'add_surplus' %}"
+                class="add-surplus-btn"
+            >
 
-                <span class="reduce-label">
-                    Food Rescued
-                </span>
+                <i class="fa-solid fa-plus"></i>
 
-                <strong>
-                    {% for unit, amount in rescued_by_unit.items %}
-                        {{ amount|floatformat:2 }}
-                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
-                            L
-                        {% else %}
-                            {{ unit|lower }}
-                        {% endif %}
+                Add Surplus Food
 
-                        {% if not forloop.last %}
-                            <br>
-                        {% endif %}
-                    {% empty %}
-                        0 kg
-                    {% endfor %}
-                </strong>
-
-            </div>
-
-
-            <!-- FOOD WASTED -->
-            <div class="reduce-stat">
-
-                <span class="reduce-label">
-                    Food Wasted
-                </span>
-
-                <strong>
-                    {% for unit, amount in wasted_by_unit.items %}
-                        {{ amount|floatformat:2 }}
-                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
-                            L
-                        {% else %}
-                            {{ unit|lower }}
-                        {% endif %}
-
-                        {% if not forloop.last %}
-                            <br>
-                        {% endif %}
-                    {% empty %}
-                        0 kg
-                    {% endfor %}
-                </strong>
-
-            </div>
-
-
-            <!-- WASTE REDUCTION -->
-            <div class="reduce-stat reduction-percentage">
-
-                <span class="reduce-label">
-                    Waste Reduction
-                </span>
-
-                <strong>
-                    {% for unit, percentage in reduction_by_unit.items %}
-
-                        {{ percentage|floatformat:1 }}%
-
-                        {% if not forloop.last %}
-                            <br>
-                        {% endif %}
-
-                    {% empty %}
-                        0%
-                    {% endfor %}
-                </strong>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-      <!-- MIDDLE SECTION -->
-      <section class="dashboard-grid">
-
-
-        <!-- RECENT SURPLUS FOOD -->
-        <div class="dashboard-card">
-
-          <div class="card-header">
-
-            <h2>
-              Recent Surplus Food
-            </h2>
-
-            <a href="#">
-              View All
             </a>
 
-          </div>
+        </section>
 
 
-          <div class="surplus-list">
 
-            {% for record in recent_surplus %}
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================== -->
 
-            <div class="surplus-item">
-
-              <div class="food-image">
-                🍲
-              </div>
+        <section class="summary-cards">
 
 
-              <div class="food-info">
+            <!-- =================================================
+                 CARD 1 - SURPLUS FOOD
+            ================================================== -->
 
-                <strong>
-                  {{ record.food_item.dish_name }}
-                </strong>
+            <div class="summary-card">
 
-                <p>
+                <div class="summary-icon green-icon">
 
-                  Quantity:
-                  {{ record.quantity }}
-                  {{ record.get_unit_display }}
+                    <i class="fa-solid fa-tree"></i>
 
-                  &nbsp;
-
-                  Recorded:
-                  {{ record.recorded_at|date:"d M, Y" }}
-
-                </p>
-
-              </div>
+                </div>
 
 
-              <span class="status available">
+                <div class="summary-content">
 
-                {{ record.get_action_display }}
-
-              </span>
-
-            </div>
+                    <h2>
+                        {{ surplus_count }}
+                    </h2>
 
 
-            {% empty %}
+                    <p>
+                        Surplus Food Items
+                    </p>
 
-            <div class="surplus-item">
 
-              <div class="food-info">
+                    <span class="badge green-badge summary-badge">
+                        Active
+                    </span>
 
-                <strong>
-                  No surplus food recorded yet.
-                </strong>
-
-                <p>
-                  Add your first surplus food item
-                  to see it here.
-                </p>
-
-              </div>
+                </div>
 
             </div>
 
-            {% endfor %}
-
-          </div>
-
-        </div>
 
 
+            <!-- =================================================
+                 CARD 2 - DONATIONS
+            ================================================== -->
 
-        <!-- DONATION OVERVIEW -->
-        <div class="dashboard-card">
+            <div class="summary-card">
 
-          <div class="card-header">
+                <div class="summary-icon orange-icon">
 
-            <h2>
-              Donation Overview
-              <span>(This Month)</span>
-            </h2>
+                    <i class="fa-solid fa-hand-holding-heart"></i>
 
-          </div>
-
-
-          <!-- GRAPH -->
-          <div
-            class="donation-chart-container"
-            style="
-              position: relative;
-              width: 100%;
-              height: 285px;
-              margin-top: 5px;
-              box-sizing: border-box;
-            "
-          >
-
-            {{ donation_counts|json_script:"donation-data" }}
+                </div>
 
 
-            <!-- Y AXIS TITLE -->
-            <div
-              style="
-                position: absolute;
-                left: 0px;
-                top: 50%;
-                transform: translateY(-50%) rotate(-90deg);
-                transform-origin: center;
-                font-size: 12px;
-                color: #737873;
-                white-space: nowrap;
-              "
-            >
-              Number of Donations
-            </div>
+                <div class="summary-content">
+
+                    <h2>
+                        {{ donation_count }}
+                    </h2>
 
 
-
-            <!-- Y AXIS NUMBERS -->
-            <div
-              id="y-axis"
-              style="
-                position: absolute;
-                left: 45px;
-                top: 25px;
-                bottom: 50px;
-                width: 25px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: flex-end;
-                font-size: 11px;
-                color: #737873;
-              "
-            >
-            </div>
+                    <p>
+                        Donations Made
+                    </p>
 
 
+                    <span class="badge orange-badge summary-badge">
+                        This Month
+                    </span>
 
-            <!-- GRAPH + GRID -->
-            <div
-              id="graph-area"
-              style="
-                position: absolute;
-
-                /* Keeps graph toward the Recent Surplus side */
-                left: 80px;
-
-                right: 25px;
-
-                top: 25px;
-
-                bottom: 50px;
-              "
-            >
-
-
-              <!-- GRID LINES -->
-              <div
-                id="grid-lines"
-                style="
-                  position: absolute;
-                  inset: 0;
-
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: space-between;
-
-                  pointer-events: none;
-                "
-              >
-              </div>
-
-
-
-              <!-- GRAPH -->
-              <svg
-                id="donation-chart"
-                viewBox="0 0 700 190"
-                preserveAspectRatio="none"
-                style="
-                  position: absolute;
-                  left: 0;
-                  top: 0;
-
-                  width: 100%;
-                  height: 100%;
-
-                  overflow: visible;
-                "
-              >
-
-                <!-- LIGHT GREEN AREA -->
-                <polygon
-                  id="donation-area"
-                  fill="#eaf7ed"
-                  points=""
-                >
-                </polygon>
-
-
-                <!-- GREEN LINE -->
-                <polyline
-                  id="donation-line"
-                  fill="none"
-                  stroke="#42b96a"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  points=""
-                >
-                </polyline>
-
-
-                <!-- POINTS -->
-                <g
-                  id="donation-points"
-                  fill="#42b96a"
-                >
-                </g>
-
-              </svg>
+                </div>
 
             </div>
 
 
 
-            <!-- X AXIS -->
-            <div
-              style="
-                position: absolute;
+            <!-- =================================================
+                 CARD 3 - PEOPLE HELPED
+            ================================================== -->
 
-                left: 80px;
-                right: 25px;
+            <div class="summary-card">
 
-                bottom: 15px;
+                <div class="summary-icon purple-icon">
 
-                height: 25px;
+                    <i class="fa-solid fa-users"></i>
 
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                </div>
 
-                font-size: 11px;
-                color: #737873;
-              "
-            >
 
-              <span>
-                1 {{ current_month_name }}
-              </span>
+                <div class="summary-content people-content">
 
-              <span>
-                7 {{ current_month_name }}
-              </span>
 
-              <span>
-                14 {{ current_month_name }}
-              </span>
+                    <div class="dual-number-row">
 
-              <span>
-                21 {{ current_month_name }}
-              </span>
 
-              <span>
-                28 {{ current_month_name }}
-              </span>
+                        <!-- NEEDY PEOPLE -->
+
+                        <div class="dual-number-item">
+
+                            <div class="people-number">
+                                {{ needy_people_helped }}
+                            </div>
+
+
+                            <p>
+                                Needy People Helped
+                            </p>
+
+                        </div>
+
+
+                        <!-- STAFF -->
+
+                        <div class="dual-number-item">
+
+                            <div class="people-number">
+                                {{ staff_people_helped }}
+                            </div>
+
+
+                            <p>
+                                Staff Helped
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="badge purple-badge summary-badge">
+                        This Month
+                    </span>
+
+                </div>
 
             </div>
 
-          </div>
+
+
+            <!-- =================================================
+                 CARD 4 - FOOD RESCUED
+            ================================================== -->
+
+            <div class="summary-card">
+
+                <div class="summary-icon green-icon">
+
+                    <i class="fa-solid fa-leaf"></i>
+
+                </div>
+
+
+                <div class="summary-content rescued-content">
+
+
+                    <div class="dual-number-row">
+
+                        {% for unit, amount in rescued_by_unit.items %}
+
+                            <div class="dual-number-item">
+
+                                <div class="people-number">
+
+                                    {{ amount|floatformat:0 }}
+
+                                    {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
+
+                                        L
+
+                                    {% else %}
+
+                                        {{ unit|lower }}
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        {% empty %}
+
+                            <div class="dual-number-item">
+
+                                <div class="people-number">
+                                    0 kg
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <p class="rescued-label">
+                        Food Rescued
+                    </p>
+
+
+                    <span class="badge green-badge summary-badge">
+                        This Month
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
 
 
 
-          <!-- GRAPH JAVASCRIPT -->
-          <script>
+        <!-- =================================================
+             REDUCE FOOD WASTE
+        ================================================== -->
 
-            const donationData = JSON.parse(
-              document.getElementById("donation-data").textContent
+        <section class="reduce-section">
+
+            <div class="dashboard-card reduce-card">
+
+
+                <div class="card-header">
+
+                    <h2>
+                        Reduce Food Waste
+                    </h2>
+
+
+                    <span class="card-period">
+                        Overall
+                    </span>
+
+                </div>
+
+
+                <div class="reduce-content">
+
+
+                    <!-- TOTAL SURPLUS -->
+
+                    <div class="reduce-stat total-surplus">
+
+                        <div class="reduce-stat-top">
+
+                            <div>
+
+                                <span class="reduce-label">
+                                    Total Surplus
+                                </span>
+
+
+                                <strong>
+
+                                    {% for unit, amount in surplus_by_unit.items %}
+
+                                        {{ amount|floatformat:2 }}
+
+                                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
+                                            L
+                                        {% else %}
+                                            {{ unit|lower }}
+                                        {% endif %}
+
+                                        {% if not forloop.last %}
+                                            <br>
+                                        {% endif %}
+
+                                    {% empty %}
+
+                                        0 kg
+
+                                    {% endfor %}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reduce-icon green-reduce-icon">
+
+                                <i class="fa-solid fa-box-open"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mini-chart green-chart">
+                            <span></span>
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- FOOD RESCUED -->
+
+                    <div class="reduce-stat">
+
+                        <div class="reduce-stat-top">
+
+                            <div>
+
+                                <span class="reduce-label">
+                                    Food Rescued
+                                </span>
+
+
+                                <strong>
+
+                                    {% for unit, amount in rescued_by_unit.items %}
+
+                                        {{ amount|floatformat:2 }}
+
+                                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
+                                            L
+                                        {% else %}
+                                            {{ unit|lower }}
+                                        {% endif %}
+
+                                        {% if not forloop.last %}
+                                            <br>
+                                        {% endif %}
+
+                                    {% empty %}
+
+                                        0 kg
+
+                                    {% endfor %}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reduce-icon green-reduce-icon">
+
+                                <i class="fa-solid fa-leaf"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mini-chart green-chart">
+                            <span></span>
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- FOOD WASTED -->
+
+                    <div class="reduce-stat">
+
+                        <div class="reduce-stat-top">
+
+                            <div>
+
+                                <span class="reduce-label">
+                                    Food Wasted
+                                </span>
+
+
+                                <strong>
+
+                                    {% for unit, amount in wasted_by_unit.items %}
+
+                                        {{ amount|floatformat:2 }}
+
+                                        {% if unit|lower == 'l' or unit|lower == 'litre' or unit|lower == 'litres' %}
+                                            L
+                                        {% else %}
+                                            {{ unit|lower }}
+                                        {% endif %}
+
+                                        {% if not forloop.last %}
+                                            <br>
+                                        {% endif %}
+
+                                    {% empty %}
+
+                                        0 kg
+
+                                    {% endfor %}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reduce-icon orange-reduce-icon">
+
+                                <i class="fa-solid fa-trash-can"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mini-chart orange-chart">
+                            <span></span>
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- WASTE REDUCTION -->
+
+                    <div class="reduce-stat">
+
+                        <div class="reduce-stat-top">
+
+                            <div>
+
+                                <span class="reduce-label">
+                                    Waste Reduction
+                                </span>
+
+
+                                <strong class="reduction-value">
+
+                                    {% for unit, percentage in reduction_by_unit.items %}
+
+                                        {{ percentage|floatformat:1 }}%
+
+                                        {% if not forloop.last %}
+                                            <br>
+                                        {% endif %}
+
+                                    {% empty %}
+
+                                        0%
+
+                                    {% endfor %}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reduce-icon green-reduce-icon">
+
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mini-chart green-chart">
+                            <span></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LOWER DASHBOARD GRID
+        ================================================== -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- =================================================
+                 RECENT SURPLUS FOOD
+            ================================================== -->
+
+            <div class="dashboard-card recent-surplus-card">
+
+
+                <div class="card-header">
+
+                    <h2>
+                        Recent Surplus Food
+                    </h2>
+
+
+                    <a href="{% url 'history' %}">
+                        View All
+                    </a>
+
+                </div>
+
+
+                <div class="surplus-list">
+
+                    {% for record in recent_surplus %}
+
+                        <div class="surplus-item">
+
+
+                            <div class="food-image">
+                                <span>🍛</span>
+                            </div>
+
+
+                            <div class="food-info">
+
+                                <strong>
+                                    {{ record.food_item.dish_name }}
+                                </strong>
+
+
+                                <p>
+
+                                    Quantity:
+                                    {{ record.quantity }}
+                                    {{ record.get_unit_display }}
+
+                                    <span class="dot-separator">
+                                        •
+                                    </span>
+
+                                    Recorded:
+                                    {{ record.recorded_at|date:"d M, Y" }}
+
+                                </p>
+
+                            </div>
+
+
+                            {% with action=record.get_action_display|lower %}
+
+
+                                {% if "donat" in action %}
+
+                                    <span class="status status-donated">
+                                        {{ record.get_action_display }}
+                                    </span>
+
+
+                                {% elif "wast" in action %}
+
+                                    <span class="status status-wasted">
+                                        {{ record.get_action_display }}
+                                    </span>
+
+
+                                {% elif "staff" in action %}
+
+                                    <span class="status status-staff">
+                                        {{ record.get_action_display }}
+                                    </span>
+
+
+                                {% else %}
+
+                                    <span class="status status-stored">
+                                        {{ record.get_action_display }}
+                                    </span>
+
+                                {% endif %}
+
+
+                            {% endwith %}
+
+                        </div>
+
+
+                    {% empty %}
+
+                        <div class="empty-state">
+
+                            <i class="fa-solid fa-bowl-food"></i>
+
+
+                            <strong>
+                                No surplus food recorded yet.
+                            </strong>
+
+
+                            <p>
+                                Add your first surplus food item
+                                to see it here.
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="small-impact-message">
+
+                    <i class="fa-solid fa-gift"></i>
+
+
+                    <span>
+                        Keep it up! You're making a real difference.
+                    </span>
+
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DONATION OVERVIEW
+            ================================================== -->
+
+            <div class="dashboard-card donation-chart-card">
+
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Donation Overview
+
+                        <span>
+                            (This Month)
+                        </span>
+
+                    </h2>
+
+                </div>
+
+
+                <div class="donation-chart-container">
+
+                    {{ donation_counts|json_script:"donation-data" }}
+
+
+                    <div class="chart-y-title">
+                        Number of Donations
+                    </div>
+
+
+                    <div
+                        id="y-axis"
+                        class="y-axis"
+                    ></div>
+
+
+                    <div
+                        id="grid-lines"
+                        class="grid-lines"
+                    ></div>
+
+
+                    <div
+                        id="graph-area"
+                        class="graph-area"
+                    >
+
+                        <svg
+                            id="donation-chart"
+                            viewBox="0 0 700 190"
+                            preserveAspectRatio="none"
+                        >
+
+                            <polygon
+                                id="donation-area"
+                                fill="rgba(66, 185, 106, 0.12)"
+                                points=""
+                            ></polygon>
+
+
+                            <polyline
+                                id="donation-line"
+                                fill="none"
+                                stroke="#2fa65a"
+                                stroke-width="3"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                points=""
+                            ></polyline>
+
+
+                            <g
+                                id="donation-points"
+                                fill="#2fa65a"
+                            ></g>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="chart-x-axis">
+
+                        <span>
+                            1 {{ current_month_name }}
+                        </span>
+
+                        <span>
+                            7 {{ current_month_name }}
+                        </span>
+
+                        <span>
+                            14 {{ current_month_name }}
+                        </span>
+
+                        <span>
+                            21 {{ current_month_name }}
+                        </span>
+
+                        <span>
+                            28 {{ current_month_name }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-summary">
+
+
+                    <div class="chart-summary-item green-summary">
+
+                        <strong>
+                            {{ donation_count }}
+                        </strong>
+
+                        <span>
+                            Total Donations
+                        </span>
+
+                    </div>
+
+
+                    <div class="chart-summary-item orange-summary">
+
+                        <strong>
+                            {{ donation_organization_count|default:"8" }}
+                        </strong>
+
+                        <span>
+                            Organizations
+                        </span>
+
+                    </div>
+
+
+                    <div class="chart-summary-item purple-summary">
+
+                        <strong>
+                            {{ needy_people_helped|default:"2" }}
+                        </strong>
+
+                        <span>
+                            New This Month
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RECENT DONATIONS
+            ================================================== -->
+
+            <div class="dashboard-card donations-card">
+
+
+                <div class="card-header">
+
+                    <h2>
+                        Recent Donations
+                    </h2>
+
+
+                    <a href="{% url 'donations' %}">
+                        View All
+                    </a>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Food Item
+                                </th>
+
+                                <th>
+                                    Quantity
+                                </th>
+
+                                <th>
+                                    Donated To
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for donation in recent_donations %}
+
+                                <tr>
+
+                                    <td>
+
+                                        <div class="table-food">
+
+                                            <span class="table-food-image">
+                                                🍛
+                                            </span>
+
+
+                                            <span>
+                                                {{ donation.food_item.dish_name }}
+                                            </span>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {{ donation.quantity }}
+                                        {{ donation.get_unit_display }}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if donation.donation_organization %}
+
+                                            {{ donation.donation_organization.organization_name }}
+
+                                        {% else %}
+
+                                            Not specified
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {{ donation.recorded_at|date:"d M, Y" }}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status status-delivered">
+                                            Delivered
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+
+                            {% empty %}
+
+                                <tr>
+
+                                    <td
+                                        colspan="5"
+                                        class="table-empty"
+                                    >
+
+                                        No donations recorded yet.
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="donation-thank-you">
+
+                    <i class="fa-solid fa-heart"></i>
+
+
+                    <span>
+
+                        Thank you for your generosity!
+                        You're helping build a better community.
+
+                    </span>
+
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="dashboard-footer">
+
+            © 2026 FoodWise. All rights reserved.
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+
+/* =====================================================
+   SIDEBAR TOGGLE
+===================================================== */
+
+function toggleSidebar() {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+
+    if (window.innerWidth <= 750) {
+
+        sidebar.classList.toggle("mobile-open");
+
+        return;
+
+    }
+
+
+    sidebar.classList.toggle("collapsed");
+
+}
+
+
+/* =====================================================
+   USER DROPDOWN
+===================================================== */
+
+function toggleUserMenu() {
+
+    const dropdown =
+        document.getElementById("userDropdown");
+
+    dropdown.classList.toggle("show");
+
+}
+
+
+/* CLOSE USER DROPDOWN WHEN CLICKING OUTSIDE */
+
+document.addEventListener("click", function(event) {
+
+    const userMenu =
+        document.querySelector(".user-menu");
+
+    const dropdown =
+        document.getElementById("userDropdown");
+
+    if (
+        userMenu &&
+        !userMenu.contains(event.target)
+    ) {
+
+        dropdown.classList.remove("show");
+
+    }
+
+});
+
+
+/* =====================================================
+   CLOSE MOBILE SIDEBAR
+===================================================== */
+
+document
+    .querySelectorAll(".sidebar-link")
+    .forEach(function (link) {
+
+        link.addEventListener(
+            "click",
+            function () {
+
+                if (window.innerWidth <= 750) {
+
+                    document
+                        .getElementById("sidebar")
+                        .classList.remove(
+                            "mobile-open"
+                        );
+
+                }
+
+            }
+        );
+
+    });
+
+
+
+/* =====================================================
+   DONATION CHART DATA
+===================================================== */
+
+const donationDataElement =
+    document.getElementById(
+        "donation-data"
+    );
+
+
+let donationData = [];
+
+
+if (donationDataElement) {
+
+    try {
+
+        donationData =
+            JSON.parse(
+                donationDataElement.textContent
+            );
+
+    } catch (error) {
+
+        donationData = [];
+
+    }
+
+}
+
+
+if (!Array.isArray(donationData)) {
+
+    donationData = [];
+
+}
+
+
+if (donationData.length === 0) {
+
+    donationData = [0];
+
+}
+
+
+
+/* =====================================================
+   CHART SETTINGS
+===================================================== */
+
+const actualMax =
+    Math.max(
+        ...donationData,
+        0
+    );
+
+
+const maxValue =
+    Math.max(
+        actualMax + 1,
+        2
+    );
+
+
+const chartWidth = 700;
+
+const chartHeight = 190;
+
+
+
+/* =====================================================
+   CHART ELEMENTS
+===================================================== */
+
+const yAxis =
+    document.getElementById(
+        "y-axis"
+    );
+
+
+const gridLines =
+    document.getElementById(
+        "grid-lines"
+    );
+
+
+const donationLine =
+    document.getElementById(
+        "donation-line"
+    );
+
+
+const donationArea =
+    document.getElementById(
+        "donation-area"
+    );
+
+
+const donationPoints =
+    document.getElementById(
+        "donation-points"
+    );
+
+
+
+/* =====================================================
+   BUILD CHART
+===================================================== */
+
+if (
+    yAxis &&
+    gridLines &&
+    donationLine &&
+    donationArea &&
+    donationPoints
+) {
+
+    yAxis.innerHTML = "";
+
+    gridLines.innerHTML = "";
+
+
+    /* Y AXIS */
+
+    for (
+        let value = maxValue;
+        value >= 0;
+        value--
+    ) {
+
+        const label =
+            document.createElement(
+                "span"
             );
 
 
-            /*
-             * Find highest donation count.
-             *
-             * Minimum scale = 2
-             * so the graph remains clean
-             * even when there is only 1 donation.
-             */
+        label.textContent =
+            value;
 
-            const actualMax = Math.max(
-              ...donationData,
-              0
+
+        yAxis.appendChild(
+            label
+        );
+
+
+        const line =
+            document.createElement(
+                "div"
             );
 
 
-            const maxValue = Math.max(
-              actualMax + 1,
-              2
-            );
+        line.className =
+            "chart-grid-line";
 
 
-            const chartWidth = 700;
+        gridLines.appendChild(
+            line
+        );
 
-            const chartHeight = 190;
-
-
-
-            /*
-             * Y AXIS
-             */
-
-            const yAxis =
-              document.getElementById("y-axis");
+    }
 
 
-            const gridLines =
-              document.getElementById("grid-lines");
+    /* GRAPH POINTS */
+
+    const points = [];
 
 
-            yAxis.innerHTML = "";
+    donationData.forEach(
+        function (value, index) {
 
-            gridLines.innerHTML = "";
+            let x = 0;
 
 
-
-            /*
-             * CREATE Y AXIS
-             */
-
-            for (
-              let value = maxValue;
-              value >= 0;
-              value--
+            if (
+                donationData.length > 1
             ) {
 
-              const label =
-                document.createElement("span");
-
-
-              label.textContent = value;
-
-
-              yAxis.appendChild(label);
-
-
-
-              /*
-               * Horizontal grid line
-               */
-
-              const line =
-                document.createElement("div");
-
-
-              line.style.width = "100%";
-
-              line.style.borderTop =
-                "1px solid #eef1ee";
-
-
-              gridLines.appendChild(line);
+                x =
+                    (
+                        index /
+                        (
+                            donationData.length - 1
+                        )
+                    ) *
+                    chartWidth;
 
             }
 
 
-
-            /*
-             * GRAPH POINTS
-             */
-
-            const points = [];
-
-
-            donationData.forEach(
-              (value, index) => {
-
-                const x =
-                  (index /
-                    (donationData.length - 1)) *
-                  chartWidth;
-
-
-                const y =
-                  chartHeight -
-                  (value / maxValue) *
-                    (chartHeight - 10);
-
-
-                points.push(
-                  `${x},${y}`
+            const y =
+                chartHeight -
+                (
+                    value /
+                    maxValue
+                ) *
+                (
+                    chartHeight - 10
                 );
 
-              }
+
+            points.push(
+                `${x},${y}`
             );
 
+        }
+    );
 
 
-            /*
-             * GREEN LINE
-             */
+    /* LINE */
 
-            document
-              .getElementById("donation-line")
-              .setAttribute(
-                "points",
-                points.join(" ")
-              );
+    donationLine.setAttribute(
+        "points",
+        points.join(" ")
+    );
 
 
+    /* AREA */
 
-            /*
-             * LIGHT GREEN AREA
-             */
-
-            const areaPoints =
-              `0,${chartHeight} ` +
-              points.join(" ") +
-              ` ${chartWidth},${chartHeight}`;
+    const areaPoints =
+        `0,${chartHeight} ` +
+        points.join(" ") +
+        ` ${chartWidth},${chartHeight}`;
 
 
-            document
-              .getElementById("donation-area")
-              .setAttribute(
-                "points",
-                areaPoints
-              );
+    donationArea.setAttribute(
+        "points",
+        areaPoints
+    );
 
 
+    /* DATA POINTS */
 
-            /*
-             * DATA POINTS
-             */
-
-            const pointGroup =
-              document.getElementById(
-                "donation-points"
-              );
+    donationPoints.innerHTML = "";
 
 
-            donationData.forEach(
-              (value, index) => {
+    donationData.forEach(
+        function (value, index) {
 
-                if (value > 0) {
+            if (value <= 0) {
 
-                  const x =
-                    (index /
-                      (donationData.length - 1)) *
+                return;
+
+            }
+
+
+            let x = 0;
+
+
+            if (
+                donationData.length > 1
+            ) {
+
+                x =
+                    (
+                        index /
+                        (
+                            donationData.length - 1
+                        )
+                    ) *
                     chartWidth;
 
-
-                  const y =
-                    chartHeight -
-                    (value / maxValue) *
-                      (chartHeight - 10);
+            }
 
 
-                  const circle =
-                    document.createElementNS(
-                      "http://www.w3.org/2000/svg",
-                      "circle"
-                    );
+            const y =
+                chartHeight -
+                (
+                    value /
+                    maxValue
+                ) *
+                (
+                    chartHeight - 10
+                );
 
 
-                  circle.setAttribute(
-                    "cx",
-                    x
-                  );
+            const circle =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "circle"
+                );
 
 
-                  circle.setAttribute(
-                    "cy",
-                    y
-                  );
-
-
-                  circle.setAttribute(
-                    "r",
-                    "4"
-                  );
-
-
-                  pointGroup.appendChild(
-                    circle
-                  );
-
-                }
-
-              }
+            circle.setAttribute(
+                "cx",
+                x
             );
 
-          </script>
 
-        </div>
+            circle.setAttribute(
+                "cy",
+                y
+            );
 
-      </section>
 
+            circle.setAttribute(
+                "r",
+                "4"
+            );
 
 
-      <!-- RECENT DONATIONS -->
-      <section class="dashboard-card donations-card">
+            donationPoints.appendChild(
+                circle
+            );
 
+        }
+    );
 
-        <div class="card-header">
+}
 
-          <h2>
-            Recent Donations
-          </h2>
-
-          <a href="#">
-            View All
-          </a>
-
-        </div>
-
-
-
-        <div class="table-wrapper">
-
-          <table>
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  Food Item
-                </th>
-
-                <th>
-                  Quantity
-                </th>
-
-                <th>
-                  Donated To
-                </th>
-
-                <th>
-                  Date
-                </th>
-
-                <th>
-                  Status
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-
-            <tbody>
-
-              {% for donation in recent_donations %}
-
-              <tr>
-
-                <td>
-
-                  🍚
-                  {{ donation.food_item.dish_name }}
-
-                </td>
-
-
-                <td>
-                  {{ donation.quantity }}
-                </td>
-
-
-                <td>
-
-                  {% if donation.donation_organization %}
-
-                    {{ donation.donation_organization.organization_name }}
-
-                  {% else %}
-
-                    Not specified
-
-                  {% endif %}
-
-                </td>
-
-
-                <td>
-
-                  {{ donation.recorded_at|date:"d M, Y" }}
-
-                </td>
-
-
-                <td>
-
-                  <span class="status delivered">
-                    Delivered
-                  </span>
-
-                </td>
-
-              </tr>
-
-
-              {% empty %}
-
-              <tr>
-
-                <td colspan="5">
-                  No donations recorded yet.
-                </td>
-
-              </tr>
-
-              {% endfor %}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </section>
-
-
-    </main>
-
-  </div>
-
+</script>
 
 </body>
-
 </html>

@@ -1,0 +1,429 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Impact - FoodWise</title>
+
+    <link rel="stylesheet" href="{% static 'wastage/style.css' %}">
+
+    <style>
+        .impact-page {
+            min-height: 100vh;
+            background: #f7faf8;
+        }
+
+        .impact-card {
+            max-width: 1100px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .impact-header {
+            margin-bottom: 30px;
+        }
+
+        .impact-header h1 {
+            margin: 0 0 8px;
+            color: #26342b;
+        }
+
+        .impact-header p {
+            margin: 0;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .impact-box {
+            padding: 24px;
+            border: 1px solid #edf0ee;
+            border-radius: 12px;
+            background: #fbfdfc;
+        }
+
+        .impact-box h2 {
+            margin: 0 0 18px;
+            color: #34423a;
+            font-size: 18px;
+        }
+
+        .impact-description {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .impact-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .impact-item:last-child {
+            border-bottom: none;
+        }
+
+        .impact-item strong {
+            color: #27864a;
+            font-size: 20px;
+        }
+
+        .impact-item span {
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        /* People Helped */
+
+        .people-box {
+            grid-column: span 2;
+            text-align: center;
+            background: #f1f9f3;
+            border: none;
+        }
+
+        .people-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .people-helped-grid {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            margin-top: 15px;
+        }
+
+        .people-helped-grid > div {
+            min-width: 160px;
+        }
+
+        .people-number {
+            font-size: 38px;
+            font-weight: 700;
+            color: #27864a;
+        }
+
+
+        /* Dashboard Button */
+
+        .dashboard-button {
+            display: inline-block;
+            margin-top: 28px;
+            padding: 12px 20px;
+            background: #27864a;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .dashboard-button:hover {
+            background: #216f3d;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 700px) {
+
+            .impact-card {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .people-box {
+                grid-column: span 1;
+            }
+
+            .people-helped-grid {
+                flex-direction: column;
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+
+
+<body class="dashboard-page impact-page">
+
+
+    <!-- Header -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-logo">
+            <span class="logo-leaf">◉</span>
+            FoodWise
+        </div>
+
+        <div class="header-right">
+
+            <div class="restaurant-user">
+
+                <strong>
+                    {{ restaurant.restaurant_name }}
+                </strong>
+
+                <small>
+                    Owner
+                </small>
+
+            </div>
+
+            <div class="user-avatar">
+                {{ restaurant.restaurant_name|first|upper }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- Main Content -->
+
+    <main class="dashboard-main">
+
+        <div class="impact-card">
+
+
+            <!-- Page Header -->
+
+            <div class="impact-header">
+
+                <h1>
+                    FoodWise Impact
+                </h1>
+
+                <p>
+                    Here's the impact {{ restaurant.restaurant_name }}
+                    has made by managing surplus food.
+                </p>
+
+            </div>
+
+
+            <!-- Impact Cards -->
+
+            <div class="impact-grid">
+
+
+                <!-- Food Surplus -->
+
+                <div class="impact-box">
+
+                    <h2>
+                        Food Surplus
+                    </h2>
+
+                    {% for unit, total in surplus_by_unit.items %}
+
+                    <div class="impact-item">
+
+                        <strong>
+                            {{ total|floatformat:2 }} {{ unit }}
+                        </strong>
+
+                        <br>
+
+                        <span>
+                            total surplus recorded
+                        </span>
+
+                    </div>
+
+                    {% empty %}
+
+                    <span class="impact-description">
+                        No surplus food recorded yet.
+                    </span>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- Food Rescued -->
+
+                <div class="impact-box">
+
+                    <h2>
+                        Food Rescued
+                    </h2>
+
+                    {% for unit, total in rescued_by_unit.items %}
+
+                    <div class="impact-item">
+
+                        <strong>
+                            {{ total|floatformat:2 }} {{ unit }}
+                        </strong>
+
+                        <br>
+
+                        <span>
+                            rescued from waste
+                        </span>
+
+                    </div>
+
+                    {% empty %}
+
+                    <span class="impact-description">
+                        No rescued food recorded yet.
+                    </span>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- Food Wasted -->
+
+                <div class="impact-box">
+
+                    <h2>
+                        Food Wasted
+                    </h2>
+
+                    {% for unit, total in wasted_by_unit.items %}
+
+                    <div class="impact-item">
+
+                        <strong>
+                            {{ total|floatformat:2 }} {{ unit }}
+                        </strong>
+
+                        <br>
+
+                        <span>
+                            recorded as waste
+                        </span>
+
+                    </div>
+
+                    {% empty %}
+
+                    <span class="impact-description">
+                        No wasted food recorded yet.
+                    </span>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- Waste Reduction -->
+
+                <div class="impact-box">
+
+                    <h2>
+                        Waste Reduction
+                    </h2>
+
+                    {% for unit, percentage in reduction_by_unit.items %}
+
+                    <div class="impact-item">
+
+                        <strong>
+                            {{ percentage|floatformat:1 }}%
+                        </strong>
+
+                        <br>
+
+                        <span>
+                            waste reduction for {{ unit }}
+                        </span>
+
+                    </div>
+
+                    {% empty %}
+
+                    <span class="impact-description">
+                        No reduction data available yet.
+                    </span>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- People Helped -->
+
+                <div class="impact-box people-box">
+
+                    <h2>
+                        People Helped
+                    </h2>
+
+                    <div class="people-helped-grid">
+
+
+                        <!-- Needy People -->
+
+                        <div>
+
+                            <div class="people-number">
+                                {{ needy_people_helped }}
+                            </div>
+
+                            <span class="impact-description">
+                                Needy people helped
+                            </span>
+
+                        </div>
+
+
+                        <!-- Staff -->
+
+                        <div>
+
+                            <div class="people-number">
+                                {{ staff_people_helped }}
+                            </div>
+
+                            <span class="impact-description">
+                                Staff helped
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Back Button -->
+
+            <a href="{% url 'dashboard' %}" class="dashboard-button">
+                ← Back to Dashboard
+            </a>
+
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

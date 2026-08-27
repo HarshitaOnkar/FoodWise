@@ -46,6 +46,14 @@
       font-weight: 600;
     }
 
+    .records-table th small {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #777;
+    }
+    
     .records-table td {
       padding: 15px 12px;
       border-bottom: 1px solid #edf0ee;
@@ -87,13 +95,14 @@
 
     .dashboard-back-btn {
       display: inline-block;
-      padding: 10px 18px;
+      padding: 11px 18px;
       border-radius: 8px;
       border: 1px solid #d9e0dc;
-      background: white;
-      color: #59635d;
+      background: #42b96a;
+      color: white;
       text-decoration: none;
       font-size: 14px;
+      font-weight: 600;
     }
   </style>
 
@@ -199,7 +208,13 @@
             </th>
 
             <th>
-              Remaining Food
+              Available Surplus
+              <small>Food remaining after sales</small>
+            </th>
+
+            <th>
+              Unallocated Surplus 
+              <small>Food remaining after surplus actions</small>
             </th>
 
           </tr>
@@ -232,6 +247,9 @@
             <td class="remaining-value">
               {{ record.remaining }}
             </td>
+
+            <td>
+              {{ record.unallocated_surplus }}
 
           </tr>
 

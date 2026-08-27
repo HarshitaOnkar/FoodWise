@@ -1,0 +1,294 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Donations - FoodWise</title>
+
+    <link rel="stylesheet" href="{% static 'wastage/style.css' %}">
+
+    <style>
+        .donations-page {
+            min-height: 100vh;
+            background: #f7faf8;
+        }
+
+        .donations-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 35px 30px;
+        }
+
+        .donations-header {
+            margin-bottom: 28px;
+        }
+
+        .donations-header h1 {
+            margin: 0 0 8px;
+            color: #26342b;
+            font-size: 28px;
+        }
+
+        .donations-header p {
+            margin: 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .donation-card {
+            background: white;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 18px;
+            border: 1px solid #edf0ee;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+        }
+
+        .donation-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .donation-card-header h3 {
+            margin: 0;
+            color: #26342b;
+            font-size: 18px;
+        }
+
+        .donation-badge {
+            padding: 6px 11px;
+            border-radius: 20px;
+            background: #eaf7ee;
+            color: #27864a;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .donation-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .detail-box {
+            padding: 15px;
+            background: #f7faf8;
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #7a827d;
+            font-size: 12px;
+        }
+
+        .detail-value {
+            color: #34423a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .empty-donations {
+            background: white;
+            border-radius: 14px;
+            padding: 50px 25px;
+            text-align: center;
+            color: #777;
+            border: 1px solid #edf0ee;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 11px 18px;
+            border-radius: 8px;
+            background: #42b96a;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: #35a95d;
+        }
+
+        @media (max-width: 800px) {
+            .donation-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .donations-container {
+                padding: 25px 15px;
+            }
+
+            .donation-details {
+                grid-template-columns: 1fr;
+            }
+
+            .donation-card-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body class="dashboard-page donations-page">
+
+    <!-- HEADER -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-logo">
+            <span class="logo-leaf">◉</span>
+            FoodWise
+        </div>
+
+        <div class="header-right">
+
+            <div class="restaurant-user">
+
+                <strong>
+                    {{ restaurant.restaurant_name }}
+                </strong>
+
+                <small>
+                    Owner
+                </small>
+
+            </div>
+
+            <div class="user-avatar">
+                {{ restaurant.restaurant_name|first|upper }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="donations-container">
+
+        <div class="donations-header">
+
+            <h1>Donations</h1>
+
+            <p>
+                Food donated by {{ restaurant.restaurant_name }}
+            </p>
+
+        </div>
+
+
+        {% for donation in donations %}
+
+        <div class="donation-card">
+
+            <div class="donation-card-header">
+
+                <h3>
+                    {{ donation.food_item.dish_name }}
+                </h3>
+
+                <span class="donation-badge">
+                    Donated
+                </span>
+
+            </div>
+
+
+            <div class="donation-details">
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Quantity
+                    </span>
+
+                    <span class="detail-value">
+                        {{ donation.quantity }}
+                        {{ donation.get_unit_display }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Donated To
+                    </span>
+
+                    <span class="detail-value">
+
+                        {% if donation.donation_organization %}
+                            {{ donation.donation_organization.organization_name }}
+                        {% else %}
+                            Not specified
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        People Helped
+                    </span>
+
+                    <span class="detail-value">
+                        {{ donation.people_helped }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Date
+                    </span>
+
+                    <span class="detail-value">
+                        {{ donation.recorded_at|date:"d M, Y" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-donations">
+            No donations recorded yet.
+        </div>
+
+        {% endfor %}
+
+
+        <a href="{% url 'dashboard' %}" class="back-button">
+            ← Back to Dashboard
+        </a>
+
+    </main>
+
+</body>
+
+</html>

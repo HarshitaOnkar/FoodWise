@@ -2,12 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
 
+from django.db import models 
+
 from .forms import RestaurantSignupForm, LeftoverRecordForm, DailyFoodRecordForm, FoodItemForm, DiscountedSaleForm, StorageRecordForm, DonationForm, ShareForm, WasteForm
 from .models import Restaurant, LeftoverRecord, DailyFoodRecord
 
 from django.contrib.auth.decorators import login_required
 
-from django.db.models import Count, F, ExpressionWrapper, IntegerField, Sum
+from django.db.models import Count, F, ExpressionWrapper, IntegerField, Sum, Value, IntegerField, DecimalField
+from django.db.models.functions import Coalesce
 from django.utils import timezone
 
 # Create your views here.
@@ -65,10 +68,20 @@ def logout(request):
 @login_required
 def dashboard(request):
     restaurant = request.user.restaurant
+
+    current_month = timezone.now().month
+    current_year = timezone.now().year
+    current_month_name = timezone.now().strftime('%b')
+
     surplus_count = LeftoverRecord.objects.filter(
         restaurant=restaurant).count()
+
     donation_count = LeftoverRecord.objects.filter(
-        restaurant=restaurant, action='DONATED').count()
+        restaurant=restaurant, action='DONATED',
+        recorded_at__year=current_year,
+        recorded_at__month=current_month,
+    ).count()
+
     recent_surplus = LeftoverRecord.objects.filter(
         restaurant=restaurant).select_related('food_item').order_by('-recorded_at')[:4]
     recent_donations = LeftoverRecord.objects.filter(restaurant=restaurant, action='DONATED').select_related(
@@ -145,10 +158,12 @@ def dashboard(request):
                 'DONATED',
                 'STORED',
                 'STAFF'
-            ]
+            ],
+            recorded_at__year=current_year,
+            recorded_at__month=current_month,
         )
         .values('unit')
-        .annotate(total=Sum('quantity'))
+        .annotate(total=Sum('quantity_used'))
     )
 
     rescued_by_unit = {
@@ -163,7 +178,7 @@ def dashboard(request):
             action='WASTED'
         )
         .values('unit')
-        .annotate(total=Sum('quantity'))
+        .annotate(total=Sum('quantity_used'))
     )
 
     wasted_by_unit = {
@@ -283,10 +298,27 @@ def food_records(request):
         restaurant=restaurant
     ).select_related(
         'food_item'
-    ).annotate(remaining=ExpressionWrapper(
-        F('quantity_prepared')-F('quantity_sold'),
-        output_field=IntegerField()
-    )
+    ).annotate(
+        remaining=ExpressionWrapper(
+            F('quantity_prepared') - F('quantity_sold'),
+            output_field=IntegerField()
+        ),
+        surplus_used=Coalesce(
+            Sum('leftoverrecord__quantity_used'),
+            Value(0),
+            output_field=DecimalField(
+                max_digits=8,
+                decimal_places=2
+            )
+        )
+    ).annotate(
+        unallocated_surplus=ExpressionWrapper(
+            F('remaining') - F('surplus_used'),
+            output_field=DecimalField(
+                max_digits=8,
+                decimal_places=2
+            )
+        )
     ).order_by('-date')
 
     return render(
@@ -343,6 +375,11 @@ def discounted_sale(request):
                 )
             else:
                 sale.save()
+
+                leftover = sale.leftover_record
+                leftover.quantity_used += sale.quantity_sold
+                leftover.save(update_fields=['quantity_used'])
+
                 return redirect('dashboard')
 
     else:
@@ -378,6 +415,11 @@ def storage_record(request):
                 )
             else:
                 storage.save()
+
+                leftover = storage.leftover_record
+                leftover.quantity_used += storage.quantity_stored
+                leftover.save(update_fields=['quantity_used'])
+
                 return redirect('dashboard')
 
     else:
@@ -421,6 +463,8 @@ def donation(request, leftover_id):
                 'people_helped'
             ]
 
+            leftover.quantity_used = leftover.quantity
+
             leftover.save()
 
             return redirect('dashboard')
@@ -458,6 +502,8 @@ def share_food(request):
                 'people_helped'
             ]
 
+            leftover.quantity_used = leftover.quantity
+
             leftover.save()
 
             return redirect('dashboard')
@@ -494,6 +540,8 @@ def waste_food(request):
                 'waste_reason'
             ]
 
+            leftover.quantity_used = leftover.quantity
+
             leftover.save()
 
             return redirect('dashboard')
@@ -509,5 +557,156 @@ def waste_food(request):
         {
             'form': form,
             'restaurant': restaurant,
+        }
+    )
+
+
+@login_required
+def donations(request):
+    restaurant = request.user.restaurant
+
+    donations = LeftoverRecord.objects.filter(
+        restaurant=restaurant,
+        action='DONATED'
+    ).select_related(
+        'food_item',
+        'donation_organization'
+    ).order_by('-recorded_at')
+
+    return render(
+        request,
+        'wastage/donations.html',
+        {
+            'restaurant': restaurant,
+            'donations': donations,
+        }
+    )
+
+
+@login_required
+def profile(request):
+    restaurant = request.user.restaurant
+
+    return render(
+        request,
+        'wastage/profile.html',
+        {
+            'restaurant': restaurant,
+        }
+    )
+
+
+@login_required
+def impact(request):
+    restaurant = request.user.restaurant
+
+    surplus_data = (
+        LeftoverRecord.objects
+        .filter(restaurant=restaurant)
+        .values('unit')
+        .annotate(total=Sum('quantity'))
+    )
+
+    rescued_data = (
+        LeftoverRecord.objects
+        .filter(
+            restaurant=restaurant,
+            action__in=[
+                'DISCOUNTED',
+                'DONATED',
+                'STORED',
+                'STAFF'
+            ]
+        )
+        .values('unit')
+        .annotate(total=Sum('quantity'))
+    )
+
+    wasted_data = (
+        LeftoverRecord.objects
+        .filter(
+            restaurant=restaurant,
+            action='WASTED'
+        )
+        .values('unit')
+        .annotate(total=Sum('quantity'))
+    )
+
+    surplus_by_unit = {
+        item['unit']: item['total']
+        for item in surplus_data
+    }
+
+    rescued_by_unit = {
+        item['unit']: item['total']
+        for item in rescued_data
+    }
+
+    wasted_by_unit = {
+        item['unit']: item['total']
+        for item in wasted_data
+    }
+
+    reduction_by_unit = {}
+
+    for unit, surplus in surplus_by_unit.items():
+        rescued = rescued_by_unit.get(unit, 0)
+
+        reduction_by_unit[unit] = (
+            (rescued / surplus) * 100
+            if surplus > 0 else 0
+        )
+
+    needy_people_helped = sum(
+        donation.people_helped
+        for donation in LeftoverRecord.objects.filter(
+            restaurant=restaurant,
+            action='DONATED'
+        )
+    )
+    staff_people_helped = sum(
+        staff.people_helped
+        for staff in LeftoverRecord.objects.filter(
+            restaurant=restaurant,
+            action='STAFF'
+        )
+    )
+
+    return render(
+        request,
+        'wastage/impact.html',
+        {
+            'restaurant': restaurant,
+            'surplus_by_unit': surplus_by_unit,
+            'rescued_by_unit': rescued_by_unit,
+            'wasted_by_unit': wasted_by_unit,
+            'reduction_by_unit': reduction_by_unit,
+            'needy_people_helped': needy_people_helped,
+            'staff_people_helped': staff_people_helped,
+        }
+    )
+
+
+@login_required
+def history(request):
+    restaurant = request.user.restaurant
+
+    records = LeftoverRecord.objects.filter(
+        restaurant=restaurant
+    ).select_related(
+        'food_item',
+        'daily_record',
+        'donation_organization'
+    ).prefetch_related(
+        'discountedsale_set',
+        'storagerecord_set'
+    ).order_by('-recorded_at')
+
+    return render(
+        request,
+        'wastage/history.html',
+        {
+            'restaurant': restaurant,
+            'records': records,
         }
     )

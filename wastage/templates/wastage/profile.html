@@ -1,0 +1,628 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile - FoodWise</title>
+
+    <link rel="stylesheet" href="{% static 'wastage/style.css' %}">
+
+    <style>
+
+        /* =========================
+           PROFILE PAGE
+        ========================= */
+
+        .profile-page {
+            min-height: 100vh;
+            background: #eef3f0;
+        }
+
+
+        .profile-main {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 35px 25px 50px;
+        }
+
+
+        /* =========================
+           MAIN PROFILE CARD
+        ========================= */
+
+        .profile-card {
+            background: #ffffff;
+
+            border-radius: 14px;
+
+            border: 1px solid #d5e0d9;
+
+            box-shadow:
+                0 4px 16px rgba(30, 60, 42, 0.07);
+
+            overflow: hidden;
+        }
+
+
+        /* =========================
+           PROFILE HEADER
+        ========================= */
+
+        .profile-top {
+            background: #c9dfcf;
+
+            padding: 28px 32px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 18px;
+
+            border-bottom: 1px solid #a9c4b1;
+        }
+
+
+        .profile-avatar {
+            width: 68px;
+            height: 68px;
+
+            border-radius: 50%;
+
+            background: #27864a;
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 29px;
+            font-weight: 700;
+
+            flex-shrink: 0;
+        }
+
+
+        .profile-title h1 {
+            margin: 0 0 5px;
+
+            color: #26342b;
+
+            font-size: 28px;
+
+            font-weight: 700;
+        }
+
+
+        .profile-title p {
+            margin: 0;
+
+            color: #637168;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           PROFILE CONTENT
+        ========================= */
+
+        .profile-content {
+            padding: 28px 32px 25px;
+
+            background: #ffffff;
+        }
+
+
+        .section-title {
+            margin: 0 0 18px;
+
+            color: #26342b;
+
+            font-size: 19px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           INFORMATION GRID
+        ========================= */
+
+        .profile-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 14px;
+        }
+
+
+        /* =========================
+           INFORMATION BOX
+        ========================= */
+
+        .info-box {
+            background: #f4f7f5;
+
+            border: 1px solid #c7d5cc;
+
+            border-radius: 10px;
+
+            padding: 16px 18px;
+
+            min-height: 68px;
+
+            box-sizing: border-box;
+
+            transition: 0.2s ease;
+        }
+
+
+        .info-box:hover {
+            background: #edf4ef;
+
+            border-color: #abc1b1;
+        }
+
+
+        .info-label {
+            display: block;
+
+            color: #59665f;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .info-value {
+            color: #1f2d25;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            line-height: 1.4;
+        }
+
+
+        /* =========================
+           ADDRESS
+        ========================= */
+
+        .address-box {
+            margin-top: 14px;
+
+            background: #f4f7f5;
+
+            border: 1px solid #c7d5cc;
+
+            border-radius: 10px;
+
+            padding: 16px 18px;
+        }
+
+
+        .address-box .info-value {
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           ACCOUNT STATUS
+        ========================= */
+
+        .status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 5px 10px;
+
+            background: #e1f2e7;
+
+            border: 1px solid #b8d9c3;
+
+            border-radius: 20px;
+
+            color: #257341;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            background: #2f9b54;
+
+            border-radius: 50%;
+        }
+
+
+        .status.inactive {
+            background: #f8e8e8;
+
+            border-color: #e2bcbc;
+
+            color: #a13d3d;
+        }
+
+
+        .status.inactive .status-dot {
+            background: #c64b4b;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .profile-footer {
+            padding: 0 32px 28px;
+
+            background: #ffffff;
+        }
+
+
+        /* =========================
+           DASHBOARD BUTTON
+        ========================= */
+
+        .dashboard-button {
+            display: inline-block;
+
+            padding: 11px 18px;
+
+            background: #27864a;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+
+        .dashboard-button:hover {
+            background: #216f3d;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .profile-main {
+                padding: 25px 15px 40px;
+            }
+
+
+            .profile-top {
+                padding: 24px;
+            }
+
+
+            .profile-avatar {
+                width: 60px;
+                height: 60px;
+
+                font-size: 26px;
+            }
+
+
+            .profile-title h1 {
+                font-size: 25px;
+            }
+
+
+            .profile-content {
+                padding: 24px;
+            }
+
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .profile-footer {
+                padding: 0 24px 24px;
+            }
+
+
+            .dashboard-button {
+                width: 100%;
+
+                text-align: center;
+
+                box-sizing: border-box;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="dashboard-page profile-page">
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-logo">
+
+            <span class="logo-leaf">◉</span>
+
+            FoodWise
+
+        </div>
+
+
+        <div class="header-right">
+
+            <div class="restaurant-user">
+
+                <strong>
+                    {{ restaurant.restaurant_name }}
+                </strong>
+
+                <small>
+                    Owner
+                </small>
+
+            </div>
+
+
+            <div class="user-avatar">
+
+                {{ restaurant.restaurant_name|first|upper }}
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="profile-main">
+
+
+        <div class="profile-card">
+
+
+            <!-- =========================
+                 PROFILE HEADER
+            ========================= -->
+
+            <div class="profile-top">
+
+                <div class="profile-avatar">
+
+                    {{ restaurant.restaurant_name|first|upper }}
+
+                </div>
+
+
+                <div class="profile-title">
+
+                    <h1>
+                        {{ restaurant.restaurant_name }}
+                    </h1>
+
+                    <p>
+                        Restaurant profile and account information
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 INFORMATION
+            ========================= -->
+
+            <div class="profile-content">
+
+                <h2 class="section-title">
+                    Restaurant Information
+                </h2>
+
+
+                <div class="profile-grid">
+
+
+                    <!-- Restaurant Name -->
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            Restaurant Name
+                        </span>
+
+                        <div class="info-value">
+                            {{ restaurant.restaurant_name }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Owner Name -->
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            Owner Name
+                        </span>
+
+                        <div class="info-value">
+                            {{ restaurant.owner_name }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            Email
+                        </span>
+
+                        <div class="info-value">
+                            {{ restaurant.email }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            Phone
+                        </span>
+
+                        <div class="info-value">
+                            {{ restaurant.phone }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- City -->
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            City
+                        </span>
+
+                        <div class="info-value">
+                            {{ restaurant.city }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Account Status -->
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            Account Status
+                        </span>
+
+                        <div class="info-value">
+
+                            {% if restaurant.is_active %}
+
+                                <span class="status">
+
+                                    <span class="status-dot"></span>
+
+                                    Active
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="status inactive">
+
+                                    <span class="status-dot"></span>
+
+                                    Inactive
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =========================
+                     ADDRESS
+                ========================= -->
+
+                <div class="address-box">
+
+                    <span class="info-label">
+                        Address
+                    </span>
+
+                    <div class="info-value">
+                        {{ restaurant.address }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 FOOTER
+            ========================= -->
+
+            <div class="profile-footer">
+
+                <a href="{% url 'dashboard' %}" class="dashboard-button">
+
+                    ← Back to Dashboard
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>
