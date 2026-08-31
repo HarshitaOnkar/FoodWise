@@ -1,0 +1,566 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Request Food - FoodWise</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6faf7;
+            color: #173f2b;
+        }
+
+        .navbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e3ebe5;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 25px;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            z-index: 1000;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            text-decoration: none;
+            color: #173f2b;
+        }
+
+        .navbar-logo-icon {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 10px;
+
+            background: #e5f5e9;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+        .navbar-logo-text strong {
+            font-size: 21px;
+        }
+
+        .navbar-logo-text span {
+            display: block;
+
+            font-size: 9px;
+            color: #708077;
+        }
+
+        .navbar-right {
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .organization-icon {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 50%;
+
+            background: #e2f3e8;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 19px;
+        }
+
+        .organization-user strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .organization-user span {
+            display: block;
+
+            font-size: 10px;
+            color: #7b867f;
+        }
+
+        .main {
+            min-height: 100vh;
+
+            padding-top: 72px;
+        }
+
+        .content {
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            padding: 45px 25px;
+        }
+
+        .back-button {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            text-decoration: none;
+
+            border: 1px solid #ccd7d0;
+
+            background: white;
+
+            color: #173f2b;
+
+            padding: 9px 14px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+
+            border: 1px solid #e1e8e4;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .food-header {
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            margin-bottom: 22px;
+        }
+
+        .food-image {
+            width: 58px;
+            height: 58px;
+
+            border-radius: 12px;
+
+            background: #f0f5f1;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+        }
+
+        .food-name {
+            font-size: 19px;
+            font-weight: 700;
+
+            color: #173f2b;
+        }
+
+        .restaurant {
+            margin-top: 5px;
+
+            font-size: 10px;
+
+            color: #718078;
+        }
+
+        .details {
+            border-top: 1px solid #edf1ee;
+
+            border-bottom: 1px solid #edf1ee;
+
+            padding: 14px 0;
+
+            margin-bottom: 22px;
+        }
+
+        .detail-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 7px 0;
+
+            font-size: 11px;
+        }
+
+        .detail-label {
+            color: #7a847e;
+        }
+
+        .detail-value {
+            font-weight: 600;
+
+            color: #173f2b;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #ccd7d0;
+
+            border-radius: 8px;
+
+            font-size: 12px;
+
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #16804d;
+        }
+
+        .error {
+            background: #fff0f0;
+
+            border: 1px solid #f0caca;
+
+            color: #a33a3a;
+
+            padding: 10px 12px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            margin-bottom: 16px;
+        }
+
+        .button-row {
+            display: flex;
+
+            gap: 10px;
+        }
+
+        .cancel-button {
+            flex: 1;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            padding: 11px;
+
+            border: 1px solid #ccd7d0;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: #173f2b;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .request-button {
+            flex: 1;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #087642;
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .request-button:hover {
+            background: #065f34;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 12px;
+            }
+
+            .navbar-logo-text span {
+                display: none;
+            }
+
+            .organization-user {
+                display: none;
+            }
+
+            .content {
+                padding: 30px 16px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <a
+        href="{% url 'organization_dashboard' %}"
+        class="navbar-logo"
+    >
+
+        <div class="navbar-logo-icon">
+            🌱
+        </div>
+
+        <div class="navbar-logo-text">
+
+            <strong>
+                FoodWise
+            </strong>
+
+            <span>
+                Surplus meets Purpose.
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <div class="navbar-right">
+
+        <div class="organization-icon">
+            🏢
+        </div>
+
+        <div class="organization-user">
+
+            <strong>
+                {{ user.username }}
+            </strong>
+
+            <span>
+                {{ organization.organization_name }}
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="main">
+
+    <section class="content">
+
+
+        <a
+            href="{% url 'browse_surplus_food' %}"
+            class="back-button"
+        >
+            ← Back to Surplus Food
+        </a>
+
+
+        <div class="card">
+
+
+            <div class="food-header">
+
+                <div class="food-image">
+                    🍛
+                </div>
+
+                <div>
+
+                    <div class="food-name">
+                        {{ leftover.food_item.dish_name }}
+                    </div>
+
+                    <div class="restaurant">
+                        📍 {{ leftover.restaurant.restaurant_name }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Available Quantity
+                    </span>
+
+                    <span class="detail-value">
+                        {{ available_quantity|floatformat:2 }}
+                        {{ leftover.get_unit_display }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Food Type
+                    </span>
+
+                    <span class="detail-value">
+                        Cooked Food
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Added
+                    </span>
+
+                    <span class="detail-value">
+                        {{ leftover.recorded_at|date:"d M Y" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            {% if error %}
+
+                <div class="error">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-group">
+
+                    <label for="quantity_requested">
+                        Quantity Required
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantity_requested"
+                        name="quantity_requested"
+                        step="0.01"
+                        min="0.01"
+                        max="{{ available_quantity }}"
+                        placeholder="Enter quantity"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="button-row">
+
+                    <a
+                        href="{% url 'browse_surplus_food' %}"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="request-button"
+                    >
+                        Submit Request
+                    </button>
+
+                </div>
+
+            </form>
+
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+</body>
+
+</html>

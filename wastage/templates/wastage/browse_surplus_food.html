@@ -1,0 +1,1120 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Browse Surplus Food - FoodWise</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6faf7;
+            color: #173f2b;
+        }
+
+
+        /* ==============================
+           NAVBAR
+        ============================== */
+
+        .navbar {
+            height: 72px;
+
+            background: white;
+
+            border-bottom: 1px solid #e3ebe5;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 25px;
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+
+            z-index: 1000;
+        }
+
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            text-decoration: none;
+
+            color: #173f2b;
+        }
+
+
+        .navbar-logo-icon {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 10px;
+
+            background: #e5f5e9;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+
+        .navbar-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .navbar-logo-text strong {
+            font-size: 21px;
+        }
+
+
+        .navbar-logo-text span {
+            font-size: 9px;
+            color: #708077;
+        }
+
+
+        .hamburger {
+            width: 42px;
+            height: 42px;
+
+            border: none;
+
+            background: transparent;
+
+            border-radius: 9px;
+
+            font-size: 25px;
+
+            color: #173f2b;
+
+            cursor: pointer;
+        }
+
+
+        .hamburger:hover {
+            background: #edf5ef;
+        }
+
+
+        .navbar-right {
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .notification {
+            font-size: 21px;
+
+            position: relative;
+        }
+
+
+        .notification-badge {
+            position: absolute;
+
+            top: -5px;
+            right: -7px;
+
+            width: 16px;
+            height: 16px;
+
+            border-radius: 50%;
+
+            background: #168044;
+
+            color: white;
+
+            font-size: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .organization-user {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 6px 10px;
+
+            border: 1px solid #e1e8e3;
+
+            border-radius: 10px;
+
+            min-width: 175px;
+        }
+
+
+        .organization-icon {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 50%;
+
+            background: #e2f3e8;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 19px;
+        }
+
+
+        .organization-user strong {
+            display: block;
+
+            font-size: 12px;
+        }
+
+
+        .organization-user span {
+            display: block;
+
+            font-size: 10px;
+
+            color: #7b867f;
+        }
+
+
+        /* ==============================
+           SIDEBAR
+        ============================== */
+
+        .sidebar {
+            position: fixed;
+
+            top: 72px;
+            left: 0;
+
+            width: 220px;
+
+            height: calc(100vh - 72px);
+
+            background: linear-gradient(
+                180deg,
+                #063d25,
+                #075331
+            );
+
+            padding: 18px 11px;
+
+            z-index: 900;
+
+            transition: transform 0.3s ease;
+        }
+
+
+        .sidebar-closed .sidebar {
+            transform: translateX(-100%);
+        }
+
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+
+            gap: 4px;
+        }
+
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            min-height: 39px;
+
+            padding: 9px 12px;
+
+            border-radius: 9px;
+
+            color: #e5f2e9;
+
+            text-decoration: none;
+
+            font-size: 12px;
+        }
+
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #16804d;
+
+            color: white;
+        }
+
+
+        .nav-icon {
+            width: 21px;
+
+            min-width: 21px;
+
+            text-align: center;
+        }
+
+
+        .logout {
+            position: absolute;
+
+            bottom: 20px;
+
+            left: 11px;
+            right: 11px;
+        }
+
+
+        .logout a {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 12px;
+
+            border-radius: 9px;
+
+            color: white;
+
+            background: rgba(255,255,255,0.12);
+
+            text-decoration: none;
+
+            font-size: 12px;
+        }
+
+
+        /* ==============================
+           MAIN
+        ============================== */
+
+        .main {
+            margin-left: 220px;
+
+            padding-top: 72px;
+
+            min-height: 100vh;
+
+            transition: margin-left 0.3s ease;
+        }
+
+
+        .sidebar-closed .main {
+            margin-left: 0;
+        }
+
+
+        .content {
+            padding: 30px;
+        }
+
+
+        /* ==============================
+           PAGE HEADER
+        ============================== */
+
+        .page-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .page-header h1 {
+            font-size: 25px;
+
+            color: #123e29;
+
+            margin-bottom: 6px;
+        }
+
+
+        .page-header p {
+            color: #718078;
+
+            font-size: 11px;
+        }
+
+
+        .back-button {
+            text-decoration: none;
+
+            border: 1px solid #ccd7d0;
+
+            background: white;
+
+            color: #173f2b;
+
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        .back-button:hover {
+            background: #f1f7f3;
+        }
+
+
+        /* ==============================
+           FOOD GRID
+        ============================== */
+
+        .food-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+
+        .food-card {
+            background: white;
+
+            border: 1px solid #e1e8e4;
+
+            border-radius: 13px;
+
+            padding: 16px;
+
+            box-shadow:
+                0 2px 7px rgba(0,0,0,0.03);
+        }
+
+
+        .food-top {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .food-image {
+            width: 52px;
+            height: 52px;
+
+            border-radius: 12px;
+
+            background: #f0f5f1;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+
+            flex-shrink: 0;
+        }
+
+
+        .food-name {
+            font-size: 15px;
+
+            font-weight: 700;
+
+            color: #173f2b;
+        }
+
+
+        .available-badge {
+            display: inline-block;
+
+            margin-top: 5px;
+
+            padding: 4px 7px;
+
+            border-radius: 7px;
+
+            background: #e5f6eb;
+
+            color: #167341;
+
+            font-size: 8px;
+
+            font-weight: 600;
+        }
+
+
+        .food-details {
+            border-top: 1px solid #edf1ee;
+
+            padding-top: 12px;
+        }
+
+
+        .detail-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 6px 0;
+
+            font-size: 10px;
+        }
+
+
+        .detail-label {
+            color: #7a847e;
+        }
+
+
+        .detail-value {
+            color: #173f2b;
+
+            font-weight: 600;
+
+            text-align: right;
+        }
+
+
+        .restaurant {
+            margin-top: 5px;
+
+            color: #59665e;
+
+            font-size: 9px;
+        }
+
+
+        .request-button {
+
+            display: block;
+
+            width: 100%;
+
+            margin-top: 14px;
+
+            padding: 10px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #087642;
+
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            cursor: pointer;
+        }
+
+
+        .request-button:hover {
+            background: #065f34;
+        }
+
+
+        /* ==============================
+           EMPTY STATE
+        ============================== */
+
+        .empty-state {
+            background: white;
+
+            border: 1px solid #e1e8e4;
+
+            border-radius: 13px;
+
+            padding: 50px 20px;
+
+            text-align: center;
+        }
+
+
+        .empty-icon {
+            font-size: 40px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .empty-state h2 {
+            font-size: 17px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .empty-state p {
+            font-size: 10px;
+
+            color: #7a847e;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 1100px) {
+
+            .food-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 850px) {
+
+            .navbar {
+                height: 65px;
+            }
+
+
+            .sidebar {
+                top: 65px;
+
+                height: calc(100vh - 65px);
+
+                width: 230px;
+            }
+
+
+            .main {
+                margin-left: 0;
+
+                padding-top: 65px;
+            }
+
+
+            .content {
+                padding: 22px 18px;
+            }
+
+
+            .organization-user {
+                min-width: auto;
+
+                border: none;
+            }
+
+
+            .organization-user > div:not(.organization-icon) {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 10px;
+            }
+
+
+            .navbar-logo-text strong {
+                font-size: 17px;
+            }
+
+
+            .navbar-logo-text span {
+                display: none;
+            }
+
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .page-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==============================
+     NAVBAR
+============================== -->
+
+<header class="navbar">
+
+    <div class="navbar-left">
+
+        <a href="{% url 'organization_dashboard' %}"
+           class="navbar-logo">
+
+            <div class="navbar-logo-icon">
+                🌱
+            </div>
+
+            <div class="navbar-logo-text">
+
+                <strong>
+                    FoodWise
+                </strong>
+
+                <span>
+                    Surplus meets Purpose.
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <button
+            class="hamburger"
+            id="sidebarToggle"
+            type="button"
+        >
+            ☰
+        </button>
+
+    </div>
+
+
+    <div class="navbar-right">
+
+        <div class="notification">
+
+            🔔
+
+            <span class="notification-badge">
+                3
+            </span>
+
+        </div>
+
+
+        <div class="organization-user">
+
+            <div class="organization-icon">
+                🏢
+            </div>
+
+            <div>
+
+                <strong>
+                    {{ user.username }}
+                </strong>
+
+                <span>
+                    {{ organization.organization_name }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- ==============================
+     SIDEBAR
+============================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <nav class="nav-menu">
+
+
+        <a
+            href="{% url 'organization_dashboard' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            Dashboard
+
+        </a>
+
+
+        <a
+            href="{% url 'browse_surplus_food' %}"
+            class="nav-item active"
+        >
+
+            <span class="nav-icon">
+                🍱
+            </span>
+
+            Surplus Food
+
+        </a>
+
+
+        <a href="#" class="nav-item">
+
+            <span class="nav-icon">
+                📋
+            </span>
+
+            My Requests
+
+        </a>
+
+
+        <a href="#" class="nav-item">
+
+            <span class="nav-icon">
+                ♡
+            </span>
+
+            My Donations
+
+        </a>
+
+
+        <a href="#" class="nav-item">
+
+            <span class="nav-icon">
+                🎁
+            </span>
+
+            Food Received
+
+        </a>
+
+
+        <a href="#" class="nav-item">
+
+            <span class="nav-icon">
+                📊
+            </span>
+
+            Impact
+
+        </a>
+
+
+        <a href="#" class="nav-item">
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            Profile
+
+        </a>
+
+
+        <a href="#" class="nav-item">
+
+            <span class="nav-icon">
+                🔔
+            </span>
+
+            Notifications
+
+        </a>
+
+
+        <a href="#" class="nav-item">
+
+            <span class="nav-icon">
+                🔒
+            </span>
+
+            Change Password
+
+        </a>
+
+    </nav>
+
+
+    <div class="logout">
+
+        <a href="{% url 'logout' %}">
+
+            <span class="nav-icon">
+                ⇥
+            </span>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ==============================
+     MAIN
+============================== -->
+
+<main class="main">
+
+    <section class="content">
+
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>
+                    Browse Surplus Food
+                </h1>
+
+                <p>
+                    Discover surplus food available from FoodWise restaurants.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'organization_dashboard' %}"
+                class="back-button"
+            >
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+
+
+        {% if available_food %}
+
+
+            <div class="food-grid">
+
+
+                {% for food in available_food %}
+
+
+                    <div class="food-card">
+
+
+                        <div class="food-top">
+
+
+                            <div class="food-image">
+                                🍛
+                            </div>
+
+
+                            <div>
+
+                                <div class="food-name">
+                                    {{ food.food_item.dish_name }}
+                                </div>
+
+
+                                <span class="available-badge">
+                                    Available
+                                </span>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="food-details">
+
+
+                            <div class="detail-row">
+
+                                <span class="detail-label">
+                                    Quantity
+                                </span>
+
+                                <span class="detail-value">
+
+                                    {{ food.quantity|floatformat:2 }}
+
+                                    {{ food.get_unit_display }}
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="detail-row">
+
+                                <span class="detail-label">
+                                    Food Type
+                                </span>
+
+                                <span class="detail-value">
+                                    Cooked
+                                </span>
+
+                            </div>
+
+
+                            <div class="detail-row">
+
+                                <span class="detail-label">
+                                    Added
+                                </span>
+
+                                <span class="detail-value">
+
+                                    {{ food.recorded_at|date:"d M Y" }}
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="restaurant">
+
+                                📍
+                                {{ food.restaurant.restaurant_name }}
+
+                            </div>
+
+
+                        </div>
+
+
+                        <a href="{% url 'request_food' food.id %}" class="request-button">
+                            Request Food
+                        </a>  
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    🍽️
+                </div>
+
+                <h2>
+                    No surplus food available
+                </h2>
+
+                <p>
+                    There is currently no surplus food available for request.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+</main>
+
+
+
+<script>
+
+    const sidebarToggle =
+        document.getElementById("sidebarToggle");
+
+
+    sidebarToggle.addEventListener(
+        "click",
+        function () {
+
+            document.body.classList.toggle(
+                "sidebar-closed"
+            );
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

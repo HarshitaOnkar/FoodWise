@@ -108,19 +108,43 @@ class LeftoverRecord(models.Model):
 
 
 class FoodRescueOrganization(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='food_rescue_organization'
+    )
+
     ORGANIZATION_TYPE_CHOICES = [
         ('NGO', 'NGO / Food Rescue Organization'),
         ('SHELTER', 'Shelter / Community Center'),
         ('ANIMAL', 'Animal Welfare Organization'),
     ]
+
     organization_name = models.CharField(max_length=150)
+
     organization_type = models.CharField(
-        max_length=50, choices=ORGANIZATION_TYPE_CHOICES)
-    contact_person = models.CharField(max_length=100)
+        max_length=50,
+        choices=ORGANIZATION_TYPE_CHOICES
+    )
+
+    owner_name = models.CharField(
+        max_length=100
+    )
+
+    contact_person = models.CharField(
+        max_length=100
+    )
+
     email = models.EmailField(unique=True)
+
     phone = models.CharField(max_length=15)
+
     address = models.TextField()
+
     city = models.CharField(max_length=100)
+
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -149,3 +173,45 @@ class StorageRecord(models.Model):
 
     def __str__(self):
         return f"{self.leftover_record.food_item.dish_name} - Stored"
+
+
+
+class FoodRequest(models.Model):
+
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('APPROVED', 'Approved'),
+        ('REJECTED', 'Rejected'),
+    ]
+
+    organization = models.ForeignKey(
+        FoodRescueOrganization,
+        on_delete=models.CASCADE
+    )
+
+    leftover_record = models.ForeignKey(
+        LeftoverRecord,
+        on_delete=models.CASCADE
+    )
+
+    quantity_requested = models.DecimalField(
+        max_digits=8,
+        decimal_places=2
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='PENDING'
+    )
+
+    requested_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return (
+            f"{self.organization.organization_name} - "
+            f"{self.leftover_record.food_item.dish_name} - "
+            f"{self.status}"
+        )

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Organization Login - FoodWise</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: #f3faf5;
+            color: #173f2b;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px;
+        }
+
+        /* Main container */
+        .login-container {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 600px;
+
+            background: white;
+            border-radius: 28px;
+
+            display: flex;
+            overflow: hidden;
+
+            box-shadow: 0 15px 45px rgba(24, 80, 48, 0.12);
+        }
+
+        /* LEFT SIDE */
+        .left-section {
+            width: 50%;
+            background: linear-gradient(
+                145deg,
+                #eef8f1,
+                #dff1e5
+            );
+
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            position: relative;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 55px;
+        }
+
+        .logo {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+
+            background: #239653;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 32px;
+        }
+
+        .brand-name {
+            font-size: 30px;
+            font-weight: 700;
+            color: #124b30;
+        }
+
+        .tagline {
+            font-size: 15px;
+            color: #718078;
+            margin-top: 3px;
+        }
+
+        .welcome-title {
+            font-size: 44px;
+            line-height: 1.12;
+            margin-bottom: 22px;
+            color: #124b30;
+        }
+
+        .welcome-title span {
+            color: #31945a;
+        }
+
+        .description {
+            max-width: 430px;
+            font-size: 17px;
+            line-height: 1.7;
+            color: #68766f;
+        }
+
+        .leaf {
+            position: absolute;
+            right: 65px;
+            bottom: 50px;
+            font-size: 48px;
+            opacity: 0.65;
+        }
+
+        /* RIGHT SIDE */
+        .right-section {
+            width: 50%;
+            padding: 55px 65px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-title {
+            font-size: 34px;
+            color: #164a30;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #7a837e;
+            font-size: 16px;
+            margin-bottom: 35px;
+        }
+
+        /* Django messages/errors */
+        .error-box {
+            background: #fff1f1;
+            color: #b42318;
+            border: 1px solid #f3c5c5;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 22px;
+        }
+
+        .field label {
+            display: block;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #274735;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            height: 54px;
+
+            border: 1px solid #d8e1db;
+            border-radius: 12px;
+
+            padding: 0 48px 0 18px;
+
+            font-size: 16px;
+            outline: none;
+
+            transition: 0.2s;
+            background: #ffffff;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #39a366;
+            box-shadow: 0 0 0 3px rgba(57, 163, 102, 0.12);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            font-size: 18px;
+            color: #7a857f;
+
+            cursor: pointer;
+        }
+
+        /* Login button */
+        .login-button {
+            width: 100%;
+            height: 54px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: #168044;
+            color: white;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: #116b38;
+            transform: translateY(-1px);
+        }
+
+        /* Signup */
+        .signup-text {
+            text-align: center;
+            margin-top: 28px;
+
+            color: #7a837e;
+            font-size: 15px;
+        }
+
+        .signup-text a {
+            color: #23854e;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile */
+        @media (max-width: 800px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .login-container {
+                min-height: auto;
+                flex-direction: column;
+            }
+
+            .left-section,
+            .right-section {
+                width: 100%;
+            }
+
+            .left-section {
+                padding: 35px;
+            }
+
+            .brand {
+                margin-bottom: 30px;
+            }
+
+            .welcome-title {
+                font-size: 34px;
+            }
+
+            .leaf {
+                display: none;
+            }
+
+            .right-section {
+                padding: 35px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .left-section,
+            .right-section {
+                padding: 28px 22px;
+            }
+
+            .brand-name {
+                font-size: 25px;
+            }
+
+            .welcome-title {
+                font-size: 30px;
+            }
+
+            .login-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <!-- LEFT SIDE -->
+    <div class="left-section">
+
+        <div class="brand">
+            <div class="logo">🌱</div>
+
+            <div>
+                <div class="brand-name">FoodWise</div>
+                <div class="tagline">Surplus meets Purpose.</div>
+            </div>
+        </div>
+
+        <h1 class="welcome-title">
+            Welcome back to<br>
+            <span>FoodWise</span>
+        </h1>
+
+        <p class="description">
+            Manage your organization, rescue surplus food,
+            and help make a difference in your community.
+        </p>
+
+        <div class="leaf">🌿</div>
+
+    </div>
+
+
+    <!-- RIGHT SIDE -->
+    <div class="right-section">
+
+        <h2 class="login-title">Organization Login</h2>
+
+        <p class="login-subtitle">
+            Login to manage your organization.
+        </p>
+
+
+        {% if form.errors %}
+            <div class="error-box">
+                Invalid username or password.
+                Please try again.
+            </div>
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <!-- Username -->
+            <div class="field">
+
+                <label for="id_username">
+                    Username
+                </label>
+
+                <div class="input-wrapper">
+
+                    <input
+                        type="text"
+                        name="username"
+                        id="id_username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                    >
+
+                    <span class="input-icon">👤</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="field">
+
+                <label for="id_password">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <input
+                        type="password"
+                        name="password"
+                        id="id_password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <span
+                        class="input-icon"
+                        onclick="togglePassword()"
+                        id="eyeIcon"
+                    >
+                        👁
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Login -->
+            <button type="submit" class="login-button">
+                🔐 &nbsp; Login to Organization Account
+            </button>
+
+        </form>
+
+
+        <!-- Signup -->
+        <div class="signup-text">
+            Don't have an organization account?
+            <a href="{% url 'organization_signup' %}">
+                Sign up here →
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function togglePassword() {
+
+    const password = document.getElementById("id_password");
+    const eye = document.getElementById("eyeIcon");
+
+    if (password.type === "password") {
+
+        password.type = "text";
+        eye.textContent = "🙈";
+
+    } else {
+
+        password.type = "password";
+        eye.textContent = "👁";
+
+    }
+}
+
+</script>
+
+</body>
+</html>

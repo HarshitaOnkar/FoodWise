@@ -340,3 +340,77 @@ class WasteForm(forms.Form):
                     action='WASTED'
                 )
             )
+
+
+class OrganizationSignupForm(UserCreationForm):
+
+    organization_name = forms.CharField(
+        max_length=150,
+        label='Organization Name'
+    )
+
+    organization_type = forms.ChoiceField(
+        choices=FoodRescueOrganization.ORGANIZATION_TYPE_CHOICES,
+        label='Organization Type'
+    )
+
+    owner_name = forms.CharField(
+        max_length=100,
+        label='Owner Name'
+    )
+
+    contact_person = forms.CharField(
+        max_length=100,
+        label='Contact Person'
+    )
+
+    email = forms.EmailField(
+        label='Email'
+    )
+
+    phone = forms.CharField(
+        max_length=15,
+        label='Phone'
+    )
+
+    address = forms.CharField(
+        widget=forms.Textarea,
+        label='Address'
+    )
+
+    city = forms.CharField(
+        max_length=100,
+        label='City'
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'password1',
+            'password2',
+            'organization_name',
+            'organization_type',
+            'owner_name',
+            'contact_person',
+            'email',
+            'phone',
+            'address',
+            'city',
+        ]
+        
+class OrganizationLoginForm(forms.Form):
+    username = forms.CharField(
+        max_length=150,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter your username',
+            'autocomplete': 'username'
+        })
+    )
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Enter your password',
+            'autocomplete': 'current-password'
+        })
+    )

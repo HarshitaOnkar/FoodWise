@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 
-from django.db import models 
+from django.contrib.auth.models import User
 
-from .forms import RestaurantSignupForm, LeftoverRecordForm, DailyFoodRecordForm, FoodItemForm, DiscountedSaleForm, StorageRecordForm, DonationForm, ShareForm, WasteForm
-from .models import Restaurant, LeftoverRecord, DailyFoodRecord
+from django.db import models
+
+from .forms import RestaurantSignupForm, LeftoverRecordForm, DailyFoodRecordForm, FoodItemForm, DiscountedSaleForm, StorageRecordForm, DonationForm, ShareForm, WasteForm, OrganizationSignupForm, OrganizationLoginForm
+from .models import Restaurant, LeftoverRecord, DailyFoodRecord, FoodRescueOrganization, FoodRequest
 
 from django.contrib.auth.decorators import login_required
 
@@ -18,6 +22,10 @@ from django.utils import timezone
 
 def home(request):
     return render(request, 'wastage/home.html')
+
+
+def organization_home(request):
+    return render(request, 'wastage/organization_home.html')
 
 
 def signup(request):
@@ -43,6 +51,276 @@ def signup(request):
         form = RestaurantSignupForm()
 
     return render(request, 'wastage/signup.html', {'form': form})
+
+
+def organization_signup(request):
+    if request.method == 'POST':
+        form = OrganizationSignupForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+
+            FoodRescueOrganization.objects.create(
+                user=user,
+                organization_name=form.cleaned_data['organization_name'],
+                organization_type=form.cleaned_data['organization_type'],
+                contact_person=form.cleaned_data['contact_person'],
+                owner_name=form.cleaned_data['owner_name'],
+                email=form.cleaned_data['email'],
+                phone=form.cleaned_data['phone'],
+                address=form.cleaned_data['address'],
+                city=form.cleaned_data['city'],
+            )
+
+            return redirect('organization_login')
+
+    else:
+        form = OrganizationSignupForm()
+
+    return render(
+        request,
+        'wastage/organization_signup.html',
+        {
+            'form': form,
+        }
+    )
+
+
+def organization_login(request):
+
+    if request.method == 'POST':
+
+        form = OrganizationLoginForm(request.POST)
+
+        if form.is_valid():
+
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            try:
+                user = User.objects.get(username=username)
+
+                if user.check_password(password):
+
+                    auth_login(request, user)
+
+                    return redirect('organization_dashboard')
+
+                else:
+                    form.add_error(None, 'Invalid username or password.')
+
+            except User.DoesNotExist:
+                form.add_error(None, 'Invalid username or password.')
+
+    else:
+        form = OrganizationLoginForm()
+
+    return render(
+        request,
+        'wastage/organization_login.html',
+        {'form': form}
+    )
+
+
+@login_required
+def organization_dashboard(request):
+
+    organization = FoodRescueOrganization.objects.filter(
+        user=request.user
+    ).first()
+
+    # =========================================================
+    # AVAILABLE SURPLUS FOOD
+    # =========================================================
+
+    available_food_list = LeftoverRecord.objects.filter(
+        action='DONATED'
+    ).select_related(
+        'food_item',
+        'restaurant'
+    ).order_by('-recorded_at')[:4]
+
+    available_food = LeftoverRecord.objects.filter(
+        action='DONATED'
+    ).count()
+
+    # =========================================================
+    # MY PENDING REQUESTS
+    # =========================================================
+
+    pending_requests_list = FoodRequest.objects.filter(
+        organization=organization,
+        status='PENDING'
+    ).select_related(
+        'leftover_record__food_item',
+        'leftover_record__restaurant'
+    ).order_by('-requested_at')
+
+    pending_requests = pending_requests_list.count()
+
+    # =========================================================
+    # MY REQUESTS
+    # =========================================================
+
+    organization_requests = FoodRequest.objects.filter(
+        organization=organization
+    ).select_related(
+        'leftover_record__food_item',
+        'leftover_record__restaurant'
+    ).order_by('-requested_at')[:4]
+
+    # =========================================================
+    # FOOD RECEIVED BY THIS ORGANIZATION
+    # =========================================================
+
+    received_requests = FoodRequest.objects.filter(
+        organization=organization,
+        status='APPROVED'
+    ).select_related(
+        'leftover_record__food_item',
+        'leftover_record__restaurant'
+    ).order_by('-requested_at')
+
+    # =========================================================
+    # TOTAL FOOD RECEIVED
+    # =========================================================
+
+    food_received_count = received_requests.count()
+
+    # =========================================================
+    # TOTAL PEOPLE HELPED
+    # =========================================================
+
+    people_helped = received_requests.aggregate(
+        total=Sum('leftover_record__people_helped')
+    )['total'] or 0
+
+    # =========================================================
+    # RENDER DASHBOARD
+    # =========================================================
+
+    return render(
+        request,
+        'wastage/organization_dashboard.html',
+        {
+            'organization': organization,
+
+            # Available surplus
+            'available_food': available_food,
+            'available_food_list': available_food_list,
+
+            # Requests
+            'pending_requests': pending_requests,
+            'pending_requests_list': pending_requests_list,
+            'organization_requests': organization_requests,
+
+            # Received food / impact
+            'food_received_count': food_received_count,
+            'people_helped': people_helped,
+            'received_requests': received_requests,
+        }
+    )
+
+
+@login_required
+def browse_surplus_food(request):
+
+    organization = FoodRescueOrganization.objects.filter(
+        user=request.user
+    ).first()
+
+    available_food = LeftoverRecord.objects.filter(
+        action='DONATED'
+    ).exclude(
+        donation_organization=organization
+    ).filter(
+        quantity_used__lt=F('quantity')
+    ).select_related(
+        'food_item',
+        'restaurant'
+    ).order_by('-recorded_at')
+
+    return render(
+        request,
+        'wastage/browse_surplus_food.html',
+        {
+            'organization': organization,
+            'available_food': available_food,
+        }
+    )
+
+
+@login_required
+def request_food(request, leftover_id):
+
+    organization = FoodRescueOrganization.objects.filter(
+        user=request.user
+    ).first()
+
+    leftover = get_object_or_404(
+        LeftoverRecord,
+        id=leftover_id,
+        action='DONATED'
+    )
+
+    available_quantity = (
+        leftover.quantity - leftover.quantity_used
+    )
+
+    if request.method == 'POST':
+
+        quantity_requested = request.POST.get(
+            'quantity_requested'
+        )
+
+        try:
+            quantity_requested = float(quantity_requested)
+
+            if quantity_requested <= 0:
+                raise ValueError
+
+            if quantity_requested > float(available_quantity):
+                return render(
+                    request,
+                    'wastage/request_food.html',
+                    {
+                        'organization': organization,
+                        'leftover': leftover,
+                        'available_quantity': available_quantity,
+                        'error': 'Requested quantity cannot be more than available quantity.'
+                    }
+                )
+
+            FoodRequest.objects.create(
+                organization=organization,
+                leftover_record=leftover,
+                quantity_requested=quantity_requested
+            )
+
+            return redirect('organization_dashboard')
+
+        except (ValueError, TypeError):
+
+            return render(
+                request,
+                'wastage/request_food.html',
+                {
+                    'organization': organization,
+                    'leftover': leftover,
+                    'available_quantity': available_quantity,
+                    'error': 'Please enter a valid quantity.'
+                }
+            )
+
+    return render(
+        request,
+        'wastage/request_food.html',
+        {
+            'organization': organization,
+            'leftover': leftover,
+            'available_quantity': available_quantity,
+        }
+    )
 
 
 def login(request):
@@ -755,5 +1033,54 @@ def history(request):
         {
             'restaurant': restaurant,
             'records': records,
+        }
+    )
+
+
+@login_required
+def restaurant_food_requests(request):
+
+    restaurant = Restaurant.objects.filter(
+        user=request.user
+    ).first()
+
+    food_requests = FoodRequest.objects.filter(
+        leftover_record__restaurant=restaurant
+    ).select_related(
+        'organization',
+        'leftover_record',
+        'leftover_record__food_item'
+    ).order_by('-requested_at')
+
+    return render(
+        request,
+        'wastage/restaurant_food_requests.html',
+        {
+            'restaurant': restaurant,
+            'food_requests': food_requests,
+        }
+    )
+
+
+@login_required
+def my_requests(request):
+
+    organization = FoodRescueOrganization.objects.filter(
+        user=request.user
+    ).first()
+
+    requests = FoodRequest.objects.filter(
+        organization=organization
+    ).select_related(
+        'leftover_record__food_item',
+        'leftover_record__restaurant'
+    ).order_by('-requested_at')
+
+    return render(
+        request,
+        'wastage/my_requests.html',
+        {
+            'organization': organization,
+            'requests': requests,
         }
     )

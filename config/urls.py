@@ -38,4 +38,11 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('impact/', views.impact, name='impact'),
     path('history/', views.history, name='history'),
+    path('organization/', views.organization_home, name='organization_home'),
+    path('organization/signup/', views.organization_signup, name='organization_signup'),
+    path('organization/login/', views.organization_login, name='organization_login'),
+    path('organization/dashboard/', views.organization_dashboard, name='organization_dashboard'),
+    path('organization/browse-surplus/', views.browse_surplus_food, name='browse_surplus_food'),
+    path('organization/request-food/<int:leftover_id>/', views.request_food, name='request_food'),
+    path('organization/my-requests/', views.my_requests, name='my_requests'),
 ]
