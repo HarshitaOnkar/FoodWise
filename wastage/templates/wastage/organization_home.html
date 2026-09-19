@@ -1,142 +1,1258 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>FoodWise - Organizations</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
+
+        * {
             margin: 0;
-            background: #f5f8f5;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7fbf8;
             color: #183d25;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 70px 30px;
-            text-align: center;
-        }
 
-        h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
 
-        .subtitle {
-            font-size: 19px;
-            color: #555;
-            max-width: 700px;
-            margin: 0 auto 45px;
-            line-height: 1.6;
-        }
+        .navbar {
+            height: 55px;
 
-        .cards {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-            margin-bottom: 45px;
-        }
-
-        .card {
-            background: white;
-            width: 260px;
-            padding: 30px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .card h3 {
-            margin-bottom: 12px;
-        }
-
-        .card p {
-            color: #666;
-            line-height: 1.5;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 13px 28px;
-            border-radius: 7px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .primary {
             background: #183d25;
+
+            border-bottom: 1px solid #dfe9e3;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 7%;
+
+            position: relative;
+
+            z-index: 10;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: #183d25;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 10px;
+
+            background: #e7f2e9;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+        .logo-text strong {
+            display: block;
+
+            font-size: 23px;
+
+            line-height: 23px;
+
+            font-weight: 700;
+
             color: white;
         }
 
-        .secondary {
-            background: white;
+        .logo-text span {
+            display: block;
+
+            margin-top: 3px;
+
+            font-size: 10px;
+
+            color: white;
+
+            letter-spacing: 0.2px;
+        }
+
+        .restaurant-link {
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            text-decoration: none;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .restaurant-icon {
+            font-size: 19px;
+        }
+
+        .restaurant-arrow {
+            font-size: 21px;
+
+            line-height: 1;
+        }
+
+        /* No green line under logo */
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            position: relative;
+
+            min-height: calc(100vh - 55px);
+
+            padding: 26px 7% 0;
+
+            overflow: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+
+            background:
+                radial-gradient(
+                    circle at 15% 45%,
+                    rgba(225, 243, 232, 0.65),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #ffffff 0%,
+                    #f7fbf8 100%
+                );
+        }
+
+
+        /* =====================================================
+           DECORATIVE LEAVES
+        ===================================================== */
+
+        .leaf-left {
+            position: absolute;
+
+            left: -45px;
+
+            top: 40px;
+
+            width: 230px;
+
+            height: 520px;
+
+            opacity: 0.75;
+
+            pointer-events: none;
+        }
+
+        .leaf-left::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 80px;
+
+            background: #c6e5d0;
+
+            border-radius: 100% 0 100% 0;
+
+            transform: rotate(-58deg);
+
+            top: 45px;
+            left: -10px;
+        }
+
+        .leaf-left::after {
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+            height: 65px;
+
+            background: #d7eee0;
+
+            border-radius: 100% 0 100% 0;
+
+            transform: rotate(-25deg);
+
+            top: 155px;
+            left: 0;
+        }
+
+        .leaf-stem {
+            position: absolute;
+
+            width: 5px;
+
+            height: 390px;
+
+            background: #9fcdb0;
+
+            border-radius: 50%;
+
+            transform: rotate(20deg);
+
+            left: 78px;
+
+            top: 80px;
+        }
+
+        .leaf-bottom-right {
+            position: absolute;
+
+            right: -65px;
+
+            bottom: -130px;
+
+            width: 330px;
+
+            height: 280px;
+
+            background: rgba(222, 241, 229, 0.75);
+
+            border-radius: 50% 0 0 0;
+
+            transform: rotate(-10deg);
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           TOP LABEL
+        ===================================================== */
+
+        .hero-label {
+            text-align: center;
+
+            color: #76a38c;
+
+            font-size: 11px;
+
+            letter-spacing: 3px;
+
+            font-weight: 600;
+
+            margin-bottom: 11px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           MAIN HEADING
+        ===================================================== */
+
+        .hero-title {
+            text-align: center;
+
+            font-size: clamp(38px, 4.2vw, 52px);
+
+            line-height: 1.08;
+
+            font-weight: 700;
+
             color: #183d25;
+
+            margin-bottom: 10px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .hero-description {
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            text-align: center;
+
+            font-size: 16px;
+
+            line-height: 1.4;
+
+            color: #53665d;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           ORGANIZATION CARDS
+        ===================================================== */
+
+        .cards {
+            max-width: 1150px;
+
+            width: 100%;
+
+            margin: 24px auto 0;
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+
+            position: relative;
+
+            z-index: 3;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+
+            border: 1px solid #dce8e0;
+
+            border-radius: 13px;
+
+            min-height: 205px;
+
+            padding: 18px 28px;
+
+            text-align: center;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: flex-start;
+
+            box-shadow:
+                0 8px 25px rgba(31, 70, 49, 0.05);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 15px 35px rgba(31, 70, 49, 0.10);
+        }
+
+        .card-icon {
+            width: 72px;
+            height: 72px;
+
+            border-radius: 50%;
+
+            background: #e0f0e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 34px;
+
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+
+            color: #183d25;
+
+            margin-bottom: 7px;
+        }
+
+        .card p {
+            max-width: 300px;
+
+            font-size: 14px;
+
+            line-height: 1.4;
+
+            color: #596b62;
+        }
+
+        .card-line {
+            width: 52px;
+
+            height: 2px;
+
+            background: #9ccab0;
+
+            margin-top: auto;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 18px;
+
+            margin-top: 20px;
+
+            position: relative;
+
+            z-index: 4;
+        }
+
+        .btn {
+            min-width: 260px;
+
+            height: 50px;
+
+            padding: 0 25px;
+
+            border-radius: 9px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-decoration: none;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            transition: all 0.25s ease;
+        }
+
+        .btn-signup {
+            background: #183d25;
+
+            color: white;
+
             border: 1px solid #183d25;
         }
+
+        .btn-signup:hover {
+            background: #245c39;
+
+            border-color: #245c39;
+
+            transform: translateY(-2px);
+        }
+
+        .btn-login {
+            background: white;
+
+            color: #183d25;
+
+            border: 1.5px solid #183d25;
+        }
+
+        .btn-login:hover {
+            background: #f0f8f3;
+
+            border-color: #245c39;
+
+            color: #245c39;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           BOTTOM TAGLINE
+        ===================================================== */
+
+        .tagline {
+            text-align: center;
+
+            margin-top: 13px;
+
+            position: relative;
+
+            z-index: 4;
+        }
+
+        .tagline-decoration {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            margin-bottom: 4px;
+        }
+
+        .tagline-decoration::before,
+        .tagline-decoration::after {
+            content: "";
+
+            width: 70px;
+
+            height: 1px;
+
+            background: #abcab7;
+        }
+
+        .tagline-leaf {
+            font-size: 21px;
+
+            color: #183d25;
+        }
+
+        .tagline p {
+            font-size: 12px;
+
+            color: #62746b;
+
+            letter-spacing: 2px;
+        }
+
+
+        /* =====================================================
+        FOOTER
+        ===================================================== */
+        
+        .footer {
+            width: 100vw;
+
+            min-height: 52px;
+
+            height: 52px;
+
+            background: #183d25;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 10px 7%;
+
+            margin-top: 12px;
+
+            position: relative;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 5;
+
+            flex-shrink: 0;
+        }
+
+        .copyright {
+            font-size: 11px;
+
+            color: #e7f2ec;
+
+            white-space: nowrap;
+       }
+
+        .footer-center {
+            text-align: center;
+
+            font-size: 11px;
+
+            color: #d7e8df;
+
+            letter-spacing: 1.5px;
+        }
+
+        .footer-links {
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+       }
+
+        .social-divider {
+            width: 1px;
+
+            height: 19px;
+
+            background: rgba(255,255,255,0.35);
+
+            margin-left: 1px;
+        }
+
+        .social {
+            display: flex;
+
+            gap: 12px;
+        }
+
+        .social a {
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+        /* =====================================================
+           LARGE SCREENS
+        ===================================================== */
+
+        @media (min-width: 1400px) {
+
+            .hero {
+                padding-top: 32px;
+            }
+
+            .cards {
+                max-width: 1250px;
+
+                margin-top: 28px;
+            }
+
+            .card {
+                min-height: 220px;
+            }
+
+            .card-icon {
+                width: 78px;
+                height: 78px;
+
+                font-size: 36px;
+            }
+
+            .footer {
+                min-height: 56px;
+                height: 56px;
+            }
+
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+            .hero {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .cards {
+                grid-template-columns: repeat(3, 1fr);
+
+                gap: 14px;
+            }
+
+            .card {
+                padding: 18px 15px;
+
+                min-height: 195px;
+            }
+
+            .card-icon {
+                width: 68px;
+                height: 68px;
+
+                font-size: 31px;
+            }
+
+            .card h2 {
+                font-size: 18px;
+            }
+
+            .card p {
+                font-size: 13px;
+            }
+
+            .btn {
+                min-width: 220px;
+            }
+
+            .footer {
+                width: 100vw;
+
+                left: 50%;
+
+                transform: translateX(-50%);
+
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                height: 65px;
+
+                padding: 0 18px;
+            }
+
+            .logo-icon {
+                width: 38px;
+                height: 38px;
+
+                font-size: 24px;
+            }
+
+            .logo-text strong {
+                font-size: 20px;
+            }
+
+            .logo-text span {
+                font-size: 9px;
+            }
+
+            .restaurant-link {
+                font-size: 0;
+            }
+
+            .restaurant-icon {
+                font-size: 20px;
+            }
+
+            .restaurant-arrow {
+                font-size: 22px;
+            }
+
+            .hero {
+                min-height: auto;
+
+                padding: 25px 18px 0;
+            }
+
+            .hero-label {
+                font-size: 9px;
+
+                letter-spacing: 2px;
+
+                margin-bottom: 12px;
+            }
+
+            .hero-title {
+                font-size: 34px;
+
+                margin-bottom: 9px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+
+                line-height: 1.4;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+
+                gap: 12px;
+
+                margin-top: 22px;
+            }
+
+            .card {
+                min-height: 205px;
+
+                padding: 20px 18px;
+            }
+
+            .card-icon {
+                width: 70px;
+                height: 70px;
+
+                font-size: 32px;
+
+                margin-bottom: 9px;
+            }
+
+            .card h2 {
+                font-size: 20px;
+
+                margin-bottom: 7px;
+            }
+
+            .card p {
+                font-size: 14px;
+            }
+
+            .actions {
+                flex-direction: column;
+
+                gap: 10px;
+
+                margin-top: 20px;
+            }
+
+            .btn {
+                width: 100%;
+
+                min-width: 0;
+
+                max-width: 300px;
+
+                height: 50px;
+
+                font-size: 15px;
+            }
+
+            .tagline {
+                margin-top: 15px;
+            }
+
+            .tagline p {
+                font-size: 10px;
+
+                letter-spacing: 1.2px;
+            }
+
+            .tagline-decoration {
+                margin-bottom: 3px;
+            }
+
+            .tagline-decoration::before,
+            .tagline-decoration::after {
+                width: 40px;
+            }
+
+            .tagline-leaf {
+                font-size: 19px;
+            }
+
+
+            /* =================================================
+               FULL-WIDTH MOBILE FOOTER
+            ================================================= */
+
+            .footer {
+                width: 100vw;
+                left: 50%;
+                transform: translateX(-50%);
+
+                height: auto;
+
+                min-height: 70px;
+
+                flex-direction: column;
+
+                gap: 7px;
+
+                text-align: center;
+
+                padding: 12px 18px;
+
+                margin-top: 12px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 11px;
+            }
+
+            .social-divider {
+                display: none;
+            }
+
+            .copyright {
+                font-size: 9px;
+            }
+
+            .footer-center {
+                display: none;
+            }
+
+            .footer-links a {
+                font-size: 9px;
+            }
+
+            .social a {
+                font-size: 14px;
+            }
+
+            .leaf-left {
+                opacity: 0.35;
+
+                left: -100px;
+            }
+
+        }
+
+
+        /* =====================================================
+           VERY SMALL PHONES
+        ===================================================== */
+
+        @media (max-width: 400px) {
+
+            .hero-title {
+                font-size: 30px;
+            }
+
+            .hero-description {
+                font-size: 13px;
+            }
+
+            .card {
+                min-height: 195px;
+            }
+
+            .footer {
+                min-height: 68px;
+
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
 
-        <h1>FoodWise for Organizations</h1>
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-        <p class="subtitle">
-            Connect with restaurants and help ensure surplus food reaches
-            people and animals who need it instead of going to waste.
-        </p>
+<header class="navbar">
 
-        <div class="cards">
+    <a href="{% url 'organization_home' %}"
+       class="navbar-logo">
 
-            <div class="card">
-                <h3>🤝 NGOs</h3>
-                <p>
-                    Receive surplus food from restaurants and distribute it
-                    to people in need.
-                </p>
-            </div>
+        <div class="logo-icon">
+            🌱
+        </div>
 
-            <div class="card">
-                <h3>🏠 Shelters</h3>
-                <p>
-                    Request available surplus food for shelters and
-                    community centers.
-                </p>
-            </div>
+        <div class="logo-text">
 
-            <div class="card">
-                <h3>🐾 Animal Welfare</h3>
-                <p>
-                    Help redirect suitable surplus food to animals through
-                    registered organizations.
-                </p>
-            </div>
+            <strong>
+                FoodWise
+            </strong>
+
+            <span>
+                Surplus meets Purpose.
+            </span>
 
         </div>
 
-        <div class="buttons">
+    </a>
 
-            <a href="#" class="btn primary">
-                Organization Sign Up
-            </a>
 
-            <a href="#" class="btn secondary">
-                Organization Login
-            </a>
+    <a href="{% url 'home' %}"
+       class="restaurant-link">
 
-        </div>
+        <span class="restaurant-icon">
+            🌐
+        </span>
+
+        <span>
+            For Restaurants
+        </span>
+
+        <span class="restaurant-arrow">
+            →
+        </span>
+
+    </a>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<main class="hero">
+
+
+    <div class="leaf-left">
+
+        <div class="leaf-stem"></div>
 
     </div>
 
+
+    <div class="leaf-bottom-right"></div>
+
+
+    <div class="hero-label">
+        PEOPLE &nbsp;•&nbsp; COMMUNITIES &nbsp;•&nbsp; ANIMALS
+    </div>
+
+
+    <h1 class="hero-title">
+        FoodWise for Organizations
+    </h1>
+
+
+    <p class="hero-description">
+        Connect with restaurants and help ensure surplus food reaches
+        people and animals who need it instead of going to waste.
+    </p>
+
+
+    <!-- =================================================
+         ORGANIZATION TYPES
+    ================================================== -->
+
+    <section class="cards">
+
+
+        <article class="card">
+
+            <div class="card-icon">
+                👥
+            </div>
+
+            <h2>
+                NGOs
+            </h2>
+
+            <p>
+                Receive surplus food from restaurants
+                and distribute it to people in need.
+            </p>
+
+            <div class="card-line"></div>
+
+        </article>
+
+
+        <article class="card">
+
+            <div class="card-icon">
+                🏠
+            </div>
+
+            <h2>
+                Shelters
+            </h2>
+
+            <p>
+                Request available surplus food for
+                shelters and community centers.
+            </p>
+
+            <div class="card-line"></div>
+
+        </article>
+
+
+        <article class="card">
+
+            <div class="card-icon">
+                🐾
+            </div>
+
+            <h2>
+                Animal Welfare
+            </h2>
+
+            <p>
+                Help redirect suitable surplus food to
+                animals through registered organizations.
+            </p>
+
+            <div class="card-line"></div>
+
+        </article>
+
+
+    </section>
+
+
+    <!-- =================================================
+         ACTION BUTTONS
+    ================================================== -->
+
+    <div class="actions">
+
+        <a href="{% url 'organization_signup' %}"
+           class="btn btn-signup">
+
+            Organization Sign Up
+            &nbsp; →
+
+        </a>
+
+
+        <a href="{% url 'organization_login' %}"
+           class="btn btn-login">
+
+            Organization Login
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         TAGLINE
+    ================================================== -->
+
+    <div class="tagline">
+
+        <div class="tagline-decoration">
+
+            <span class="tagline-leaf">
+                🌿
+            </span>
+
+        </div>
+
+        <p>
+            A more sustainable, compassionate tomorrow.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <footer class="footer">
+
+
+        <div class="copyright">
+
+            © 2026 FoodWise. All rights reserved.
+
+        </div>
+
+
+        <div class="footer-center">
+
+            🌿
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#">
+                About
+            </a>
+
+            <a href="#">
+                Contact
+            </a>
+
+            <a href="#">
+                Privacy
+            </a>
+
+            <a href="#">
+                Terms
+            </a>
+
+
+            <div class="social-divider"></div>
+
+
+            <div class="social">
+
+                <a href="#">
+                    in
+                </a>
+
+                <a href="#">
+                    ◎
+                </a>
+
+                <a href="#">
+                    ●
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </footer>
+
+
+</main>
+
+
 </body>
+
 </html>

@@ -12,6 +12,10 @@
 
 <style>
 
+/* =====================================================
+   GLOBAL
+===================================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -40,32 +44,41 @@ body {
     position: fixed;
     top: 0;
     left: 0;
+
     width: 100%;
     height: 72px;
+
     background: #ffffff;
+
     border-bottom: 1px solid #e4ebe6;
 
     display: flex;
     align-items: center;
 
     padding: 0 25px;
+
     z-index: 2000;
 }
 
 .navbar-left {
     display: flex;
     align-items: center;
+
     gap: 10px;
+
     height: 100%;
 }
 
 .navbar-logo {
     display: flex;
     align-items: center;
+
     gap: 9px;
 
     text-decoration: none;
+
     color: #173f2b;
+
     white-space: nowrap;
 }
 
@@ -74,6 +87,7 @@ body {
     height: 40px;
 
     border-radius: 10px;
+
     background: #e5f5e9;
 
     display: flex;
@@ -81,6 +95,7 @@ body {
     justify-content: center;
 
     font-size: 25px;
+
     flex-shrink: 0;
 }
 
@@ -91,13 +106,17 @@ body {
 
 .navbar-logo-text strong {
     font-size: 21px;
+
     line-height: 1.1;
+
     color: #17452e;
 }
 
 .navbar-logo-text span {
     font-size: 9px;
+
     color: #708077;
+
     margin-top: 2px;
 }
 
@@ -111,7 +130,9 @@ body {
     height: 42px;
 
     border: none;
+
     background: transparent;
+
     border-radius: 9px;
 
     display: flex;
@@ -119,7 +140,9 @@ body {
     justify-content: center;
 
     cursor: pointer;
+
     font-size: 25px;
+
     color: #173f2b;
 
     flex-shrink: 0;
@@ -139,6 +162,7 @@ body {
 
     display: flex;
     align-items: center;
+
     gap: 22px;
 }
 
@@ -151,6 +175,7 @@ body {
     position: relative;
 
     font-size: 21px;
+
     cursor: pointer;
 
     width: 35px;
@@ -159,6 +184,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    text-decoration: none;
+
+    color: inherit;
 }
 
 .notification-badge {
@@ -167,13 +196,14 @@ body {
     top: -2px;
     right: -3px;
 
-    background: #168044;
-    color: white;
-
     width: 16px;
     height: 16px;
 
     border-radius: 50%;
+
+    background: #168044;
+
+    color: white;
 
     font-size: 9px;
 
@@ -184,8 +214,12 @@ body {
 
 
 /* =====================================================
-   ORGANIZATION USER
+   ORGANIZATION PROFILE
 ===================================================== */
+
+.organization-profile {
+    position: relative;
+}
 
 .organization-user {
     display: flex;
@@ -195,18 +229,33 @@ body {
 
     padding: 6px 10px;
 
+    min-width: 175px;
+
     border: 1px solid #e1e8e3;
+
     border-radius: 10px;
 
-    min-width: 175px;
     background: white;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    text-align: left;
+}
+
+.organization-user:hover {
+    background: #f8fbf9;
 }
 
 .organization-icon {
     width: 36px;
     height: 36px;
 
+    min-width: 36px;
+
     border-radius: 50%;
+
     background: #e2f3e8;
 
     display: flex;
@@ -214,28 +263,201 @@ body {
     justify-content: center;
 
     font-size: 19px;
-    flex-shrink: 0;
+}
+
+.organization-user-info {
+    min-width: 0;
 }
 
 .organization-user strong {
     display: block;
 
     font-size: 12px;
+
     color: #173f2b;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
 .organization-user span {
     display: block;
 
     font-size: 10px;
+
     color: #7b867f;
 
     margin-top: 2px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
 .arrow {
     margin-left: auto;
+
     font-size: 17px;
+
+    color: #173f2b;
+}
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 8px);
+
+    right: 0;
+
+    width: 230px;
+
+    background: white;
+
+    border: 1px solid #e1e8e3;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.12);
+
+    padding: 8px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+
+    z-index: 3000;
+}
+
+.profile-dropdown.show {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+/* =====================================================
+   DROPDOWN HEADER
+===================================================== */
+
+.dropdown-header {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px;
+}
+
+.dropdown-icon {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 50%;
+
+    background: #e2f3e8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+.dropdown-header strong {
+    display: block;
+
+    font-size: 11px;
+
+    color: #173f2b;
+}
+
+.dropdown-header span {
+    display: block;
+
+    font-size: 9px;
+
+    color: #7b867f;
+
+    margin-top: 3px;
+
+    max-width: 145px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #edf1ee;
+
+    margin: 5px 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    color: #173f2b;
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    transition: background 0.2s ease;
+}
+
+.dropdown-item span:first-child {
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+.dropdown-item:hover {
+    background: #edf7f0;
+}
+
+.dropdown-item.logout-item {
+    color: #b33a3a;
+}
+
+.dropdown-item.logout-item:hover {
+    background: #fff0f0;
 }
 
 
@@ -250,19 +472,22 @@ body {
     left: 0;
 
     width: 220px;
+
     height: calc(100vh - 72px);
 
-    background: linear-gradient(
-        180deg,
-        #063d25,
-        #075331
-    );
+    background:
+        linear-gradient(
+            180deg,
+            #063d25,
+            #075331
+        );
 
     color: white;
 
     padding: 18px 11px;
 
     display: flex;
+
     flex-direction: column;
 
     z-index: 1000;
@@ -280,22 +505,25 @@ body.sidebar-closed .sidebar {
 
 
 /* =====================================================
-   NAVIGATION
+   SIDEBAR NAVIGATION
 ===================================================== */
 
 .nav-menu {
     display: flex;
+
     flex-direction: column;
+
     gap: 4px;
 }
 
 .nav-item {
     display: flex;
+
     align-items: center;
 
     gap: 10px;
 
-    min-height: 39px;
+    min-height: 40px;
 
     padding: 9px 12px;
 
@@ -307,42 +535,60 @@ body.sidebar-closed .sidebar {
 
     font-size: 12px;
 
-    transition: 0.2s;
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
-.nav-item:hover,
+.nav-item:hover {
+    background: rgba(255,255,255,0.12);
+
+    color: white;
+}
+
 .nav-item.active {
     background: #16804d;
+
     color: white;
 }
 
 .nav-icon {
     width: 21px;
+
     min-width: 21px;
 
     text-align: center;
+
     font-size: 15px;
 }
 
 
 /* =====================================================
-   LOGOUT
+   SIDEBAR LOGOUT
 ===================================================== */
 
 .logout {
     margin-top: auto;
+
     padding-top: 15px;
 }
 
 .logout a {
     display: flex;
+
     align-items: center;
+
+    justify-content: flex-start;
 
     gap: 10px;
 
-    padding: 10px 12px;
+    width: 100%;
 
-    min-height: 39px;
+    min-height: 40px;
+
+    padding: 10px 12px;
 
     border-radius: 9px;
 
@@ -353,11 +599,28 @@ body.sidebar-closed .sidebar {
     background: rgba(255,255,255,0.12);
 
     font-size: 12px;
+
     font-weight: 600;
+
+    text-align: left;
 }
 
 .logout a:hover {
     background: rgba(255,255,255,0.2);
+}
+
+.logout-icon {
+    width: 21px;
+
+    min-width: 21px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 15px;
 }
 
 
@@ -381,6 +644,7 @@ body.sidebar-closed .sidebar {
 
 body.sidebar-closed .main {
     margin-left: 0;
+
     width: 100%;
 }
 
@@ -391,6 +655,7 @@ body.sidebar-closed .main {
 
 .content {
     width: 100%;
+
     padding: 25px 30px 20px;
 }
 
@@ -403,27 +668,46 @@ body.sidebar-closed .main {
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
-    margin-bottom: 17px;
+    margin-bottom: 18px;
 
     gap: 20px;
 }
 
 .welcome h1 {
     font-size: 25px;
-    color: #123e29;
 
-    margin-bottom: 5px;
+    line-height: 1.2;
+
+    color: #173f2b;
+
+    margin-bottom: 6px;
+
+    font-weight: 700;
 }
 
 .welcome p {
     color: #718078;
+
     font-size: 11px;
+
+    line-height: 1.5;
 }
 
 .add-button {
-    background: #087642;
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #087642,
+            #16804d
+        );
 
     color: white;
 
@@ -431,23 +715,31 @@ body.sidebar-closed .main {
 
     padding: 10px 15px;
 
-    border-radius: 9px;
+    border-radius: 10px;
 
     font-size: 11px;
+
     font-weight: 700;
 
     cursor: pointer;
 
     text-decoration: none;
 
-    transition: 0.2s;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 
     white-space: nowrap;
+
+    box-shadow:
+        0 6px 15px rgba(8,118,66,0.16);
 }
 
 .add-button:hover {
-    background: #065f34;
     transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 18px rgba(8,118,66,0.22);
 }
 
 
@@ -475,9 +767,10 @@ body.sidebar-closed .main {
 
     min-height: 86px;
 
-    padding: 12px;
+    padding: 13px;
 
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -485,6 +778,17 @@ body.sidebar-closed .main {
     min-width: 0;
 
     width: 100%;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 20px rgba(23,63,43,0.07);
 }
 
 .stat-icon {
@@ -496,6 +800,7 @@ body.sidebar-closed .main {
     border-radius: 50%;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -523,15 +828,19 @@ body.sidebar-closed .main {
 
     font-weight: 700;
 
-    color: #111;
+    color: #173f2b;
+
+    line-height: 1;
 }
 
 .stat-title {
     font-size: 10px;
 
-    font-weight: 600;
+    font-weight: 700;
 
-    margin-top: 3px;
+    color: #304d3c;
+
+    margin-top: 5px;
 }
 
 .stat-description {
@@ -570,13 +879,18 @@ body.sidebar-closed .main {
 
     border-radius: 11px;
 
-    padding: 13px;
+    padding: 14px;
 
     min-width: 0;
+
     width: 100%;
 
     display: flex;
+
     flex-direction: column;
+
+    box-shadow:
+        0 2px 8px rgba(23,63,43,0.025);
 }
 
 
@@ -588,6 +902,7 @@ body.sidebar-closed .main {
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
     margin-bottom: 10px;
@@ -598,7 +913,11 @@ body.sidebar-closed .main {
 .card-header h2 {
     font-size: 14px;
 
+    line-height: 1.3;
+
     color: #173f2b;
+
+    font-weight: 700;
 
     min-width: 0;
 }
@@ -610,9 +929,13 @@ body.sidebar-closed .main {
 
     text-decoration: none;
 
-    font-weight: 600;
+    font-weight: 700;
 
     white-space: nowrap;
+}
+
+.view-all:hover {
+    text-decoration: underline;
 }
 
 
@@ -627,7 +950,7 @@ body.sidebar-closed .main {
 
     gap: 8px;
 
-    padding: 7px 0;
+    padding: 8px 0;
 
     border-bottom: 1px solid #edf1ee;
 
@@ -649,6 +972,7 @@ body.sidebar-closed .main {
     background: #f0f5f1;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -657,6 +981,7 @@ body.sidebar-closed .main {
 
 .food-info {
     flex: 1;
+
     min-width: 0;
 }
 
@@ -664,6 +989,8 @@ body.sidebar-closed .main {
     font-size: 11px;
 
     font-weight: 700;
+
+    color: #173f2b;
 
     margin-bottom: 2px;
 
@@ -702,30 +1029,86 @@ body.sidebar-closed .main {
 ===================================================== */
 
 .status {
+    display: inline-block;
+
     padding: 5px 7px;
 
     border-radius: 8px;
 
     font-size: 8px;
 
-    font-weight: 600;
+    font-weight: 700;
 
     white-space: nowrap;
+
+    text-align: center;
 }
 
 .available {
     background: #e5f6eb;
+
     color: #167341;
 }
 
 .pending {
     background: #fff4d9;
+
     color: #9a6900;
+}
+
+.approved {
+    background: #e5f6eb;
+
+    color: #167341;
+}
+
+.rejected {
+    background: #ffe8e8;
+
+    color: #a53d3d;
 }
 
 .received {
     background: #e5f6eb;
+
     color: #167341;
+}
+
+
+/* =====================================================
+   REQUEST STATUS COLUMN
+===================================================== */
+
+.request-status {
+    width: 115px;
+
+    min-width: 115px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    justify-content: center;
+
+    text-align: right;
+
+    flex-shrink: 0;
+}
+
+.request-status .status {
+    min-width: 55px;
+
+    text-align: center;
+}
+
+.request-status .food-details {
+    width: 100%;
+
+    text-align: right;
+
+    white-space: nowrap;
 }
 
 
@@ -752,7 +1135,7 @@ body.sidebar-closed .main {
 
 
 /* =====================================================
-   BUTTON
+   BOTTOM BUTTON
 ===================================================== */
 
 .bottom-button {
@@ -772,22 +1155,28 @@ body.sidebar-closed .main {
 
     font-size: 9px;
 
-    font-weight: 600;
+    font-weight: 700;
 
     cursor: pointer;
 
     text-align: center;
 
     text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .bottom-button:hover {
     background: #f2f8f4;
+
+    border-color: #b8c8be;
 }
 
 
 /* =====================================================
-   IMPACT OVERVIEW
+   IMPACT
 ===================================================== */
 
 .impact-message {
@@ -819,7 +1208,6 @@ body.sidebar-closed .main {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     font-size: 19px;
@@ -827,6 +1215,8 @@ body.sidebar-closed .main {
 
 .impact-message strong {
     font-size: 10px;
+
+    color: #173f2b;
 }
 
 .impact-message p {
@@ -851,6 +1241,8 @@ body.sidebar-closed .main {
     border-bottom: 1px solid #edf1ee;
 
     font-size: 9px;
+
+    color: #59665e;
 }
 
 .impact-row:last-child {
@@ -858,7 +1250,9 @@ body.sidebar-closed .main {
 }
 
 .impact-value {
-    font-weight: 600;
+    font-weight: 700;
+
+    color: #173f2b;
 
     white-space: nowrap;
 }
@@ -877,7 +1271,7 @@ body.sidebar-closed .main {
 
     align-items: center;
 
-    padding: 7px 0;
+    padding: 8px 0;
 
     border-bottom: 1px solid #edf1ee;
 
@@ -899,11 +1293,14 @@ body.sidebar-closed .main {
 
 .recent-food {
     flex: 1;
+
     min-width: 0;
 }
 
 .recent-food strong {
     font-size: 10px;
+
+    color: #173f2b;
 }
 
 .recent-food p {
@@ -966,7 +1363,6 @@ body.sidebar-closed .main {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     font-size: 20px;
@@ -974,6 +1370,8 @@ body.sidebar-closed .main {
 
 .profile h3 {
     font-size: 11px;
+
+    color: #173f2b;
 }
 
 .profile p {
@@ -990,6 +1388,8 @@ body.sidebar-closed .main {
     color: #626d67;
 
     line-height: 1.8;
+
+    margin-bottom: 10px;
 }
 
 
@@ -1020,6 +1420,7 @@ body.sidebar-closed .main {
 
     .sidebar {
         top: 66px;
+
         height: calc(100vh - 66px);
     }
 
@@ -1079,6 +1480,7 @@ body.sidebar-closed .main {
 
     .navbar {
         height: 65px;
+
         padding: 0 15px;
     }
 
@@ -1097,18 +1499,22 @@ body.sidebar-closed .main {
     .navbar-logo-icon {
         width: 35px;
         height: 35px;
+
         font-size: 21px;
     }
 
     .hamburger {
         width: 38px;
         height: 38px;
+
         font-size: 23px;
     }
 
     .sidebar {
         top: 65px;
+
         height: calc(100vh - 65px);
+
         width: 230px;
 
         box-shadow:
@@ -1117,7 +1523,9 @@ body.sidebar-closed .main {
 
     .main {
         margin-left: 0;
+
         width: 100%;
+
         padding-top: 65px;
     }
 
@@ -1140,13 +1548,21 @@ body.sidebar-closed .main {
 
     .organization-user {
         min-width: auto;
+
         border: none;
+
         padding: 4px;
     }
 
-    .organization-user > div:not(.organization-icon),
+    .organization-user-info,
     .arrow {
         display: none;
+    }
+
+    .request-status {
+        width: 105px;
+
+        min-width: 105px;
     }
 }
 
@@ -1208,6 +1624,12 @@ body.sidebar-closed .main {
     .recent-date {
         margin-left: auto;
     }
+
+    .request-status {
+        width: 95px;
+
+        min-width: 95px;
+    }
 }
 
 </style>
@@ -1262,37 +1684,128 @@ body.sidebar-closed .main {
 
     <div class="navbar-right">
 
-        <div class="notification">
+
+        <!-- =================================================
+             NOTIFICATION
+        ================================================== -->
+
+        <a
+            href="{% url 'organization_notifications' %}"
+            class="notification"
+            title="Notifications"
+            aria-label="Notifications"
+        >
 
             🔔
 
             <span class="notification-badge">
-                3
+                {{ notifications_count }}
             </span>
 
-        </div>
+        </a>
 
 
-        <div class="organization-user">
+        <!-- =================================================
+             ORGANIZATION PROFILE
+        ================================================== -->
 
-            <div class="organization-icon">
-                🏢
-            </div>
+        <div class="organization-profile">
 
-            <div>
+            <button
+                type="button"
+                class="organization-user"
+                id="organizationProfileButton"
+                aria-expanded="false"
+            >
 
-                <strong>
-                    {{ user.username }}
-                </strong>
+                <div class="organization-icon">
+                    🏢
+                </div>
 
-                <span>
-                    {{ organization.organization_name }}
-                </span>
+                <div class="organization-user-info">
 
-            </div>
+                    <strong>
+                        {{ user.username }}
+                    </strong>
 
-            <div class="arrow">
-                ⌄
+                    <span>
+                        {{ organization.organization_name }}
+                    </span>
+
+                </div>
+
+                <div class="arrow">
+                    ⌄
+                </div>
+
+            </button>
+
+
+            <!-- PROFILE DROPDOWN -->
+
+            <div
+                class="profile-dropdown"
+                id="profileDropdown"
+            >
+
+                <div class="dropdown-header">
+
+                    <div class="dropdown-icon">
+                        🏢
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ user.username }}
+                        </strong>
+
+                        <span>
+                            {{ organization.organization_name }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dropdown-divider"></div>
+
+
+                <!-- PROFILE -->
+
+                <a
+                    href="{% url 'organization_profile' %}"
+                    class="dropdown-item"
+                >
+
+                    <span>👤</span>
+
+                    <span>
+                        Profile
+                    </span>
+
+                </a>
+
+
+                <div class="dropdown-divider"></div>
+
+
+                <!-- LOGOUT -->
+
+                <a
+                    href="{% url 'organization_logout' %}"
+                    class="dropdown-item logout-item"
+                >
+
+                    <span>⇥</span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </a>
+
             </div>
 
         </div>
@@ -1310,10 +1823,14 @@ body.sidebar-closed .main {
 
     <nav class="nav-menu">
 
-        <a href="#" class="nav-item active">
+
+        <a
+            href="{% url 'organization_dashboard' %}"
+            class="nav-item active"
+        >
 
             <span class="nav-icon">
-                ⌂
+                📅
             </span>
 
             <span>
@@ -1323,7 +1840,10 @@ body.sidebar-closed .main {
         </a>
 
 
-        <a href="#" class="nav-item">
+        <a
+            href="{% url 'browse_surplus_food' %}"
+            class="nav-item"
+        >
 
             <span class="nav-icon">
                 🍱
@@ -1336,7 +1856,10 @@ body.sidebar-closed .main {
         </a>
 
 
-        <a href="{% url 'my_requests' %}" class="nav-item">
+        <a
+            href="{% url 'my_requests' %}"
+            class="nav-item"
+        >
 
             <span class="nav-icon">
                 📋
@@ -1349,20 +1872,10 @@ body.sidebar-closed .main {
         </a>
 
 
-        <a href="#" class="nav-item">
-
-            <span class="nav-icon">
-                ♡
-            </span>
-
-            <span>
-                My Donations
-            </span>
-
-        </a>
-
-
-        <a href="#" class="nav-item">
+        <a
+            href="{% url 'food_received' %}"
+            class="nav-item"
+        >
 
             <span class="nav-icon">
                 🎁
@@ -1375,7 +1888,10 @@ body.sidebar-closed .main {
         </a>
 
 
-        <a href="#" class="nav-item">
+        <a
+            href="{% url 'organization_impact' %}"
+            class="nav-item"
+        >
 
             <span class="nav-icon">
                 📊
@@ -1388,10 +1904,13 @@ body.sidebar-closed .main {
         </a>
 
 
-        <a href="#" class="nav-item">
+        <a
+            href="{% url 'organization_profile' %}"
+            class="nav-item"
+        >
 
             <span class="nav-icon">
-                ♙
+                👤
             </span>
 
             <span>
@@ -1401,7 +1920,10 @@ body.sidebar-closed .main {
         </a>
 
 
-        <a href="#" class="nav-item">
+        <a
+            href="{% url 'organization_notifications' %}"
+            class="nav-item"
+        >
 
             <span class="nav-icon">
                 🔔
@@ -1414,7 +1936,10 @@ body.sidebar-closed .main {
         </a>
 
 
-        <a href="#" class="nav-item">
+        <a
+            href="{% url 'organization_change_password' %}"
+            class="nav-item"
+        >
 
             <span class="nav-icon">
                 🔒
@@ -1429,12 +1954,16 @@ body.sidebar-closed .main {
     </nav>
 
 
+    <!-- =====================================================
+         LOGOUT
+    ====================================================== -->
+
     <div class="logout">
 
-        <a href="{% url 'logout' %}">
+        <a href="{% url 'organization_logout' %}">
 
-            <span class="nav-icon">
-                ⇥
+            <span class="logout-icon">
+                🔙
             </span>
 
             <span>
@@ -1547,9 +2076,7 @@ body.sidebar-closed .main {
         </div>
 
 
-        <!-- =================================================
-             FOOD RECEIVED
-        ================================================== -->
+        <!-- FOOD RECEIVED -->
 
         <div class="stat-card">
 
@@ -1576,9 +2103,7 @@ body.sidebar-closed .main {
         </div>
 
 
-        <!-- =================================================
-             PEOPLE HELPED
-        ================================================== -->
+        <!-- PEOPLE HELPED -->
 
         <div class="stat-card">
 
@@ -1703,7 +2228,9 @@ body.sidebar-closed .main {
             {% else %}
 
                 <div class="empty-message">
+
                     🍽️ No surplus food is currently available.
+
                 </div>
 
             {% endif %}
@@ -1741,9 +2268,9 @@ body.sidebar-closed .main {
             </div>
 
 
-            {% if pending_requests_list %}
+            {% if my_requests_list %}
 
-                {% for request in pending_requests_list|slice:":4" %}
+                {% for request in my_requests_list|slice:":4" %}
 
                 <div class="food-item">
 
@@ -1765,15 +2292,14 @@ body.sidebar-closed .main {
                     <div class="food-info">
 
                         <div class="food-name">
-
                             {{ request.leftover_record.food_item.dish_name }}
-
                         </div>
 
 
                         <div class="food-details">
 
                             {{ request.quantity_requested }}
+
                             {{ request.leftover_record.get_unit_display }}
 
                         </div>
@@ -1782,22 +2308,61 @@ body.sidebar-closed .main {
                         <div class="food-location">
 
                             📅
-                            {{ request.leftover_record.recorded_at|date:"d M Y" }}
+                            {{ request.requested_at|date:"d M Y" }}
 
                         </div>
 
                     </div>
 
 
-                    <div>
+                    <!-- FIXED REQUEST STATUS COLUMN -->
 
-                        <span class="status pending">
-                            Pending
-                        </span>
+                    <div class="request-status">
 
-                        <div class="food-details">
-                            Requested
-                        </div>
+                        {% if request.status == 'PENDING' %}
+
+                            <span class="status pending">
+                                Pending
+                            </span>
+
+                            <div class="food-details">
+                                Waiting for approval
+                            </div>
+
+
+                        {% elif request.status == 'APPROVED' %}
+
+                            <span class="status approved">
+                                Approved
+                            </span>
+
+                            <div class="food-details">
+                                Request approved
+                            </div>
+
+
+                        {% elif request.status == 'REJECTED' %}
+
+                            <span class="status rejected">
+                                Rejected
+                            </span>
+
+                            <div class="food-details">
+                                Request rejected
+                            </div>
+
+
+                        {% else %}
+
+                            <span class="status">
+                                {{ request.get_status_display }}
+                            </span>
+
+                            <div class="food-details">
+                                Request status
+                            </div>
+
+                        {% endif %}
 
                     </div>
 
@@ -1805,10 +2370,13 @@ body.sidebar-closed .main {
 
                 {% endfor %}
 
+
             {% else %}
 
                 <div class="empty-message">
-                    📋 No pending requests yet.
+
+                    📋 No requests yet.
+
                 </div>
 
             {% endif %}
@@ -1860,8 +2428,6 @@ body.sidebar-closed .main {
             </div>
 
 
-            <!-- TOTAL FOOD RECEIVED -->
-
             <div class="impact-row">
 
                 <span>
@@ -1871,15 +2437,12 @@ body.sidebar-closed .main {
                 <span class="impact-value">
 
                     {{ food_received_count }}
-
                     items
 
                 </span>
 
             </div>
 
-
-            <!-- TOTAL PEOPLE HELPED -->
 
             <div class="impact-row">
 
@@ -1895,8 +2458,6 @@ body.sidebar-closed .main {
 
             </div>
 
-
-            <!-- ACTIVE SINCE -->
 
             <div class="impact-row">
 
@@ -1916,89 +2477,101 @@ body.sidebar-closed .main {
 
 
         <!-- =================================================
-        RECENT DONATIONS / FOOD RECEIVED
-        ================================================= -->
+             RECENT DONATIONS / FOOD RECEIVED
+        ================================================== -->
 
-    <div class="card recent-card">
-        <div class="card-header">
-            <h2>
-                Recent Donations / Food Received
-            </h2>
+        <div class="card recent-card">
 
-            <a href="#" class="view-all">
-                View All
-            </a>
+            <div class="card-header">
+
+                <h2>
+                    Recent Donations / Food Received
+                </h2>
+
+                <a
+                    href="{% url 'food_received' %}"
+                    class="view-all"
+                >
+                    View All
+                </a>
+
+            </div>
+
+
+            {% if received_requests %}
+
+                {% for received in received_requests|slice:":4" %}
+
+                <div class="recent-item">
+
+                    <div class="food-image">
+
+                        {% if forloop.counter == 1 %}
+                            🍛
+                        {% elif forloop.counter == 2 %}
+                            🍚
+                        {% elif forloop.counter == 3 %}
+                            🥪
+                        {% else %}
+                            🍝
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="recent-food">
+
+                        <strong>
+                            {{ received.leftover_record.food_item.dish_name }}
+                        </strong>
+
+                        <p>
+                            📍
+                            {{ received.leftover_record.restaurant.restaurant_name }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="recent-quantity">
+
+                        {{ received.quantity_requested }}
+
+                        {{ received.leftover_record.get_unit_display }}
+
+                    </div>
+
+
+                    <span class="status received">
+
+                        Received
+
+                    </span>
+
+
+                    <div class="recent-date">
+
+                        {{ received.requested_at|date:"d M Y" }}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+                <div class="empty-message">
+
+                    🎁 No food has been received yet.
+
+                </div>
+
+            {% endif %}
 
         </div>
-        
-        {% if received_requests %}
-        {% for received in received_requests|slice:":4" %}
-        <div class="recent-item">
-            <div class="food-image">
-                {% if forloop.counter == 1 %}
-                    🍛
-                {% elif forloop.counter == 2 %}
-                    🍚
-                {% elif forloop.counter == 3 %}
-                    🥪
-                {% else %}
-                    🍝
-                {% endif %}
 
-            </div>
-
-
-            <div class="recent-food">
-
-                <strong>
-                    {{ request.leftover_record.food_item.dish_name }}
-                </strong>
-
-                <p>
-                    📍
-                    {{ request.leftover_record.restaurant.restaurant_name }}
-                </p>
-
-            </div>
-
-
-            <div class="recent-quantity">
-
-                {{ request.quantity_requested }}
-                {{ request.leftover_record.get_unit_display }}
-
-            </div>
-
-
-            <span class="status received">
-
-                Received
-
-            </span>
-
-
-            <div class="recent-date">
-
-                {{ request.requested_at|date:"d M Y" }}
-
-            </div>
-
-        </div>
-
-        {% endfor %}
-
-
-        {% else %}
-
-        <div class="empty-message">
-
-            🎁 No food has been received yet.
-
-        </div>
-
-        {% endif %}
-
-    </div>
 
         <!-- =================================================
              ORGANIZATION PROFILE
@@ -2011,6 +2584,15 @@ body.sidebar-closed .main {
                 <h2>
                     Organization Profile
                 </h2>
+
+                <!-- EDIT -->
+
+                <a
+                    href="{% url 'organization_profile' %}"
+                    class="view-all"
+                >
+                    Edit
+                </a>
 
             </div>
 
@@ -2056,9 +2638,12 @@ body.sidebar-closed .main {
             </div>
 
 
-            <button class="bottom-button">
+            <a
+                href="{% url 'organization_profile' %}"
+                class="bottom-button"
+            >
                 View Profile
-            </button>
+            </a>
 
         </div>
 
@@ -2076,29 +2661,126 @@ body.sidebar-closed .main {
 
 <script>
 
+
+/* =====================================================
+   SIDEBAR TOGGLE
+===================================================== */
+
 const sidebarToggle =
     document.getElementById("sidebarToggle");
 
+sidebarToggle.addEventListener(
+    "click",
+    function () {
 
-sidebarToggle.addEventListener("click", function () {
-
-    document.body.classList.toggle(
-        "sidebar-closed"
-    );
-
-
-    const isClosed =
-        document.body.classList.contains(
+        document.body.classList.toggle(
             "sidebar-closed"
         );
 
+        const isClosed =
+            document.body.classList.contains(
+                "sidebar-closed"
+            );
 
-    sidebarToggle.setAttribute(
-        "aria-expanded",
-        !isClosed
+        sidebarToggle.setAttribute(
+            "aria-expanded",
+            String(!isClosed)
+        );
+
+    }
+);
+
+
+/* =====================================================
+   ORGANIZATION PROFILE DROPDOWN
+===================================================== */
+
+const organizationProfileButton =
+    document.getElementById(
+        "organizationProfileButton"
     );
 
-});
+const profileDropdown =
+    document.getElementById(
+        "profileDropdown"
+    );
+
+
+organizationProfileButton.addEventListener(
+    "click",
+    function (event) {
+
+        event.stopPropagation();
+
+        const isOpen =
+            profileDropdown.classList.toggle(
+                "show"
+            );
+
+        organizationProfileButton.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+
+    }
+);
+
+
+/* =====================================================
+   CLOSE DROPDOWN OUTSIDE
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            !profileDropdown.contains(
+                event.target
+            ) &&
+            !organizationProfileButton.contains(
+                event.target
+            )
+        ) {
+
+            profileDropdown.classList.remove(
+                "show"
+            );
+
+            organizationProfileButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            profileDropdown.classList.remove(
+                "show"
+            );
+
+            organizationProfileButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    }
+);
 
 </script>
 

@@ -4,290 +4,1579 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Donations - FoodWise</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="{% static 'wastage/style.css' %}">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <style>
-        .donations-page {
-            min-height: 100vh;
-            background: #f7faf8;
-        }
+<title>Donations - FoodWise</title>
 
-        .donations-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 35px 30px;
-        }
 
-        .donations-header {
-            margin-bottom: 28px;
-        }
+<style>
 
-        .donations-header h1 {
-            margin: 0 0 8px;
-            color: #26342b;
-            font-size: 28px;
-        }
+/* =====================================================
+   GLOBAL
+===================================================== */
 
-        .donations-header p {
-            margin: 0;
-            color: #777;
-            font-size: 14px;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        .donation-card {
-            background: white;
-            border-radius: 14px;
-            padding: 24px;
-            margin-bottom: 18px;
-            border: 1px solid #edf0ee;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-        }
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
 
-        .donation-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6faf7;
+    color: #173f2b;
+    overflow-x: hidden;
+}
 
-        .donation-card-header h3 {
-            margin: 0;
-            color: #26342b;
-            font-size: 18px;
-        }
 
-        .donation-badge {
-            padding: 6px 11px;
-            border-radius: 20px;
-            background: #eaf7ee;
-            color: #27864a;
-            font-size: 12px;
-            font-weight: 600;
-        }
+/* =====================================================
+   NAVBAR
+   STANDARD - SAME AS ADD FOOD ITEM
+===================================================== */
 
-        .donation-details {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-        }
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
 
-        .detail-box {
-            padding: 15px;
-            background: #f7faf8;
-            border-radius: 10px;
-        }
+    width: 100%;
+    height: 72px;
 
-        .detail-label {
-            display: block;
-            margin-bottom: 6px;
-            color: #7a827d;
-            font-size: 12px;
-        }
+    background: #ffffff;
 
-        .detail-value {
-            color: #34423a;
-            font-size: 14px;
-            font-weight: 600;
-        }
+    border-bottom: 1px solid #e4ebe6;
 
-        .empty-donations {
-            background: white;
-            border-radius: 14px;
-            padding: 50px 25px;
-            text-align: center;
-            color: #777;
-            border: 1px solid #edf0ee;
-        }
+    display: flex;
+    align-items: center;
 
-        .back-button {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 11px 18px;
-            border-radius: 8px;
-            background: #42b96a;
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-        }
+    padding: 0 25px;
 
-        .back-button:hover {
-            background: #35a95d;
-        }
+    z-index: 2000;
+}
 
-        @media (max-width: 800px) {
-            .donation-details {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+.navbar-left {
+    display: flex;
+    align-items: center;
 
-        @media (max-width: 500px) {
-            .donations-container {
-                padding: 25px 15px;
-            }
+    gap: 10px;
 
-            .donation-details {
-                grid-template-columns: 1fr;
-            }
+    height: 100%;
+}
 
-            .donation-card-header {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-        }
-    </style>
+.navbar-logo {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    text-decoration: none;
+
+    color: #173f2b;
+
+    white-space: nowrap;
+}
+
+.navbar-logo-icon {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 10px;
+
+    background: #e5f5e9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+
+    flex-shrink: 0;
+}
+
+.navbar-logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-logo-text strong {
+    font-size: 21px;
+
+    line-height: 1.1;
+
+    color: #17452e;
+}
+
+.navbar-logo-text span {
+    font-size: 9px;
+
+    color: #708077;
+
+    margin-top: 2px;
+}
+
+
+/* =====================================================
+   HAMBURGER
+===================================================== */
+
+.hamburger {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    background: transparent;
+
+    border-radius: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    font-size: 25px;
+
+    color: #173f2b;
+
+    flex-shrink: 0;
+}
+
+.hamburger:hover {
+    background: #edf5ef;
+}
+
+
+/* =====================================================
+   NAVBAR RIGHT
+===================================================== */
+
+.navbar-right {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+}
+
+
+
+/* =====================================================
+   ORGANIZATION / RESTAURANT PROFILE
+   STANDARD - SAME AS ADD FOOD ITEM
+===================================================== */
+
+.organization-profile {
+    position: relative;
+}
+
+.organization-user {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 6px 10px;
+
+    min-width: 175px;
+
+    border: 1px solid #e1e8e3;
+
+    border-radius: 10px;
+
+    background: white;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    text-align: left;
+}
+
+.organization-user:hover {
+    background: #f8fbf9;
+}
+
+.organization-icon {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    border-radius: 50%;
+
+    background: #e2f3e8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+}
+
+.organization-user-info {
+    min-width: 0;
+}
+
+.organization-user strong {
+    display: block;
+
+    font-size: 12px;
+
+    color: #173f2b;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.organization-user span {
+    display: block;
+
+    font-size: 10px;
+
+    color: #7b867f;
+
+    margin-top: 2px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.arrow {
+    margin-left: auto;
+
+    font-size: 17px;
+
+    color: #173f2b;
+}
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 8px);
+
+    right: 0;
+
+    width: 230px;
+
+    background: white;
+
+    border: 1px solid #e1e8e3;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.12);
+
+    padding: 8px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+
+    z-index: 3000;
+}
+
+.profile-dropdown.show {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+/* =====================================================
+   DROPDOWN HEADER
+===================================================== */
+
+.dropdown-header {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px;
+}
+
+.dropdown-icon {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 50%;
+
+    background: #e2f3e8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+.dropdown-header strong {
+    display: block;
+
+    font-size: 11px;
+
+    color: #173f2b;
+}
+
+.dropdown-header span {
+    display: block;
+
+    font-size: 9px;
+
+    color: #7b867f;
+
+    margin-top: 3px;
+
+    max-width: 145px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #edf1ee;
+
+    margin: 5px 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    color: #173f2b;
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    transition: background 0.2s ease;
+}
+
+.dropdown-item span:first-child {
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+.dropdown-item:hover {
+    background: #edf7f0;
+}
+
+.dropdown-item.logout-item {
+    color: #b33a3a;
+}
+
+.dropdown-item.logout-item:hover {
+    background: #fff0f0;
+}
+
+
+/* =====================================================
+   SIDEBAR
+   STANDARD - SAME AS ADD FOOD ITEM
+===================================================== */
+
+.sidebar {
+    position: fixed;
+
+    top: 72px;
+    left: 0;
+
+    width: 220px;
+
+    height: calc(100vh - 72px);
+
+    background:
+        linear-gradient(
+            180deg,
+            #063d25,
+            #075331
+        );
+
+    color: white;
+
+    padding: 18px 11px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    z-index: 1000;
+
+    overflow-y: auto;
+
+    transform: translateX(0);
+
+    transition: transform 0.3s ease;
+}
+
+body.sidebar-closed .sidebar {
+    transform: translateX(-100%);
+}
+
+
+/* =====================================================
+   SIDEBAR NAVIGATION
+===================================================== */
+
+.nav-menu {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.nav-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 40px;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    color: #e5f2e9;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.10);
+
+    color: white;
+}
+
+.nav-item.active {
+    background: #16804d;
+
+    color: white;
+}
+
+.nav-icon {
+    width: 21px;
+
+    min-width: 21px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+.logout {
+    margin-top: auto;
+
+    padding-top: 15px;
+}
+
+.logout a {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+    gap: 10px;
+
+    width: 100%;
+
+    min-height: 40px;
+
+    padding: 10px 12px;
+
+    border-radius: 9px;
+
+    color: white;
+
+    text-decoration: none;
+
+    background: rgba(255,255,255,0.12);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-align: left;
+}
+
+.logout a:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.logout-icon {
+    width: 21px;
+
+    min-width: 21px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main {
+    margin-left: 220px;
+
+    padding-top: 72px;
+
+    min-height: 100vh;
+
+    width: calc(100% - 220px);
+
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease;
+}
+
+body.sidebar-closed .main {
+    margin-left: 0;
+
+    width: 100%;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content {
+    width: 100%;
+
+    padding: 25px 30px 20px;
+}
+
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.page-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 18px;
+}
+
+.page-title h1 {
+    font-size: 25px;
+
+    line-height: 1.2;
+
+    color: #173f2b;
+
+    margin-bottom: 6px;
+
+    font-weight: 700;
+}
+
+.page-title p {
+    color: #718078;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   BACK TO DASHBOARD
+   EXACTLY LIKE ADD FOOD ITEM
+===================================================== */
+
+.back-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+
+    color: #173f2b;
+
+    border: 1px solid #ccd7d0;
+
+    padding: 10px 15px;
+
+    border-radius: 10px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.back-button:hover {
+    background: #f2f8f4;
+}
+
+
+/* =====================================================
+   DONATIONS LIST
+===================================================== */
+
+.donations-list {
+    width: min(1000px, 100%);
+
+    margin: 0 auto;
+}
+
+
+/* =====================================================
+   DONATION CARD
+===================================================== */
+
+.donation-card {
+    background: #ffffff;
+
+    border: 1px solid #e1e8e4;
+
+    border-radius: 11px;
+
+    padding: 25px 30px;
+
+    margin-bottom: 14px;
+
+    box-shadow:
+        0 2px 8px rgba(23,63,43,0.025);
+}
+
+.donation-card-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-bottom: 16px;
+
+    margin-bottom: 18px;
+
+    border-bottom: 1px solid #edf1ee;
+}
+
+.donation-card-header h3 {
+    margin: 0;
+
+    color: #173f2b;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+.donation-badge {
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    background: #e5f5e9;
+
+    color: #16804d;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   DONATION DETAILS
+===================================================== */
+
+.donation-details {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px;
+}
+
+.detail-box {
+    padding: 13px;
+
+    background: #f7faf8;
+
+    border: 1px solid #edf1ee;
+
+    border-radius: 8px;
+}
+
+.detail-label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #7a827d;
+
+    font-size: 9px;
+
+    font-weight: 500;
+}
+
+.detail-value {
+    color: #304d3c;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   EMPTY DONATIONS
+===================================================== */
+
+.empty-donations {
+    width: min(1000px, 100%);
+
+    margin: 0 auto;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e8e4;
+
+    border-radius: 11px;
+
+    padding: 45px 25px;
+
+    text-align: center;
+
+    color: #7a827c;
+
+    box-shadow:
+        0 2px 8px rgba(23,63,43,.025);
+}
+
+.empty-donations h3 {
+    margin-bottom: 6px;
+
+    color: #304d3c;
+
+    font-size: 14px;
+}
+
+.empty-donations p {
+    font-size: 10px;
+
+    color: #7d857f;
+}
+
+
+/* =====================================================
+   SHORT LAPTOP
+   SAME AS ADD FOOD ITEM
+===================================================== */
+
+@media (min-width:851px) and (max-height:750px) {
+
+    .navbar {
+        height: 66px;
+    }
+
+    .sidebar {
+        top: 66px;
+
+        height: calc(100vh - 66px);
+    }
+
+    .main {
+        padding-top: 66px;
+    }
+
+    .content {
+        padding-top: 14px;
+    }
+}
+
+
+/* =====================================================
+   TABLET / MOBILE
+   SAME AS ADD FOOD ITEM
+===================================================== */
+
+@media (max-width:850px) {
+
+    .navbar {
+        height: 65px;
+
+        padding: 0 15px;
+    }
+
+    .navbar-left {
+        gap: 7px;
+    }
+
+    .navbar-logo-text strong {
+        font-size: 18px;
+    }
+
+    .navbar-logo-text span {
+        font-size: 8px;
+    }
+
+    .navbar-logo-icon {
+        width: 35px;
+        height: 35px;
+
+        font-size: 21px;
+    }
+
+    .hamburger {
+        width: 38px;
+        height: 38px;
+
+        font-size: 23px;
+    }
+
+    .sidebar {
+        top: 65px;
+
+        height: calc(100vh - 65px);
+
+        width: 230px;
+
+        box-shadow:
+            4px 0 18px rgba(0,0,0,0.12);
+    }
+
+    .main {
+        margin-left: 0;
+
+        width: 100%;
+
+        padding-top: 65px;
+    }
+
+    .organization-user {
+        min-width: auto;
+
+        border: none;
+
+        padding: 4px;
+    }
+
+    .organization-user-info,
+    .arrow {
+        display: none;
+    }
+
+    .content {
+        padding: 22px 18px;
+    }
+
+    .page-header {
+        gap: 15px;
+    }
+
+    .donation-details {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   SAME AS ADD FOOD ITEM
+===================================================== */
+
+@media (max-width:600px) {
+
+    .navbar {
+        padding: 0 10px;
+    }
+
+    .navbar-left {
+        gap: 5px;
+    }
+
+    .navbar-logo {
+        gap: 6px;
+    }
+
+    .navbar-logo-text strong {
+        font-size: 17px;
+    }
+
+    .navbar-logo-text span {
+        display: none;
+    }
+
+    .navbar-right {
+        gap: 8px;
+    }
+
+    /* DO NOT HIDE NOTIFICATION */
+
+    .content {
+        padding: 18px 12px;
+    }
+
+    .page-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .page-title h1 {
+        font-size: 22px;
+    }
+
+    .back-button {
+        width: 100%;
+    }
+
+    .donation-card {
+        padding: 20px;
+    }
+
+    .donation-card-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .donation-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
 </head>
 
-<body class="dashboard-page donations-page">
 
-    <!-- HEADER -->
+<body>
 
-    <header class="dashboard-header">
 
-        <div class="dashboard-logo">
-            <span class="logo-leaf">◉</span>
-            FoodWise
-        </div>
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-        <div class="header-right">
+<header class="navbar">
 
-            <div class="restaurant-user">
+    <div class="navbar-left">
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="navbar-logo"
+        >
+
+            <div class="navbar-logo-icon">
+                🌱
+            </div>
+
+            <div class="navbar-logo-text">
 
                 <strong>
-                    {{ restaurant.restaurant_name }}
+                    FoodWise
                 </strong>
 
-                <small>
-                    Owner
-                </small>
-
-            </div>
-
-            <div class="user-avatar">
-                {{ restaurant.restaurant_name|first|upper }}
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- MAIN -->
-
-    <main class="donations-container">
-
-        <div class="donations-header">
-
-            <h1>Donations</h1>
-
-            <p>
-                Food donated by {{ restaurant.restaurant_name }}
-            </p>
-
-        </div>
-
-
-        {% for donation in donations %}
-
-        <div class="donation-card">
-
-            <div class="donation-card-header">
-
-                <h3>
-                    {{ donation.food_item.dish_name }}
-                </h3>
-
-                <span class="donation-badge">
-                    Donated
+                <span>
+                    Surplus meets Purpose.
                 </span>
 
             </div>
 
+        </a>
 
-            <div class="donation-details">
 
-                <div class="detail-box">
+        <button
+            class="hamburger"
+            id="sidebarToggle"
+            type="button"
+            aria-label="Toggle sidebar"
+            aria-expanded="true"
+        >
+            ☰
+        </button>
 
-                    <span class="detail-label">
-                        Quantity
-                    </span>
+    </div>
 
-                    <span class="detail-value">
-                        {{ donation.quantity }}
-                        {{ donation.get_unit_display }}
+
+    <div class="navbar-right">
+
+        <!-- PROFILE -->
+
+        <div class="organization-profile">
+
+            <button
+                type="button"
+                class="organization-user"
+                id="organizationProfileButton"
+                aria-expanded="false"
+            >
+
+                <div class="organization-icon">
+                    🍽️
+                </div>
+
+                <div class="organization-user-info">
+
+                    <strong>
+                        {{ restaurant.restaurant_name }}
+                    </strong>
+
+                    <span>
+                        {{ restaurant.owner_name }}
                     </span>
 
                 </div>
 
+                <div class="arrow">
+                    ⌄
+                </div>
 
-                <div class="detail-box">
+            </button>
 
-                    <span class="detail-label">
-                        Donated To
-                    </span>
 
-                    <span class="detail-value">
+            <!-- PROFILE DROPDOWN -->
 
-                        {% if donation.donation_organization %}
-                            {{ donation.donation_organization.organization_name }}
-                        {% else %}
-                            Not specified
-                        {% endif %}
+            <div
+                class="profile-dropdown"
+                id="profileDropdown"
+            >
 
-                    </span>
+                <div class="dropdown-header">
+
+                    <div class="dropdown-icon">
+                        🍽️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ restaurant.restaurant_name }}
+                        </strong>
+
+                        <span>
+                            {{ restaurant.owner_name }}
+                        </span>
+
+                    </div>
 
                 </div>
 
 
-                <div class="detail-box">
-
-                    <span class="detail-label">
-                        People Helped
-                    </span>
-
-                    <span class="detail-value">
-                        {{ donation.people_helped }}
-                    </span>
-
-                </div>
+                <div class="dropdown-divider"></div>
 
 
-                <div class="detail-box">
+                <a
+                    href="{% url 'profile' %}"
+                    class="dropdown-item"
+                >
+                    <span>♙</span>
+                    <span>Profile</span>
+                </a>
 
-                    <span class="detail-label">
-                        Date
-                    </span>
 
-                    <span class="detail-value">
-                        {{ donation.recorded_at|date:"d M, Y" }}
-                    </span>
+                <div class="dropdown-divider"></div>
 
-                </div>
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="dropdown-item logout-item"
+                >
+                    <span>⇥</span>
+                    <span>Logout</span>
+                </a>
 
             </div>
 
         </div>
 
-        {% empty %}
+    </div>
 
-        <div class="empty-donations">
-            No donations recorded yet.
-        </div>
-
-        {% endfor %}
+</header>
 
 
-        <a href="{% url 'dashboard' %}" class="back-button">
-            ← Back to Dashboard
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <nav class="nav-menu">
+
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📅</span>
+            <span>Dashboard</span>
         </a>
 
-    </main>
+
+        <a
+            href="{% url 'add_food_item' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🍽️</span>
+            <span>Add Food Item</span>
+        </a>
+
+
+        <a
+            href="{% url 'add_surplus' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🍲</span>
+            <span>Add Surplus Food</span>
+        </a>
+
+
+        <a
+            href="{% url 'food_records' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📋</span>
+            <span>Food Records</span>
+        </a>
+
+
+        <a
+            href="{% url 'donations' %}"
+            class="nav-item active"
+        >
+            <span class="nav-icon">🎁</span>
+            <span>Donations</span>
+        </a>
+
+
+        <a
+            href="{% url 'restaurant_food_requests' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📋</span>
+            <span>Requests</span>
+        </a>
+
+
+        <a
+            href="{% url 'history' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🕘</span>
+            <span>History</span>
+        </a>
+
+
+        <a
+            href="{% url 'impact' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📊</span>
+            <span>Impact</span>
+        </a>
+
+
+        <a
+            href="{% url 'profile' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">👤</span>
+            <span>Profile</span>
+        </a>
+
+        <a
+            href="{% url 'restaurant_change_password' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🔒</span>
+            <span>Change Password</span>
+        </a>
+
+    </nav>
+
+
+    <div class="logout">
+
+        <a href="{% url 'logout' %}">
+
+            <span class="logout-icon">
+                🔙
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main">
+
+    <section class="content">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Donations
+                </h1>
+
+                <p>
+                    Food donated by {{ restaurant.restaurant_name }}
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="back-button"
+            >
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+
+        <!-- DONATIONS -->
+
+        {% if donations %}
+
+        <div class="donations-list">
+
+            {% for donation in donations %}
+
+            <div class="donation-card">
+
+
+                <div class="donation-card-header">
+
+                    <h3>
+                        {{ donation.food_item.dish_name }}
+                    </h3>
+
+                    <span class="donation-badge">
+                        Donated
+                    </span>
+
+                </div>
+
+
+                <div class="donation-details">
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Quantity
+                        </span>
+
+                        <span class="detail-value">
+
+                            {{ donation.quantity }}
+                            {{ donation.get_unit_display }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- DONATED TO -->
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Donated To
+                        </span>
+
+                        <span class="detail-value">
+
+                            {% if donation.donation_organization %}
+
+                                {{ donation.donation_organization.organization_name }}
+
+                            {% else %}
+
+                                Not specified
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- PEOPLE HELPED -->
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            People Helped
+                        </span>
+
+                        <span class="detail-value">
+                            {{ donation.people_helped }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Date
+                        </span>
+
+                        <span class="detail-value">
+
+                            {{ donation.recorded_at|date:"d M, Y" }}
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- EMPTY STATE -->
+
+        <div class="empty-donations">
+
+            <h3>
+                No donations recorded yet.
+            </h3>
+
+            <p>
+                Donations made by your restaurant will appear here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     SAME AS ADD FOOD ITEM
+===================================================== -->
+
+<script>
+
+const sidebarToggle =
+    document.getElementById("sidebarToggle");
+
+const profileButton =
+    document.getElementById("organizationProfileButton");
+
+const profileDropdown =
+    document.getElementById("profileDropdown");
+
+
+/* =====================================================
+   SIDEBAR TOGGLE
+===================================================== */
+
+sidebarToggle.addEventListener("click", function () {
+
+    document.body.classList.toggle("sidebar-closed");
+
+    const isClosed =
+        document.body.classList.contains("sidebar-closed");
+
+    sidebarToggle.setAttribute(
+        "aria-expanded",
+        String(!isClosed)
+    );
+
+});
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+profileButton.addEventListener("click", function (event) {
+
+    event.stopPropagation();
+
+    const isOpen =
+        profileDropdown.classList.toggle("show");
+
+    profileButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+    );
+
+});
+
+
+/* =====================================================
+   CLOSE DROPDOWN
+===================================================== */
+
+document.addEventListener("click", function (event) {
+
+    if (
+        !profileDropdown.contains(event.target) &&
+        !profileButton.contains(event.target)
+    ) {
+
+        profileDropdown.classList.remove("show");
+
+        profileButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+});
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+document.addEventListener("keydown", function (event) {
+
+    if (event.key === "Escape") {
+
+        profileDropdown.classList.remove("show");
+
+        profileButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+});
+
+</script>
+
 
 </body>
 

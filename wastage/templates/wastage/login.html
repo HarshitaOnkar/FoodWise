@@ -1,57 +1,1022 @@
-<!doctype html>
+{% load static %}
+
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login - FoodWise</title>
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'wastage/style.css' %}" />
-  </head>
+    <style>
 
-  <body>
-    <!-- NAVBAR -->
-    <nav>
-      <div class="logo">FoodWise</div>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      <div class="nav-links">
-        <a href="{% url 'home' %}">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <a href="{% url 'signup' %}">Sign Up</a>
-      </div>
-    </nav>
 
-    <!-- LOGIN -->
-    <div class="login-container">
-      <h1>Welcome Back</h1>
+        /* =====================================================
+           BODY
+        ===================================================== */
 
-      <p>Login to continue with FoodWise.</p>
+        body {
 
-      {% if form.errors %}
-      <div class="error-message">Invalid username or password.</div>
-      {% endif %}
+            min-height: 100vh;
 
-      <form method="POST">
-        {% csrf_token %}
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
 
-        <div class="form-group">
-          <label for="id_username">Username</label>
-          {{ form.username }}
+            background: #f5f8f5;
+
+            color: #183d25;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+
+        /* =====================================================
+           MAIN LOGIN CARD
+        ===================================================== */
+
+        .login-wrapper {
+
+            width: 100%;
+
+            max-width: 800px;
+
+            min-height: 500px;
+
+            background: white;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            display: grid;
+
+            grid-template-columns: 42% 58%;
+
+            box-shadow:
+                0 15px 45px rgba(24, 61, 37, 0.10);
+        }
+
+
+        /* =====================================================
+           LEFT GREEN PANEL
+        ===================================================== */
+
+        .login-info {
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #183d25,
+                    #245c39
+                );
+
+            color: white;
+
+            padding: 42px 35px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+        }
+
+
+        /* =====================================================
+           DECORATIVE CIRCLES
+        ===================================================== */
+
+        .login-info::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 250px;
+
+            height: 250px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            top: -100px;
+
+            right: -100px;
+        }
+
+
+        .login-info::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 210px;
+
+            height: 210px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, 0.04);
+
+            bottom: -100px;
+
+            left: -100px;
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 55px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .brand-icon {
+
+            width: 50px;
+
+            height: 50px;
+
+            border-radius: 13px;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 28px;
+
+            box-shadow:
+                0 5px 14px rgba(0,0,0,0.10);
+        }
+
+
+        .brand-text strong {
+
+            display: block;
+
+            font-size: 24px;
+
+            line-height: 1.1;
+        }
+
+
+        .brand-text span {
+
+            display: block;
+
+            font-size: 10px;
+
+            color: #d4eee0;
+
+            margin-top: 4px;
+        }
+
+
+        /* =====================================================
+           WELCOME CONTENT
+        ===================================================== */
+
+        .login-info h1 {
+
+            position: relative;
+
+            z-index: 2;
+
+            font-size: 26px;
+
+            line-height: 1.2;
+
+            margin-bottom: 15px;
+        }
+
+
+        .login-info > p {
+
+            position: relative;
+
+            z-index: 2;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            color: #d8eee1;
+
+            max-width: 300px;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* =====================================================
+           BENEFITS
+        ===================================================== */
+
+        .benefits {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .benefit {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 11px;
+
+            color: #e5f4eb;
+        }
+
+
+        .benefit-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            min-width: 34px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           RIGHT FORM SECTION
+        ===================================================== */
+
+        .login-form-section {
+
+            padding: 45px 40px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+        }
+
+
+        /* =====================================================
+           FORM HEADING
+        ===================================================== */
+
+        .form-heading {
+
+            margin-bottom: 28px;
+        }
+
+
+        .form-heading h2 {
+
+            font-size: 27px;
+
+            line-height: 1.2;
+
+            color: #183d25;
+
+            margin-bottom: 7px;
+        }
+
+
+        .form-heading p {
+
+            font-size: 12px;
+
+            color: #77847d;
+        }
+
+
+        /* =====================================================
+           SMALL GREEN LINE
+        ===================================================== */
+
+        .green-line {
+
+            width: 55px;
+
+            height: 4px;
+
+            border-radius: 10px;
+
+            background: #183d25;
+
+            margin-top: 13px;
+        }
+
+
+        /* =====================================================
+           ERROR MESSAGE
+        ===================================================== */
+
+        .error-message {
+
+            background: #fff1f1;
+
+            border: 1px solid #f1d1d1;
+
+            color: #b33a3a;
+
+            border-radius: 7px;
+
+            padding: 9px 11px;
+
+            font-size: 10px;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =====================================================
+           FORM GROUP
+        ===================================================== */
+
+        .form-group {
+
+            margin-bottom: 17px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #31453a;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* =====================================================
+           INPUT WRAPPER
+        ===================================================== */
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+
+        /* =====================================================
+           INPUT ICON
+        ===================================================== */
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 13px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            font-size: 14px;
+
+            z-index: 2;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           INPUT
+        ===================================================== */
+
+        .form-group input {
+
+            width: 100%;
+
+            height: 42px;
+
+            border: 1px solid #dfe7e2;
+
+            border-radius: 8px;
+
+            background: #fbfcfb;
+
+            padding: 0 12px 0 38px;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size: 11px;
+
+            color: #183d25;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        .form-group input::placeholder {
+
+            color: #9aa59f;
+        }
+
+
+        .form-group input:focus {
+
+            border-color: #183d25;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 3px rgba(24,61,37,0.08);
+        }
+
+
+        /* =====================================================
+           LOGIN BUTTON
+        ===================================================== */
+
+        .login-button {
+
+            width: 100%;
+
+            height: 44px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #183d25;
+
+            color: white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .login-button:hover {
+
+            background: #245c39;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 5px 15px rgba(24,61,37,0.18);
+        }
+
+
+        .login-button:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           SIGN UP LINK
+        ===================================================== */
+
+        .signup-text {
+
+            text-align: center;
+
+            margin-top: 17px;
+
+            font-size: 10px;
+
+            color: #7a857f;
+        }
+
+
+        .signup-text a {
+
+            color: #183d25;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        .signup-text a:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           BACK LINK
+        ===================================================== */
+
+        .back-link {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 10px;
+
+            color: #7a857f;
+
+            font-size: 9px;
+
+            text-decoration: none;
+        }
+
+
+        .back-link:hover {
+
+            color: #183d25;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 750px) {
+
+            body {
+
+                padding: 18px;
+            }
+
+
+            .login-wrapper {
+
+                grid-template-columns: 1fr;
+
+                max-width: 500px;
+
+                min-height: auto;
+            }
+
+
+            .login-info {
+
+                padding: 35px 30px;
+
+                min-height: 330px;
+            }
+
+
+            .brand {
+
+                margin-bottom: 35px;
+            }
+
+
+            .login-info h1 {
+
+                font-size: 26px;
+            }
+
+
+            .login-info > p {
+
+                font-size: 12px;
+
+                margin-bottom: 25px;
+            }
+
+
+            .benefits {
+
+                gap: 12px;
+            }
+
+
+            .benefit {
+
+                font-size: 11px;
+            }
+
+
+            .login-form-section {
+
+                padding: 35px 30px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 450px) {
+
+            body {
+
+                padding: 10px;
+            }
+
+
+            .login-wrapper {
+
+                border-radius: 16px;
+            }
+
+
+            .login-info {
+
+                padding: 28px 23px;
+            }
+
+
+            .brand {
+
+                margin-bottom: 30px;
+            }
+
+
+            .brand-icon {
+
+                width: 43px;
+
+                height: 43px;
+
+                font-size: 24px;
+            }
+
+
+            .brand-text strong {
+
+                font-size: 21px;
+            }
+
+
+            .login-info h1 {
+
+                font-size: 26px;
+            }
+
+
+            .login-info > p {
+
+                font-size: 12px;
+            }
+
+
+            .login-form-section {
+
+                padding: 30px 23px;
+            }
+
+
+            .form-heading h2 {
+
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-wrapper">
+
+
+    <!-- =====================================================
+         LEFT GREEN PANEL
+    ====================================================== -->
+
+    <section class="login-info">
+
+
+        <!-- LOGO -->
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🌱
+            </div>
+
+            <div class="brand-text">
+
+                <strong>
+                    FoodWise
+                </strong>
+
+                <span>
+                    Surplus meets Purpose.
+                </span>
+
+            </div>
+
         </div>
 
-        <div class="form-group">
-          <label for="id_password">Password</label>
-          {{ form.password }}
+
+        <!-- WELCOME -->
+
+        <h1>
+            Welcome back! 👋
+        </h1>
+
+
+        <p>
+            Sign in to continue managing your restaurant's
+            surplus food and making every leftover count.
+        </p>
+
+
+        <!-- BENEFITS -->
+
+        <div class="benefits">
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    🍱
+                </div>
+
+                <span>
+                    Track your surplus food
+                </span>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    💛
+                </div>
+
+                <span>
+                    Choose a purpose for leftovers
+                </span>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    🌱
+                </div>
+
+                <span>
+                    Reduce food waste
+                </span>
+
+            </div>
+
+
         </div>
 
-        <button type="submit" class="login-button">Login</button>
-      </form>
+    </section>
 
-      <div class="signup-link">
-        Don't have an account?
-        <a href="{% url 'signup' %}">Sign Up</a>
-      </div>
-    </div>
-  </body>
+
+
+    <!-- =====================================================
+         RIGHT LOGIN FORM
+    ====================================================== -->
+
+    <section class="login-form-section">
+
+
+        <!-- FORM HEADING -->
+
+        <div class="form-heading">
+
+            <h2>
+                Restaurant Login
+            </h2>
+
+            <p>
+                Enter your account details to continue.
+            </p>
+
+            <div class="green-line"></div>
+
+        </div>
+
+
+
+        <!-- DJANGO ERRORS -->
+
+        {% if form.non_field_errors %}
+
+            <div class="error-message">
+
+                {% for error in form.non_field_errors %}
+
+                    {{ error }}
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- LOGIN FORM -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- USERNAME -->
+
+            <div class="form-group">
+
+                <label for="{{ form.username.id_for_label }}">
+                    Username
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+                    {{ form.username }}
+
+                </div>
+
+                {% if form.username.errors %}
+
+                    <div class="error-message">
+
+                        {% for error in form.username.errors %}
+
+                            {{ error }}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="{{ form.password.id_for_label }}">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    {{ form.password }}
+
+                </div>
+
+                {% if form.password.errors %}
+
+                    <div class="error-message">
+
+                        {% for error in form.password.errors %}
+
+                            {{ error }}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                Login
+            </button>
+
+
+        </form>
+
+
+
+        <!-- SIGNUP LINK -->
+
+        <div class="signup-text">
+
+            Don't have a restaurant account?
+
+            <a href="{% url 'signup' %}">
+                Sign Up
+            </a>
+
+        </div>
+
+
+
+        <!-- BACK LINK -->
+
+        <a
+            href="{% url 'home' %}"
+            class="back-link"
+        >
+            ← Back to FoodWise
+        </a>
+
+
+    </section>
+
+
+</div>
+
+
+</body>
+
 </html>

@@ -12,7 +12,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>History - FoodWise</title>
+    <title>Edit Profile - FoodWise</title>
 
     <style>
 
@@ -209,7 +209,7 @@
 
 
         /* =====================================================
-           PROFILE DROPDOWN
+           DROPDOWN
         ===================================================== */
 
         .profile-dropdown {
@@ -290,7 +290,6 @@
             color: #173f2b;
             text-decoration: none;
             font-size: 11px;
-            transition: background .2s ease;
         }
 
         .dropdown-item span:first-child {
@@ -341,19 +340,10 @@
             transform: translateX(-100%);
         }
 
-
-        /* =====================================================
-           SIDEBAR NAVIGATION
-        ===================================================== */
-
         .nav-menu {
             display: flex;
             flex-direction: column;
             gap: 4px;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            border: none;
         }
 
         .nav-item {
@@ -364,32 +354,21 @@
             min-height: 40px;
             height: 40px;
             padding: 9px 12px;
-            margin: 0;
-            border: none;
             border-radius: 9px;
             color: #e5f2e9;
-            background: transparent;
             text-decoration: none;
             font-size: 12px;
             font-weight: 500;
-            line-height: normal;
-            box-shadow: none;
             transition:
                 background .2s ease,
                 color .2s ease;
-        }
-
-        .nav-item::before,
-        .nav-item::after {
-            content: none !important;
-            display: none !important;
         }
 
         .nav-item:hover {
             background: rgba(255,255,255,0.10);
             color: white;
         }
-        
+
         .nav-item.active {
             background: #16804d;
             color: white;
@@ -398,9 +377,6 @@
         .nav-icon {
             width: 21px;
             min-width: 21px;
-            height: auto;
-            margin: 0;
-            padding: 0;
             text-align: center;
             font-size: 15px;
             line-height: 1;
@@ -414,30 +390,22 @@
         .logout {
             margin-top: auto;
             padding-top: 15px;
-            position: static;
-            left: auto;
-            right: auto;
-            bottom: auto;
         }
 
         .logout a {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
             gap: 10px;
             width: 100%;
             min-height: 40px;
             height: 40px;
             padding: 10px 12px;
-            margin: 0;
             border-radius: 9px;
             color: white;
             text-decoration: none;
             background: rgba(255,255,255,0.12);
             font-size: 12px;
             font-weight: 600;
-            text-align: left;
-            border: none;
         }
 
         .logout a:hover {
@@ -473,11 +441,6 @@
             width: 100%;
         }
 
-
-        /* =====================================================
-           CONTENT
-        ===================================================== */
-
         .content {
             width: 100%;
             padding: 25px 30px 30px;
@@ -498,7 +461,6 @@
 
         .page-title h1 {
             font-size: 25px;
-            line-height: 1.2;
             color: #173f2b;
             margin-bottom: 6px;
         }
@@ -510,157 +472,243 @@
 
 
         /* =====================================================
-           BACK BUTTON
+           BUTTONS
         ===================================================== */
 
-        .back-button {
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .save-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: white;
-            color: #173f2b;
-            border: 1px solid #ccd7d0;
-            padding: 10px 15px;
+
+            padding: 10px 17px;
+
+            border: none;
             border-radius: 10px;
+
+            background: linear-gradient(
+                135deg,
+                #087642,
+                #16804d
+            );
+
+            color: white;
+
             font-size: 11px;
             font-weight: 700;
-            text-decoration: none;
-            white-space: nowrap;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 13px rgba(8,118,66,.15);
         }
 
-        .back-button:hover {
+        .save-button:hover {
+            background: #087642;
+        }
+
+        .cancel-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 10px 15px;
+
+            border: 1px solid #ccd7d0;
+            border-radius: 10px;
+
+            background: white;
+
+            color: #173f2b;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+        .cancel-button:hover {
             background: #f2f8f4;
         }
 
 
         /* =====================================================
-           HISTORY CARD
+           EDIT CARD
         ===================================================== */
 
-        .history-card {
-            width: min(1100px, 100%);
+        .edit-card {
+            width: min(1000px, 100%);
             margin: 0 auto;
+
             background: #ffffff;
+
             border: 1px solid #e1e8e4;
+
             border-radius: 11px;
-            padding: 25px 30px;
-            box-shadow: 0 2px 8px rgba(23, 63, 43, 0.025);
+
+            box-shadow:
+                0 2px 8px rgba(23,63,43,.025);
+
+            overflow: hidden;
         }
 
-        .history-card-header {
-            margin-bottom: 20px;
+
+        /* =====================================================
+           CARD HEADER
+        ===================================================== */
+
+        .edit-card-header {
+            padding: 22px 30px;
+
+            background: #f1f8f3;
+
+            border-bottom: 1px solid #dfe9e2;
         }
 
-        .history-card-header h2 {
-            font-size: 17px;
+        .edit-card-header h2 {
             color: #173f2b;
+            font-size: 17px;
             margin-bottom: 5px;
         }
 
-        .history-card-header p {
-            font-size: 10px;
-            color: #7a8780;
+        .edit-card-header p {
+            color: #718078;
+            font-size: 9px;
         }
 
 
         /* =====================================================
-           TABLE
+           FORM
         ===================================================== */
 
-        .history-table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid #e6ece8;
-            border-radius: 9px;
+        .edit-form {
+            padding: 25px 30px;
         }
 
-        .history-table {
-            width: 100%;
-            min-width: 900px;
-            border-collapse: collapse;
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 17px;
         }
 
-        .history-table th {
-            padding: 12px 14px;
-            background: #f6faf7;
-            color: #34423a;
-            border-bottom: 1px solid #e1e8e4;
-            text-align: left;
-            font-size: 11px;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            margin-bottom: 7px;
+
+            color: #304d3c;
+
+            font-size: 10px;
             font-weight: 700;
         }
 
-        .history-table td {
-            padding: 13px 14px;
-            border-bottom: 1px solid #edf1ee;
-            color: #58665e;
-            text-align: left;
-            vertical-align: top;
-            font-size: 11px;
-        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
 
-        .history-table tbody tr:last-child td {
-            border-bottom: none;
-        }
+            padding: 11px 12px;
 
-        .history-table tbody tr:hover {
+            border: 1px solid #d6e0da;
+
+            border-radius: 8px;
+
             background: #fbfdfc;
+
+            color: #26342b;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            font-size: 11px;
+
+            outline: none;
+
+            transition:
+                border-color .2s ease,
+                background .2s ease,
+                box-shadow .2s ease;
         }
 
-        .food-name {
-            color: #173f2b;
-            font-weight: 600;
+        .form-group input {
+            height: 42px;
         }
 
-        .quantity {
-            color: #34423a;
-            font-weight: 600;
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #16804d;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 0 3px rgba(22,128,77,.08);
         }
 
 
         /* =====================================================
-           ACTION BADGE
+           ERRORS
         ===================================================== */
 
-        .action-badge {
-            display: inline-flex;
+        .error-box {
+            margin-bottom: 18px;
+
+            padding: 12px 14px;
+
+            border-radius: 8px;
+
+            background: #fff0f0;
+
+            border: 1px solid #eccaca;
+
+            color: #a33a3a;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+        .field-error {
+            margin-top: 5px;
+
+            color: #b33a3a;
+
+            font-size: 9px;
+        }
+
+
+        /* =====================================================
+           FORM FOOTER
+        ===================================================== */
+
+        .form-footer {
+            display: flex;
+
+            justify-content: flex-end;
+
             align-items: center;
-            padding: 5px 9px;
-            border-radius: 20px;
-            background: #eaf7ee;
-            color: #27864a;
-            font-size: 10px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
 
+            gap: 10px;
 
-        /* =====================================================
-           DETAILS
-        ===================================================== */
+            margin-top: 25px;
 
-        .details {
-            min-width: 190px;
-            line-height: 1.7;
-            font-size: 10px;
-            color: #69766f;
-        }
+            padding-top: 20px;
 
-        .details strong {
-            color: #34423a;
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           EMPTY STATE
-        ===================================================== */
-
-        .empty-history {
-            padding: 45px 20px;
-            text-align: center;
-            color: #7a8780;
-            font-size: 12px;
+            border-top: 1px solid #edf1ee;
         }
 
 
@@ -729,7 +777,8 @@
                 top: 65px;
                 height: calc(100vh - 65px);
                 width: 230px;
-                box-shadow: 4px 0 18px rgba(0,0,0,.12);
+                box-shadow:
+                    4px 0 18px rgba(0,0,0,.12);
             }
 
             .main {
@@ -761,7 +810,7 @@
 
 
         /* =====================================================
-           SMALL MOBILE
+           MOBILE
         ===================================================== */
 
         @media (max-width:600px) {
@@ -790,8 +839,6 @@
                 gap: 8px;
             }
 
-            /* Notification remains visible */
-
             .content {
                 padding: 18px 12px 25px;
             }
@@ -806,20 +853,45 @@
                 font-size: 22px;
             }
 
-            .back-button {
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .save-button,
+            .cancel-button {
                 width: 100%;
             }
 
-            .history-card {
+            .edit-card {
+                width: 100%;
+            }
+
+            .edit-card-header {
                 padding: 20px;
             }
 
-            .history-card-header h2 {
-                font-size: 16px;
+            .edit-form {
+                padding: 20px;
             }
 
-            .history-table-wrapper {
-                margin-top: 5px;
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .form-footer {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .form-footer button,
+            .form-footer a {
+                width: 100%;
             }
 
         }
@@ -878,8 +950,6 @@
 
 
     <div class="navbar-right">
-
-        <!-- PROFILE -->
 
         <div class="organization-profile">
 
@@ -948,10 +1018,7 @@
                 >
 
                     <span>♙</span>
-
-                    <span>
-                        Profile
-                    </span>
+                    <span>Profile</span>
 
                 </a>
 
@@ -965,10 +1032,7 @@
                 >
 
                     <span>⇥</span>
-
-                    <span>
-                        Logout
-                    </span>
+                    <span>Logout</span>
 
                 </a>
 
@@ -1000,7 +1064,6 @@
             <span>Dashboard</span>
         </a>
 
-
         <a
             href="{% url 'add_food_item' %}"
             class="nav-item"
@@ -1008,7 +1071,6 @@
             <span class="nav-icon">🍽️</span>
             <span>Add Food Item</span>
         </a>
-
 
         <a
             href="{% url 'add_surplus' %}"
@@ -1018,7 +1080,6 @@
             <span>Add Surplus Food</span>
         </a>
 
-
         <a
             href="{% url 'food_records' %}"
             class="nav-item"
@@ -1026,7 +1087,6 @@
             <span class="nav-icon">📋</span>
             <span>Food Records</span>
         </a>
-
 
         <a
             href="{% url 'donations' %}"
@@ -1036,7 +1096,6 @@
             <span>Donations</span>
         </a>
 
-
         <a
             href="{% url 'restaurant_food_requests' %}"
             class="nav-item"
@@ -1045,15 +1104,13 @@
             <span>Requests</span>
         </a>
 
-
         <a
             href="{% url 'history' %}"
-            class="nav-item active"
+            class="nav-item"
         >
             <span class="nav-icon">🕘</span>
             <span>History</span>
         </a>
-
 
         <a
             href="{% url 'impact' %}"
@@ -1063,21 +1120,12 @@
             <span>Impact</span>
         </a>
 
-
         <a
             href="{% url 'profile' %}"
-            class="nav-item"
+            class="nav-item active"
         >
             <span class="nav-icon">👤</span>
             <span>Profile</span>
-        </a>
-
-        <a
-            href="{% url 'restaurant_change_password' %}"
-            class="nav-item"
-        >
-            <span class="nav-icon">🔒</span>
-            <span>Change Password</span>
         </a>
 
     </nav>
@@ -1118,258 +1166,229 @@
             <div class="page-title">
 
                 <h1>
-                    Food History
+                    Edit Profile
                 </h1>
 
                 <p>
-                    View all surplus food activities recorded by your restaurant.
+                    Update your restaurant account information.
                 </p>
 
             </div>
 
+            <div class="header-actions">
 
-            <a
-                href="{% url 'dashboard' %}"
-                class="back-button"
-            >
-                ← Back to Dashboard
-            </a>
+                <button
+                    type="submit"
+                    form="editProfileForm"
+                    class="save-button"
+                >
+                    ✓ Save Changes
+                </button>
+
+                <a
+                    href="{% url 'profile' %}"
+                    class="cancel-button"
+                >
+                    ← Cancel
+                </a>
+
+            </div>
 
         </div>
 
 
-        <!-- HISTORY CARD -->
+        <!-- =================================================
+             EDIT CARD
+        ================================================== -->
 
-        <div class="history-card">
+        <div class="edit-card">
 
-            <div class="history-card-header">
+
+            <div class="edit-card-header">
 
                 <h2>
-                    Activity History
+                    Restaurant Information
                 </h2>
 
                 <p>
-                    Complete record of your restaurant's surplus food activities.
+                    Change the details you want to update and save your changes.
                 </p>
 
             </div>
 
 
-            {% if records %}
+            <form
+                method="POST"
+                id="editProfileForm"
+                class="edit-form"
+            >
 
-            <div class="history-table-wrapper">
+                {% csrf_token %}
 
-                <table class="history-table">
 
-                    <thead>
+                {% if form.non_field_errors %}
 
-                        <tr>
+                    <div class="error-box">
 
-                            <th>
-                                Food Item
-                            </th>
+                        {{ form.non_field_errors }}
 
-                            <th>
-                                Quantity
-                            </th>
+                    </div>
 
-                            <th>
-                                Unit
-                            </th>
+                {% endif %}
 
-                            <th>
-                                Action
-                            </th>
 
-                            <th>
-                                Details
-                            </th>
+                <div class="form-grid">
 
-                            <th>
-                                Date
-                            </th>
 
-                        </tr>
+                    <!-- RESTAURANT NAME -->
 
-                    </thead>
+                    <div class="form-group">
 
+                        <label for="{{ form.restaurant_name.id_for_label }}">
+                            Restaurant Name
+                        </label>
 
-                    <tbody>
+                        {{ form.restaurant_name }}
 
-                        {% for record in records %}
+                        {% for error in form.restaurant_name.errors %}
 
-                        <tr>
-
-                            <td class="food-name">
-                                {{ record.food_item.dish_name }}
-                            </td>
-
-
-                            <td class="quantity">
-                                {{ record.quantity }}
-                            </td>
-
-
-                            <td>
-                                {{ record.get_unit_display }}
-                            </td>
-
-
-                            <td>
-
-                                <span class="action-badge">
-                                    {{ record.get_action_display }}
-                                </span>
-
-                            </td>
-
-
-                            <td class="details">
-
-
-                                {% if record.action == 'DISCOUNTED' %}
-
-                                    {% for sale in record.discountedsale_set.all %}
-
-                                        <strong>
-                                            Sold:
-                                        </strong>
-
-                                        {{ sale.quantity_sold }}
-
-                                        <br>
-
-                                        <strong>
-                                            Original:
-                                        </strong>
-
-                                        ₹{{ sale.original_price }}
-
-                                        <br>
-
-                                        <strong>
-                                            Discounted:
-                                        </strong>
-
-                                        ₹{{ sale.discounted_price }}
-
-                                    {% empty %}
-
-                                        Sale details not recorded.
-
-                                    {% endfor %}
-
-
-                                {% elif record.action == 'DONATED' %}
-
-                                    {% if record.donation_organization %}
-
-                                        <strong>
-                                            Organization:
-                                        </strong>
-
-                                        {{ record.donation_organization.organization_name }}
-
-                                        <br>
-
-                                    {% endif %}
-
-                                    <strong>
-                                        People helped:
-                                    </strong>
-
-                                    {{ record.people_helped }}
-
-
-                                {% elif record.action == 'STORED' %}
-
-                                    {% for storage in record.storagerecord_set.all %}
-
-                                        <strong>
-                                            Method:
-                                        </strong>
-
-                                        {{ storage.storage_method }}
-
-                                        <br>
-
-                                        <strong>
-                                            Quantity stored:
-                                        </strong>
-
-                                        {{ storage.quantity_stored }}
-
-                                        <br>
-
-                                        <strong>
-                                            Use by:
-                                        </strong>
-
-                                        {{ storage.use_by_date|date:"d M, Y" }}
-
-                                    {% empty %}
-
-                                        Storage details not recorded.
-
-                                    {% endfor %}
-
-
-                                {% elif record.action == 'STAFF' %}
-
-                                    <strong>
-                                        People helped:
-                                    </strong>
-
-                                    {{ record.people_helped }}
-
-
-                                {% elif record.action == 'WASTED' %}
-
-                                    {% if record.waste_reason %}
-
-                                        <strong>
-                                            Reason:
-                                        </strong>
-
-                                        {{ record.get_waste_reason_display }}
-
-                                    {% else %}
-
-                                        Waste reason not recorded.
-
-                                    {% endif %}
-
-                                {% endif %}
-
-
-                            </td>
-
-
-                            <td>
-                                {{ record.recorded_at|date:"d M, Y" }}
-                            </td>
-
-                        </tr>
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
 
                         {% endfor %}
 
-                    </tbody>
-
-                </table>
-
-            </div>
+                    </div>
 
 
-            {% else %}
+                    <!-- OWNER NAME -->
 
-            <div class="empty-history">
+                    <div class="form-group">
 
-                No food history recorded yet.
+                        <label for="{{ form.owner_name.id_for_label }}">
+                            Owner Name
+                        </label>
 
-            </div>
+                        {{ form.owner_name }}
 
-            {% endif %}
+                        {% for error in form.owner_name.errors %}
 
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.email.id_for_label }}">
+                            Email
+                        </label>
+
+                        {{ form.email }}
+
+                        {% for error in form.email.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.phone.id_for_label }}">
+                            Phone
+                        </label>
+
+                        {{ form.phone }}
+
+                        {% for error in form.phone.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- CITY -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.city.id_for_label }}">
+                            City
+                        </label>
+
+                        {{ form.city }}
+
+                        {% for error in form.city.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group full-width">
+
+                        <label for="{{ form.address.id_for_label }}">
+                            Address
+                        </label>
+
+                        {{ form.address }}
+
+                        {% for error in form.address.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-footer">
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        ✓ Save Changes
+                    </button>
+
+                </div>
+
+
+            </form>
 
         </div>
 
@@ -1394,9 +1413,7 @@ const profileDropdown =
     document.getElementById("profileDropdown");
 
 
-/* =========================
-   SIDEBAR TOGGLE
-========================= */
+/* SIDEBAR */
 
 sidebarToggle.addEventListener("click", function () {
 
@@ -1413,9 +1430,7 @@ sidebarToggle.addEventListener("click", function () {
 });
 
 
-/* =========================
-   PROFILE DROPDOWN
-========================= */
+/* PROFILE DROPDOWN */
 
 profileButton.addEventListener("click", function (event) {
 
@@ -1432,9 +1447,7 @@ profileButton.addEventListener("click", function (event) {
 });
 
 
-/* =========================
-   CLOSE DROPDOWN
-========================= */
+/* CLOSE DROPDOWN */
 
 document.addEventListener("click", function (event) {
 
@@ -1455,9 +1468,7 @@ document.addEventListener("click", function (event) {
 });
 
 
-/* =========================
-   ESCAPE KEY
-========================= */
+/* ESCAPE */
 
 document.addEventListener("keydown", function (event) {
 

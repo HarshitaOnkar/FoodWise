@@ -4,364 +4,1000 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Profile - FoodWise</title>
 
-    <link rel="stylesheet" href="{% static 'wastage/style.css' %}">
-
     <style>
 
-        /* =========================
-           PROFILE PAGE
-        ========================= */
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
 
-        .profile-page {
-            min-height: 100vh;
-            background: #eef3f0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6faf7;
+            color: #173f2b;
+            overflow-x: hidden;
         }
 
 
-        .profile-main {
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 35px 25px 50px;
-        }
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
 
-
-        /* =========================
-           MAIN PROFILE CARD
-        ========================= */
-
-        .profile-card {
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 72px;
             background: #ffffff;
+            border-bottom: 1px solid #e4ebe6;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            z-index: 2000;
+        }
 
-            border-radius: 14px;
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 100%;
+        }
 
-            border: 1px solid #d5e0d9;
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+            color: #173f2b;
+            white-space: nowrap;
+        }
+
+        .navbar-logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #e5f5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-logo-text strong {
+            font-size: 21px;
+            line-height: 1.1;
+            color: #17452e;
+        }
+
+        .navbar-logo-text span {
+            font-size: 9px;
+            color: #708077;
+            margin-top: 2px;
+        }
+
+
+        /* =====================================================
+           HAMBURGER
+        ===================================================== */
+
+        .hamburger {
+            width: 42px;
+            height: 42px;
+            border: none;
+            background: transparent;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 25px;
+            color: #173f2b;
+            flex-shrink: 0;
+        }
+
+        .hamburger:hover {
+            background: #edf5ef;
+        }
+
+
+        /* =====================================================
+           NAVBAR RIGHT
+        ===================================================== */
+
+        .navbar-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+
+        /* =====================================================
+           PROFILE BUTTON
+        ===================================================== */
+
+        .organization-profile {
+            position: relative;
+        }
+
+        .organization-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 6px 10px;
+            min-width: 175px;
+            border: 1px solid #e1e8e3;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+        }
+
+        .organization-user:hover {
+            background: #f8fbf9;
+        }
+
+        .organization-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            background: #e2f3e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .organization-user-info {
+            min-width: 0;
+        }
+
+        .organization-user strong {
+            display: block;
+            font-size: 12px;
+            color: #173f2b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .organization-user span {
+            display: block;
+            font-size: 10px;
+            color: #7b867f;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .arrow {
+            margin-left: auto;
+            font-size: 17px;
+            color: #173f2b;
+        }
+
+
+        /* =====================================================
+           PROFILE DROPDOWN
+        ===================================================== */
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 230px;
+            background: white;
+            border: 1px solid #e1e8e3;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            padding: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition:
+                opacity .2s ease,
+                transform .2s ease,
+                visibility .2s ease;
+            z-index: 3000;
+        }
+
+        .profile-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-header {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px;
+        }
+
+        .dropdown-icon {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 50%;
+            background: #e2f3e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .dropdown-header strong {
+            display: block;
+            font-size: 11px;
+            color: #173f2b;
+        }
+
+        .dropdown-header span {
+            display: block;
+            font-size: 9px;
+            color: #7b867f;
+            margin-top: 3px;
+            max-width: 145px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #edf1ee;
+            margin: 5px 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            color: #173f2b;
+            text-decoration: none;
+            font-size: 11px;
+            transition: background .2s ease;
+        }
+
+        .dropdown-item span:first-child {
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #edf7f0;
+        }
+
+        .dropdown-item.logout-item {
+            color: #b33a3a;
+        }
+
+        .dropdown-item.logout-item:hover {
+            background: #fff0f0;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 220px;
+            height: calc(100vh - 72px);
+            background: linear-gradient(
+                180deg,
+                #063d25,
+                #075331
+            );
+            color: white;
+            padding: 18px 11px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            overflow-y: auto;
+            transform: translateX(0);
+            transition: transform .3s ease;
+        }
+
+        body.sidebar-closed .sidebar {
+            transform: translateX(-100%);
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 40px;
+            height: 40px;
+            padding: 9px 12px;
+            border-radius: 9px;
+            color: #e5f2e9;
+            background: transparent;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            transition:
+                background .2s ease,
+                color .2s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.10);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: #16804d;
+            color: white;
+        }
+
+        .nav-icon {
+            width: 21px;
+            min-width: 21px;
+            text-align: center;
+            font-size: 15px;
+            line-height: 1;
+        }
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        .logout {
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .logout a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            width: 100%;
+            min-height: 40px;
+            height: 40px;
+            padding: 10px 12px;
+            border-radius: 9px;
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.12);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .logout a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .logout-icon {
+            width: 21px;
+            min-width: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: 220px;
+            padding-top: 72px;
+            min-height: 100vh;
+            width: calc(100% - 220px);
+            transition:
+                margin-left .3s ease,
+                width .3s ease;
+        }
+
+        body.sidebar-closed .main {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        .content {
+            width: 100%;
+            padding: 25px 30px 30px;
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+        ===================================================== */
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .page-title h1 {
+            font-size: 25px;
+            line-height: 1.2;
+            color: #173f2b;
+            margin-bottom: 6px;
+        }
+
+        .page-title p {
+            font-size: 10px;
+            color: #718078;
+        }
+
+
+        /* =====================================================
+           HEADER ACTIONS
+        ===================================================== */
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .edit-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                #087642,
+                #16804d
+            );
+
+            color: #ffffff;
+
+            border: none;
+
+            padding: 10px 15px;
+
+            border-radius: 10px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            white-space: nowrap;
 
             box-shadow:
-                0 4px 16px rgba(30, 60, 42, 0.07);
+                0 5px 13px rgba(8,118,66,.15);
 
-            overflow: hidden;
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .edit-button:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 17px rgba(8,118,66,.20);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            background: white;
+            color: #173f2b;
+
+            border: 1px solid #ccd7d0;
+
+            padding: 10px 15px;
+
+            border-radius: 10px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            white-space: nowrap;
+        }
+
+        .back-button:hover {
+            background: #f2f8f4;
         }
 
 
-        /* =========================
-           PROFILE HEADER
-        ========================= */
+        /* =====================================================
+           PROFILE CARD
+        ===================================================== */
+
+        .profile-card {
+            width: min(1000px, 100%);
+            margin: 0 auto;
+
+            background: #ffffff;
+
+            border: 1px solid #e1e8e4;
+
+            border-radius: 11px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 2px 8px rgba(23,63,43,.025);
+        }
+
+
+        /* =====================================================
+           PROFILE TOP
+        ===================================================== */
 
         .profile-top {
-            background: #c9dfcf;
-
-            padding: 28px 32px;
+            padding: 25px 30px;
 
             display: flex;
             align-items: center;
 
-            gap: 18px;
+            gap: 16px;
 
-            border-bottom: 1px solid #a9c4b1;
+            background: #f1f8f3;
+
+            border-bottom: 1px solid #dfe9e2;
         }
 
-
         .profile-avatar {
-            width: 68px;
-            height: 68px;
+            width: 58px;
+            height: 58px;
 
-            border-radius: 50%;
-
-            background: #27864a;
-
-            color: white;
+            flex-shrink: 0;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-size: 29px;
-            font-weight: 700;
+            border-radius: 50%;
 
-            flex-shrink: 0;
+            background: #27864a;
+
+            color: #ffffff;
+
+            font-size: 24px;
+            font-weight: 700;
         }
 
+        .profile-title {
+            flex: 1;
+            min-width: 0;
+        }
 
         .profile-title h1 {
-            margin: 0 0 5px;
+            margin-bottom: 5px;
 
-            color: #26342b;
+            color: #173f2b;
 
-            font-size: 28px;
-
+            font-size: 21px;
             font-weight: 700;
         }
-
 
         .profile-title p {
-            margin: 0;
-
-            color: #637168;
-
-            font-size: 14px;
+            color: #718078;
+            font-size: 10px;
         }
 
+        .profile-top-edit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
 
-        /* =========================
-           PROFILE CONTENT
-        ========================= */
+            padding: 8px 13px;
 
-        .profile-content {
-            padding: 28px 32px 25px;
+            border-radius: 9px;
 
             background: #ffffff;
+
+            border: 1px solid #ccd7d0;
+
+            color: #087642;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            white-space: nowrap;
         }
 
+        .profile-top-edit:hover {
+            background: #edf7f0;
+        }
+
+
+        /* =====================================================
+           PROFILE INFORMATION
+        ===================================================== */
+
+        .profile-info {
+            padding: 25px 30px;
+        }
 
         .section-title {
-            margin: 0 0 18px;
+            margin-bottom: 18px;
 
-            color: #26342b;
+            color: #173f2b;
 
-            font-size: 19px;
-
+            font-size: 16px;
             font-weight: 700;
         }
-
-
-        /* =========================
-           INFORMATION GRID
-        ========================= */
 
         .profile-grid {
             display: grid;
 
             grid-template-columns: repeat(2, 1fr);
 
-            gap: 14px;
+            gap: 12px;
         }
-
-
-        /* =========================
-           INFORMATION BOX
-        ========================= */
 
         .info-box {
-            background: #f4f7f5;
-
-            border: 1px solid #c7d5cc;
-
-            border-radius: 10px;
-
-            padding: 16px 18px;
-
             min-height: 68px;
 
-            box-sizing: border-box;
+            padding: 14px 16px;
 
-            transition: 0.2s ease;
+            background: #fbfdfc;
+
+            border: 1px solid #e1e8e4;
+
+            border-radius: 9px;
         }
-
-
-        .info-box:hover {
-            background: #edf4ef;
-
-            border-color: #abc1b1;
-        }
-
 
         .info-label {
             display: block;
 
-            color: #59665f;
+            margin-bottom: 6px;
 
-            font-size: 10px;
+            color: #718078;
 
+            font-size: 9px;
             font-weight: 700;
 
             text-transform: uppercase;
 
-            letter-spacing: 0.7px;
-
-            margin-bottom: 6px;
+            letter-spacing: 0.6px;
         }
-
 
         .info-value {
-            color: #1f2d25;
+            color: #26342b;
 
-            font-size: 15px;
-
+            font-size: 12px;
             font-weight: 600;
 
-            line-height: 1.4;
+            line-height: 1.45;
+
+            word-break: break-word;
         }
 
 
-        /* =========================
+        /* =====================================================
            ADDRESS
-        ========================= */
+        ===================================================== */
 
         .address-box {
-            margin-top: 14px;
+            margin-top: 12px;
 
-            background: #f4f7f5;
+            padding: 14px 16px;
 
-            border: 1px solid #c7d5cc;
+            background: #fbfdfc;
 
-            border-radius: 10px;
+            border: 1px solid #e1e8e4;
 
-            padding: 16px 18px;
+            border-radius: 9px;
         }
-
 
         .address-box .info-value {
             line-height: 1.5;
         }
 
 
-        /* =========================
+        /* =====================================================
            ACCOUNT STATUS
-        ========================= */
+        ===================================================== */
 
         .status {
             display: inline-flex;
 
             align-items: center;
 
-            gap: 8px;
+            gap: 7px;
 
-            padding: 5px 10px;
+            padding: 5px 9px;
 
-            background: #e1f2e7;
+            background: #eaf7ee;
 
-            border: 1px solid #b8d9c3;
+            border: 1px solid #cce5d4;
 
             border-radius: 20px;
 
-            color: #257341;
+            color: #27864a;
 
-            font-size: 13px;
-
+            font-size: 10px;
             font-weight: 700;
         }
 
-
         .status-dot {
-            width: 8px;
-            height: 8px;
-
-            background: #2f9b54;
+            width: 7px;
+            height: 7px;
 
             border-radius: 50%;
+
+            background: #2f9b54;
         }
 
-
         .status.inactive {
-            background: #f8e8e8;
+            background: #f9eded;
 
-            border-color: #e2bcbc;
+            border-color: #e7caca;
 
             color: #a13d3d;
         }
-
 
         .status.inactive .status-dot {
             background: #c64b4b;
         }
 
 
-        /* =========================
-           FOOTER
-        ========================= */
+        /* =====================================================
+           PROFILE FOOTER
+        ===================================================== */
 
         .profile-footer {
-            padding: 0 32px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            padding: 0 30px 25px;
 
             background: #ffffff;
         }
 
 
-        /* =========================
-           DASHBOARD BUTTON
-        ========================= */
+        /* =====================================================
+           SHORT LAPTOP
+        ===================================================== */
 
-        .dashboard-button {
-            display: inline-block;
+        @media (min-width:851px) and (max-height:750px) {
 
-            padding: 11px 18px;
-
-            background: #27864a;
-
-            color: white;
-
-            text-decoration: none;
-
-            border-radius: 8px;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            transition: 0.2s ease;
-        }
-
-
-        .dashboard-button:hover {
-            background: #216f3d;
-        }
-
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 700px) {
-
-            .profile-main {
-                padding: 25px 15px 40px;
+            .navbar {
+                height: 66px;
             }
 
+            .sidebar {
+                top: 66px;
+                height: calc(100vh - 66px);
+            }
+
+            .main {
+                padding-top: 66px;
+            }
+
+            .content {
+                padding-top: 14px;
+            }
+
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width:850px) {
+
+            .navbar {
+                height: 65px;
+                padding: 0 15px;
+            }
+
+            .navbar-left {
+                gap: 7px;
+            }
+
+            .navbar-logo-text strong {
+                font-size: 18px;
+            }
+
+            .navbar-logo-text span {
+                font-size: 8px;
+            }
+
+            .navbar-logo-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 21px;
+            }
+
+            .hamburger {
+                width: 38px;
+                height: 38px;
+                font-size: 23px;
+            }
+
+            .sidebar {
+                top: 65px;
+                height: calc(100vh - 65px);
+                width: 230px;
+                box-shadow:
+                    4px 0 18px rgba(0,0,0,.12);
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding-top: 65px;
+            }
+
+            .organization-user {
+                min-width: auto;
+                border: none;
+                padding: 4px;
+            }
+
+            .organization-user-info,
+            .arrow {
+                display: none;
+            }
+
+            .content {
+                padding: 22px 18px 30px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width:600px) {
+
+            .navbar {
+                padding: 0 10px;
+            }
+
+            .navbar-left {
+                gap: 5px;
+            }
+
+            .navbar-logo {
+                gap: 6px;
+            }
+
+            .navbar-logo-text strong {
+                font-size: 17px;
+            }
+
+            .navbar-logo-text span {
+                display: none;
+            }
+
+            .navbar-right {
+                gap: 8px;
+            }
+
+            .content {
+                padding: 18px 12px 25px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .page-title h1 {
+                font-size: 22px;
+            }
+
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .edit-button,
+            .back-button {
+                width: 100%;
+            }
+
+            .profile-card {
+                width: 100%;
+            }
 
             .profile-top {
-                padding: 24px;
+                padding: 20px;
             }
-
 
             .profile-avatar {
-                width: 60px;
-                height: 60px;
-
-                font-size: 26px;
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
             }
-
 
             .profile-title h1 {
-                font-size: 25px;
+                font-size: 18px;
             }
 
-
-            .profile-content {
-                padding: 24px;
+            .profile-top-edit {
+                display: none;
             }
 
+            .profile-info {
+                padding: 20px;
+            }
 
             .profile-grid {
                 grid-template-columns: 1fr;
             }
 
-
             .profile-footer {
-                padding: 0 24px 24px;
-            }
+                padding: 0 20px 20px;
 
+                flex-direction: column;
 
-            .dashboard-button {
-                width: 100%;
-
-                text-align: center;
-
-                box-sizing: border-box;
+                align-items: stretch;
             }
 
         }
@@ -371,70 +1007,336 @@
 </head>
 
 
-<body class="dashboard-page profile-page">
+<body>
 
 
-    <!-- =========================
-         HEADER
-    ========================= -->
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-    <header class="dashboard-header">
+<header class="navbar">
 
-        <div class="dashboard-logo">
+    <div class="navbar-left">
 
-            <span class="logo-leaf">◉</span>
+        <a
+            href="{% url 'dashboard' %}"
+            class="navbar-logo"
+        >
 
-            FoodWise
+            <div class="navbar-logo-icon">
+                🌱
+            </div>
 
-        </div>
-
-
-        <div class="header-right">
-
-            <div class="restaurant-user">
+            <div class="navbar-logo-text">
 
                 <strong>
-                    {{ restaurant.restaurant_name }}
+                    FoodWise
                 </strong>
 
-                <small>
-                    Owner
-                </small>
+                <span>
+                    Surplus meets Purpose.
+                </span>
 
             </div>
 
+        </a>
 
-            <div class="user-avatar">
 
-                {{ restaurant.restaurant_name|first|upper }}
+        <button
+            class="hamburger"
+            id="sidebarToggle"
+            type="button"
+            aria-label="Toggle sidebar"
+            aria-expanded="true"
+        >
+            ☰
+        </button>
+
+    </div>
+
+
+    <div class="navbar-right">
+
+        <div class="organization-profile">
+
+            <button
+                type="button"
+                class="organization-user"
+                id="organizationProfileButton"
+                aria-expanded="false"
+            >
+
+                <div class="organization-icon">
+                    🍽️
+                </div>
+
+                <div class="organization-user-info">
+
+                    <strong>
+                        {{ restaurant.restaurant_name }}
+                    </strong>
+
+                    <span>
+                        {{ restaurant.owner_name }}
+                    </span>
+
+                </div>
+
+                <div class="arrow">
+                    ⌄
+                </div>
+
+            </button>
+
+
+            <div
+                class="profile-dropdown"
+                id="profileDropdown"
+            >
+
+                <div class="dropdown-header">
+
+                    <div class="dropdown-icon">
+                        🍽️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ restaurant.restaurant_name }}
+                        </strong>
+
+                        <span>
+                            {{ restaurant.owner_name }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dropdown-divider"></div>
+
+
+                <a
+                    href="{% url 'profile' %}"
+                    class="dropdown-item"
+                >
+
+                    <span>♙</span>
+
+                    <span>
+                        Profile
+                    </span>
+
+                </a>
+
+
+                <div class="dropdown-divider"></div>
+
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="dropdown-item logout-item"
+                >
+
+                    <span>⇥</span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </a>
 
             </div>
 
         </div>
 
-    </header>
+    </div>
+
+</header>
 
 
-    <!-- =========================
-         MAIN CONTENT
-    ========================= -->
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-    <main class="profile-main">
+<aside
+    class="sidebar"
+    id="sidebar"
+>
 
+    <nav class="nav-menu">
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📅</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a
+            href="{% url 'add_food_item' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🍽️</span>
+            <span>Add Food Item</span>
+        </a>
+
+        <a
+            href="{% url 'add_surplus' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🍲</span>
+            <span>Add Surplus Food</span>
+        </a>
+
+        <a
+            href="{% url 'food_records' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📋</span>
+            <span>Food Records</span>
+        </a>
+
+        <a
+            href="{% url 'donations' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🎁</span>
+            <span>Donations</span>
+        </a>
+
+        <a
+            href="{% url 'restaurant_food_requests' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📋</span>
+            <span>Requests</span>
+        </a>
+
+        <a
+            href="{% url 'history' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🕘</span>
+            <span>History</span>
+        </a>
+
+        <a
+            href="{% url 'impact' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📊</span>
+            <span>Impact</span>
+        </a>
+
+        <a
+            href="{% url 'profile' %}"
+            class="nav-item active"
+        >
+            <span class="nav-icon">👤</span>
+            <span>Profile</span>
+        </a>
+
+        <a
+            href="{% url 'restaurant_change_password' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🔒</span>
+            <span>Change Password</span>
+        </a>
+
+    </nav>
+
+
+    <div class="logout">
+
+        <a href="{% url 'logout' %}">
+
+            <span class="logout-icon">
+                🔙
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main">
+
+    <section class="content">
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Profile
+                </h1>
+
+                <p>
+                    View and manage your restaurant account information.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <!-- WORKING EDIT BUTTON -->
+
+                <a
+                    href="{% url 'edit_profile' %}"
+                    class="edit-button"
+                >
+                    ✎ Edit Profile
+                </a>
+
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="back-button"
+                >
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PROFILE CARD
+        ================================================== -->
 
         <div class="profile-card">
 
 
-            <!-- =========================
-                 PROFILE HEADER
-            ========================= -->
+            <!-- =================================================
+                 PROFILE TOP
+            ================================================== -->
 
             <div class="profile-top">
 
                 <div class="profile-avatar">
-
                     {{ restaurant.restaurant_name|first|upper }}
-
                 </div>
 
 
@@ -450,14 +1352,24 @@
 
                 </div>
 
+
+                <!-- SECOND EDIT OPTION -->
+
+                <a
+                    href="{% url 'edit_profile' %}"
+                    class="profile-top-edit"
+                >
+                    ✎ Edit
+                </a>
+
             </div>
 
 
-            <!-- =========================
-                 INFORMATION
-            ========================= -->
+            <!-- =================================================
+                 PROFILE INFORMATION
+            ================================================== -->
 
-            <div class="profile-content">
+            <div class="profile-info">
 
                 <h2 class="section-title">
                     Restaurant Information
@@ -467,7 +1379,7 @@
                 <div class="profile-grid">
 
 
-                    <!-- Restaurant Name -->
+                    <!-- RESTAURANT NAME -->
 
                     <div class="info-box">
 
@@ -482,7 +1394,7 @@
                     </div>
 
 
-                    <!-- Owner Name -->
+                    <!-- OWNER NAME -->
 
                     <div class="info-box">
 
@@ -497,7 +1409,7 @@
                     </div>
 
 
-                    <!-- Email -->
+                    <!-- EMAIL -->
 
                     <div class="info-box">
 
@@ -512,7 +1424,7 @@
                     </div>
 
 
-                    <!-- Phone -->
+                    <!-- PHONE -->
 
                     <div class="info-box">
 
@@ -527,7 +1439,7 @@
                     </div>
 
 
-                    <!-- City -->
+                    <!-- CITY -->
 
                     <div class="info-box">
 
@@ -542,7 +1454,7 @@
                     </div>
 
 
-                    <!-- Account Status -->
+                    <!-- ACCOUNT STATUS -->
 
                     <div class="info-box">
 
@@ -582,9 +1494,9 @@
                 </div>
 
 
-                <!-- =========================
+                <!-- =================================================
                      ADDRESS
-                ========================= -->
+                ================================================== -->
 
                 <div class="address-box">
 
@@ -598,20 +1510,28 @@
 
                 </div>
 
-
             </div>
 
 
-            <!-- =========================
-                 FOOTER
-            ========================= -->
+            <!-- =================================================
+                 PROFILE FOOTER
+            ================================================== -->
 
             <div class="profile-footer">
 
-                <a href="{% url 'dashboard' %}" class="dashboard-button">
+                <a
+                    href="{% url 'edit_profile' %}"
+                    class="edit-button"
+                >
+                    ✎ Edit Profile
+                </a>
 
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="back-button"
+                >
                     ← Back to Dashboard
-
                 </a>
 
             </div>
@@ -619,8 +1539,108 @@
 
         </div>
 
+    </section>
 
-    </main>
+</main>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+const sidebarToggle =
+    document.getElementById("sidebarToggle");
+
+const profileButton =
+    document.getElementById("organizationProfileButton");
+
+const profileDropdown =
+    document.getElementById("profileDropdown");
+
+
+/* =====================================================
+   SIDEBAR TOGGLE
+===================================================== */
+
+sidebarToggle.addEventListener("click", function () {
+
+    document.body.classList.toggle("sidebar-closed");
+
+    const isClosed =
+        document.body.classList.contains("sidebar-closed");
+
+    sidebarToggle.setAttribute(
+        "aria-expanded",
+        String(!isClosed)
+    );
+
+});
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+profileButton.addEventListener("click", function (event) {
+
+    event.stopPropagation();
+
+    const isOpen =
+        profileDropdown.classList.toggle("show");
+
+    profileButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+    );
+
+});
+
+
+/* =====================================================
+   CLOSE DROPDOWN
+===================================================== */
+
+document.addEventListener("click", function (event) {
+
+    if (
+        !profileDropdown.contains(event.target) &&
+        !profileButton.contains(event.target)
+    ) {
+
+        profileDropdown.classList.remove("show");
+
+        profileButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+});
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+document.addEventListener("keydown", function (event) {
+
+    if (event.key === "Escape") {
+
+        profileDropdown.classList.remove("show");
+
+        profileButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+});
+
+</script>
 
 
 </body>

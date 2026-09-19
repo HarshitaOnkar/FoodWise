@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from .models import Restaurant, LeftoverRecord, DailyFoodRecord, FoodItem, DiscountedSale, StorageRecord, FoodRescueOrganization
 
-from django.db.models import Sum
+from django.db.models import Sum, F
 
 
 class RestaurantSignupForm(UserCreationForm):
@@ -268,29 +268,77 @@ class DonationForm(forms.Form):
         empty_label='- Select an organization -'
     )
 
+    quantity_donated = forms.DecimalField(
+        min_value=0.01,
+        max_digits=8,
+        decimal_places=2,
+        label='Quantity to Donate'
+    )
+
     people_helped = forms.IntegerField(
         min_value=0,
         initial=0
     )
 
     def __init__(self, *args, **kwargs):
+
         restaurant = kwargs.pop('restaurant', None)
         leftover = kwargs.pop('leftover', None)
 
         super().__init__(*args, **kwargs)
 
         if restaurant:
+
             self.fields['leftover_record'].queryset = (
                 LeftoverRecord.objects.filter(
                     restaurant=restaurant,
-                    action='DONATED'
+                    action='DONATED',
+                    quantity_used__lt=F('quantity')
                 )
             )
 
         if leftover:
+
+            self.fields['leftover_record'].queryset = (
+                LeftoverRecord.objects.filter(
+                    id=leftover.id
+                )
+            )
+
             self.fields['leftover_record'].initial = leftover
 
+            available_quantity = (
+                leftover.quantity - leftover.quantity_used
+            )
 
+            self.fields['quantity_donated'].widget.attrs.update({
+                'max': str(available_quantity),
+                'step': '0.01'
+            })
+
+    def clean(self):
+
+        cleaned_data = super().clean()
+
+        leftover = cleaned_data.get('leftover_record')
+        quantity_donated = cleaned_data.get('quantity_donated')
+
+        if leftover and quantity_donated is not None:
+
+            available_quantity = (
+                leftover.quantity - leftover.quantity_used
+            )
+
+            if quantity_donated > available_quantity:
+
+                raise forms.ValidationError(
+                    f'Only {available_quantity} '
+                    f'{leftover.unit} of this food is still available '
+                    f'for donation.'
+                )
+
+        return cleaned_data
+    
 class ShareForm(forms.Form):
 
     leftover_record = forms.ModelChoiceField(
@@ -414,3 +462,72 @@ class OrganizationLoginForm(forms.Form):
             'autocomplete': 'current-password'
         })
     )
+    
+    
+class RestaurantProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Restaurant
+
+        fields = [
+            'restaurant_name',
+            'owner_name',
+            'email',
+            'phone',
+            'address',
+            'city',
+        ]
+
+        widgets = {
+            'restaurant_name': forms.TextInput(
+                attrs={
+                    'placeholder': 'Enter restaurant name'
+                }
+            ),
+
+            'owner_name': forms.TextInput(
+                attrs={
+                    'placeholder': 'Enter owner name'
+                }
+            ),
+
+            'email': forms.EmailInput(
+                attrs={
+                    'placeholder': 'Enter email address'
+                }
+            ),
+
+            'phone': forms.TextInput(
+                attrs={
+                    'placeholder': 'Enter phone number'
+                }
+            ),
+
+            'address': forms.Textarea(
+                attrs={
+                    'placeholder': 'Enter restaurant address',
+                    'rows': 3
+                }
+            ),
+
+            'city': forms.TextInput(
+                attrs={
+                    'placeholder': 'Enter city'
+                }
+            ),
+        }
+        
+        
+class OrganizationProfileForm(forms.ModelForm):
+    class Meta:
+        model = FoodRescueOrganization
+        fields = [
+            'organization_name',
+            'organization_type',
+            'owner_name',
+            'contact_person',
+            'email',
+            'phone',
+            'address',
+            'city',
+        ]

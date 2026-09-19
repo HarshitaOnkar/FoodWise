@@ -1,116 +1,1322 @@
 {% load static %}
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Sign Up - FoodWise</title>
+<head>
 
-    <link rel="stylesheet" href="{% static 'wastage/style.css' %}" />
-  </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <body>
-    <!-- NAVBAR -->
-    <nav>
-      <div class="logo">FoodWise</div>
+    <title>Restaurant Sign Up - FoodWise</title>
 
-      <div class="nav-links">
-        <a href="{% url 'home' %}">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <a href="{% url 'login' %}">Login</a>
-      </div>
-    </nav>
+    <style>
 
-    <!-- SIGNUP -->
-    <div class="signup-container">
-      <h1>Create Account</h1>
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
 
-      <p>Join FoodWise and give surplus food a purpose.</p>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      <form method="POST">
-        {% csrf_token %}
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
 
-        <!-- ACCOUNT DETAILS -->
+            background: #f5f8f5;
+            color: #183d25;
 
-        <h3>Account Details</h3>
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-        <div class="form-group">
-          <label for="id_username">Username</label>
-          {{ form.username }} {% if form.username.errors %}
-          <div class="form-error">{{ form.username.errors }}</div>
-          {% endif %}
+            padding: 30px;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .signup-container {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 680px;
+
+            background: white;
+
+            border-radius: 22px;
+            overflow: hidden;
+
+            display: grid;
+            grid-template-columns: 38% 62%;
+
+            box-shadow:
+                0 15px 45px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =====================================================
+           LEFT GREEN PANEL
+        ===================================================== */
+
+        .welcome-panel {
+
+            position: relative;
+
+            background: #183d25;
+
+            color: white;
+
+            padding: 45px 42px;
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           DECORATIVE CIRCLES
+        ===================================================== */
+
+        .welcome-panel::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.06);
+
+            top: -90px;
+            right: -100px;
+        }
+
+
+        .welcome-panel::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.05);
+
+            bottom: -100px;
+            left: -90px;
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo {
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            position: relative;
+            z-index: 2;
+
+            margin-bottom: 75px;
+        }
+
+
+        .logo-icon {
+
+            width: 50px;
+            height: 50px;
+
+            border-radius: 13px;
+
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 29px;
+        }
+
+
+        .logo-text strong {
+
+            display: block;
+
+            font-size: 24px;
+
+            line-height: 1.1;
+        }
+
+
+        .logo-text span {
+
+            display: block;
+
+            font-size: 10px;
+
+            color: #e1ebe4;
+
+            margin-top: 4px;
+        }
+
+
+        /* =====================================================
+           WELCOME CONTENT
+        ===================================================== */
+
+        .welcome-content {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .welcome-content h1 {
+
+            font-size: 34px;
+
+            line-height: 1.2;
+
+            margin-bottom: 15px;
+
+            color: white;
+        }
+
+
+        .welcome-content > p {
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            color: #e1ebe4;
+
+            max-width: 300px;
+
+            margin-bottom: 42px;
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .features {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 20px;
+        }
+
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+        }
+
+
+        .feature-icon {
+
+            width: 38px;
+            height: 38px;
+
+            min-width: 38px;
+
+            border-radius: 11px;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+
+        .feature span {
+
+            font-size: 11px;
+
+            color: #e8f0eb;
+        }
+
+
+        /* =====================================================
+           RIGHT FORM PANEL
+        ===================================================== */
+
+        .form-panel {
+
+            padding: 42px 48px;
+
+            overflow-y: auto;
+
+            background: white;
+        }
+
+
+        /* =====================================================
+           FORM HEADER
+        ===================================================== */
+
+        .form-header {
+
+            margin-bottom: 28px;
+        }
+
+
+        .form-header h2 {
+
+            font-size: 29px;
+
+            font-weight: 700;
+
+            color: #183d25;
+
+            margin-bottom: 7px;
+        }
+
+
+        .form-header h2 span {
+
+            color: #183d25;
+        }
+
+
+        .form-header p {
+
+            font-size: 11px;
+
+            color: #666;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           GREEN LINE
+        ===================================================== */
+
+        .green-line {
+
+            width: 55px;
+            height: 4px;
+
+            border-radius: 10px;
+
+            background: #183d25;
+
+            margin-top: 13px;
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        form {
+            width: 100%;
+        }
+
+
+        /* =====================================================
+           FORM GRID
+        ===================================================== */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 17px 24px;
+        }
+
+
+        /* =====================================================
+           FIELD
+        ===================================================== */
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+
+        .form-group.full {
+
+            grid-column: 1 / -1;
+        }
+
+
+        .form-group label {
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #183d25;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* =====================================================
+           INPUT WRAPPER
+        ===================================================== */
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+
+        /* =====================================================
+           INPUT ICON
+        ===================================================== */
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 13px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            font-size: 14px;
+
+            z-index: 2;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           INPUT
+        ===================================================== */
+
+        .form-control {
+
+            width: 100%;
+
+            height: 42px;
+
+            border: 1px solid #dfe7e2;
+
+            border-radius: 8px;
+
+            background: #fbfcfb;
+
+            padding: 0 12px 0 38px;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size: 11px;
+
+            color: #183d25;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        .form-control:focus {
+
+            border-color: #183d25;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 3px rgba(24, 61, 37, 0.08);
+        }
+
+
+        .form-control::placeholder {
+
+            color: #888;
+        }
+
+
+        /* =====================================================
+           TEXTAREA
+        ===================================================== */
+
+        textarea.form-control {
+
+            height: 70px;
+
+            min-height: 70px;
+
+            padding-top: 12px;
+
+            resize: vertical;
+        }
+
+
+        .textarea-icon {
+
+            top: 18px;
+
+            transform: none;
+        }
+
+
+        /* =====================================================
+           DJANGO ERRORS
+        ===================================================== */
+
+        .error-message {
+
+            color: #b33a3a;
+
+            background: #fff1f1;
+
+            border: 1px solid #f1d1d1;
+
+            border-radius: 7px;
+
+            padding: 9px 11px;
+
+            font-size: 10px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .field-error {
+
+            color: #b33a3a;
+
+            font-size: 9px;
+
+            margin-top: 4px;
+        }
+
+
+        /* =====================================================
+           SIGNUP BUTTON
+        ===================================================== */
+
+        .signup-button {
+
+            width: 100%;
+
+            height: 44px;
+
+            margin-top: 25px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #183d25;
+
+            color: white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .signup-button:hover {
+
+            background: #12301e;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 5px 15px rgba(24, 61, 37, 0.18);
+        }
+
+
+        /* =====================================================
+           LOGIN LINK
+        ===================================================== */
+
+        .login-link {
+
+            text-align: center;
+
+            margin-top: 17px;
+
+            font-size: 10px;
+
+            color: #666;
+        }
+
+
+        .login-link a {
+
+            color: #183d25;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        .login-link a:hover {
+
+            color: #12301e;
+
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           BACK LINK
+        ===================================================== */
+
+        .back-link {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 10px;
+
+            color: #666;
+
+            font-size: 9px;
+
+            text-decoration: none;
+        }
+
+
+        .back-link:hover {
+
+            color: #183d25;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            body {
+                padding: 18px;
+            }
+
+
+            .signup-container {
+
+                grid-template-columns: 1fr;
+
+                max-width: 650px;
+            }
+
+
+            .welcome-panel {
+
+                padding: 30px;
+
+                min-height: 330px;
+            }
+
+
+            .logo {
+
+                margin-bottom: 35px;
+            }
+
+
+            .welcome-content h1 {
+
+                font-size: 28px;
+            }
+
+
+            .welcome-content > p {
+
+                margin-bottom: 25px;
+            }
+
+
+            .features {
+
+                flex-direction: row;
+
+                flex-wrap: wrap;
+
+                gap: 12px;
+            }
+
+
+            .feature {
+
+                flex: 1;
+
+                min-width: 180px;
+            }
+
+
+            .form-panel {
+
+                padding: 32px 28px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 10px;
+            }
+
+
+            .signup-container {
+
+                border-radius: 16px;
+            }
+
+
+            .welcome-panel {
+
+                padding: 25px;
+
+                min-height: auto;
+            }
+
+
+            .logo {
+
+                margin-bottom: 30px;
+            }
+
+
+            .logo-icon {
+
+                width: 43px;
+                height: 43px;
+
+                font-size: 24px;
+            }
+
+
+            .logo-text strong {
+
+                font-size: 21px;
+            }
+
+
+            .welcome-content h1 {
+
+                font-size: 25px;
+            }
+
+
+            .welcome-content > p {
+
+                font-size: 11px;
+            }
+
+
+            .features {
+
+                flex-direction: column;
+            }
+
+
+            .feature {
+
+                min-width: 0;
+            }
+
+
+            .form-panel {
+
+                padding: 28px 20px;
+            }
+
+
+            .form-header h2 {
+
+                font-size: 25px;
+            }
+
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 15px;
+            }
+
+
+            .form-group.full {
+
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="signup-container">
+
+
+    <!-- =====================================================
+         LEFT SIDE
+    ====================================================== -->
+
+    <section class="welcome-panel">
+
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🌱
+            </div>
+
+            <div class="logo-text">
+
+                <strong>
+                    FoodWise
+                </strong>
+
+                <span>
+                    Surplus meets Purpose.
+                </span>
+
+            </div>
+
         </div>
 
-        <div class="form-group">
-          <label for="id_password1">Password</label>
-          {{ form.password1 }} {% if form.password1.errors %}
-          <div class="form-error">{{ form.password1.errors }}</div>
-          {% endif %}
+
+        <div class="welcome-content">
+
+            <h1>
+                Join us! 🌱
+            </h1>
+
+            <p>
+                Create your restaurant account and start
+                managing surplus food while reducing
+                unnecessary food waste.
+            </p>
+
+
+            <div class="features">
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🍱
+                    </div>
+
+                    <span>
+                        Track your surplus food
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        💛
+                    </div>
+
+                    <span>
+                        Give leftovers a purpose
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🌱
+                    </div>
+
+                    <span>
+                        Reduce food waste together
+                    </span>
+
+                </div>
+
+
+            </div>
+
         </div>
 
-        <div class="form-group">
-          <label for="id_password2">Confirm Password</label>
-          {{ form.password2 }} {% if form.password2.errors %}
-          <div class="form-error">{{ form.password2.errors }}</div>
-          {% endif %}
+    </section>
+
+
+
+    <!-- =====================================================
+         RIGHT SIDE
+    ====================================================== -->
+
+    <section class="form-panel">
+
+
+        <div class="form-header">
+
+            <h2>
+                Restaurant <span>Sign Up</span>
+            </h2>
+
+            <p>
+                Create an account to start managing your restaurant.
+            </p>
+
+            <div class="green-line"></div>
+
         </div>
 
-        <!-- RESTAURANT DETAILS -->
 
-        <h3>Restaurant Details</h3>
+        {% if form.non_field_errors %}
 
-        <div class="form-group">
-          <label for="id_restaurant_name">Restaurant Name</label>
-          {{ form.restaurant_name }} {% if form.restaurant_name.errors %}
-          <div class="form-error">{{ form.restaurant_name.errors }}</div>
-          {% endif %}
+            <div class="error-message">
+
+                {{ form.non_field_errors }}
+
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+
+                <!-- USERNAME -->
+
+                <div class="form-group">
+
+                    <label for="id_username">
+                        Username
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            👤
+                        </span>
+
+                        <input
+                            type="text"
+                            name="username"
+                            id="id_username"
+                            class="form-control"
+                            placeholder="Enter username"
+                            value="{{ form.username.value|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.username.errors %}
+
+                        <div class="field-error">
+                            {{ form.username.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="id_email">
+                        Email
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            ✉️
+                        </span>
+
+                        <input
+                            type="email"
+                            name="email"
+                            id="id_email"
+                            class="form-control"
+                            placeholder="Restaurant email"
+                            value="{{ form.email.value|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.email.errors %}
+
+                        <div class="field-error">
+                            {{ form.email.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="id_password1">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            name="password1"
+                            id="id_password1"
+                            class="form-control"
+                            placeholder="Create password"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.password1.errors %}
+
+                        <div class="field-error">
+                            {{ form.password1.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="id_password2">
+                        Confirm Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            name="password2"
+                            id="id_password2"
+                            class="form-control"
+                            placeholder="Confirm password"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.password2.errors %}
+
+                        <div class="field-error">
+                            {{ form.password2.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- RESTAURANT NAME -->
+
+                <div class="form-group">
+
+                    <label for="id_restaurant_name">
+                        Restaurant Name
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🏢
+                        </span>
+
+                        <input
+                            type="text"
+                            name="restaurant_name"
+                            id="id_restaurant_name"
+                            class="form-control"
+                            placeholder="Enter restaurant name"
+                            value="{{ form.restaurant_name.value|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.restaurant_name.errors %}
+
+                        <div class="field-error">
+                            {{ form.restaurant_name.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- OWNER NAME -->
+
+                <div class="form-group">
+
+                    <label for="id_owner_name">
+                        Owner Name
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            👤
+                        </span>
+
+                        <input
+                            type="text"
+                            name="owner_name"
+                            id="id_owner_name"
+                            class="form-control"
+                            placeholder="Owner / founder name"
+                            value="{{ form.owner_name.value|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.owner_name.errors %}
+
+                        <div class="field-error">
+                            {{ form.owner_name.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="id_phone">
+                        Phone
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            📞
+                        </span>
+
+                        <input
+                            type="text"
+                            name="phone"
+                            id="id_phone"
+                            class="form-control"
+                            placeholder="Phone number"
+                            value="{{ form.phone.value|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.phone.errors %}
+
+                        <div class="field-error">
+                            {{ form.phone.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- CITY -->
+
+                <div class="form-group">
+
+                    <label for="id_city">
+                        City
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🏙️
+                        </span>
+
+                        <input
+                            type="text"
+                            name="city"
+                            id="id_city"
+                            class="form-control"
+                            placeholder="City"
+                            value="{{ form.city.value|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.city.errors %}
+
+                        <div class="field-error">
+                            {{ form.city.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- ADDRESS -->
+
+                <div class="form-group full">
+
+                    <label for="id_address">
+                        Address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon textarea-icon">
+                            📍
+                        </span>
+
+                        <textarea
+                            name="address"
+                            id="id_address"
+                            class="form-control"
+                            placeholder="Complete restaurant address"
+                            required
+                        >{{ form.address.value|default:'' }}</textarea>
+
+                    </div>
+
+                    {% if form.address.errors %}
+
+                        <div class="field-error">
+                            {{ form.address.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="signup-button"
+            >
+                ✨ Create Restaurant Account
+            </button>
+
+
+        </form>
+
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="{% url 'login' %}">
+                Login here →
+            </a>
+
         </div>
 
-        <div class="form-group">
-          <label for="id_owner_name">Owner Name</label>
-          {{ form.owner_name }} {% if form.owner_name.errors %}
-          <div class="form-error">{{ form.owner_name.errors }}</div>
-          {% endif %}
-        </div>
 
-        <div class="form-group">
-          <label for="id_email">Email</label>
-          {{ form.email }} {% if form.email.errors %}
-          <div class="form-error">{{ form.email.errors }}</div>
-          {% endif %}
-        </div>
+        <a
+            href="{% url 'home' %}"
+            class="back-link"
+        >
+            ← Back to FoodWise
+        </a>
 
-        <div class="form-group">
-          <label for="id_phone">Phone</label>
-          {{ form.phone }} {% if form.phone.errors %}
-          <div class="form-error">{{ form.phone.errors }}</div>
-          {% endif %}
-        </div>
 
-        <div class="form-group">
-          <label for="id_address">Address</label>
-          {{ form.address }} {% if form.address.errors %}
-          <div class="form-error">{{ form.address.errors }}</div>
-          {% endif %}
-        </div>
+    </section>
 
-        <div class="form-group">
-          <label for="id_city">City</label>
-          {{ form.city }} {% if form.city.errors %}
-          <div class="form-error">{{ form.city.errors }}</div>
-          {% endif %}
-        </div>
 
-        <button type="submit" class="signup-button">Sign Up</button>
-      </form>
+</div>
 
-      <div class="login-link">
-        Already have an account?
-        <a href="{% url 'login' %}">Login</a>
-      </div>
-    </div>
-  </body>
+
+</body>
+
 </html>

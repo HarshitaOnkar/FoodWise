@@ -5,393 +5,1200 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Requests - FoodWise</title>
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6faf7;
+    color: #173f2b;
+    overflow-x: hidden;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 72px;
 
-    <title>My Requests - FoodWise</title>
+    background: #ffffff;
+    border-bottom: 1px solid #e4ebe6;
 
-    <style>
+    display: flex;
+    align-items: center;
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    padding: 0 25px;
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f6faf7;
-            color: #173f2b;
-        }
+    z-index: 2000;
+}
 
-        /* ================= NAVBAR ================= */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+}
 
-        .navbar {
-            height: 72px;
-            background: white;
-            border-bottom: 1px solid #e3ebe5;
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
 
-            display: flex;
-            align-items: center;
+    text-decoration: none;
+    color: #173f2b;
+    white-space: nowrap;
+}
 
-            padding: 0 25px;
+.navbar-logo-icon {
+    width: 40px;
+    height: 40px;
 
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+    border-radius: 10px;
+    background: #e5f5e9;
 
-            z-index: 1000;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .navbar-logo {
-            display: flex;
-            align-items: center;
-            gap: 9px;
+    font-size: 25px;
+    flex-shrink: 0;
+}
 
-            text-decoration: none;
-            color: #173f2b;
-        }
+.navbar-logo-text {
+    display: flex;
+    flex-direction: column;
+}
 
-        .navbar-logo-icon {
-            width: 40px;
-            height: 40px;
+.navbar-logo-text strong {
+    font-size: 21px;
+    line-height: 1.1;
+    color: #17452e;
+}
 
-            border-radius: 10px;
+.navbar-logo-text span {
+    font-size: 9px;
+    color: #708077;
+    margin-top: 2px;
+}
 
-            background: #e5f5e9;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+/* =====================================================
+   HAMBURGER
+===================================================== */
 
-            font-size: 25px;
-        }
+.hamburger {
+    width: 42px;
+    height: 42px;
 
-        .navbar-logo-text strong {
-            font-size: 21px;
-        }
+    border: none;
+    background: transparent;
+    border-radius: 9px;
 
-        .navbar-logo-text span {
-            display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            font-size: 9px;
-            color: #708077;
-        }
+    cursor: pointer;
 
-        .navbar-right {
-            margin-left: auto;
+    font-size: 25px;
+    color: #173f2b;
 
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    flex-shrink: 0;
+}
 
-        .organization-icon {
-            width: 36px;
-            height: 36px;
+.hamburger:hover {
+    background: #edf5ef;
+}
 
-            border-radius: 50%;
 
-            background: #e2f3e8;
+/* =====================================================
+   NAVBAR RIGHT
+===================================================== */
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.navbar-right {
+    margin-left: auto;
 
-            font-size: 19px;
-        }
+    display: flex;
+    align-items: center;
 
-        .organization-user strong {
-            display: block;
-            font-size: 12px;
-        }
+    gap: 22px;
+}
 
-        .organization-user span {
-            display: block;
 
-            font-size: 10px;
-            color: #7b867f;
-        }
+/* =====================================================
+   NOTIFICATION
+===================================================== */
 
-        /* ================= MAIN ================= */
+.notification-link {
+    position: relative;
 
-        .main {
-            min-height: 100vh;
+    font-size: 21px;
 
-            padding-top: 72px;
-        }
+    cursor: pointer;
 
-        .content {
-            max-width: 950px;
+    width: 35px;
+    height: 35px;
 
-            margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            padding: 40px 25px;
-        }
+    text-decoration: none;
+}
 
-        /* ================= HEADER ================= */
+.notification-link:hover {
+    opacity: 0.8;
+}
 
-        .page-header {
-            margin-bottom: 25px;
-        }
+.notification-badge {
+    position: absolute;
 
-        .page-header h1 {
-            font-size: 26px;
-            margin-bottom: 7px;
-        }
+    top: -2px;
+    right: -3px;
 
-        .page-header p {
-            font-size: 12px;
-            color: #718078;
-        }
+    width: 16px;
+    height: 16px;
 
-        .back-button {
-            display: inline-block;
+    border-radius: 50%;
 
-            margin-bottom: 20px;
+    background: #168044;
+    color: white;
 
-            text-decoration: none;
+    font-size: 9px;
 
-            border: 1px solid #ccd7d0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-            background: white;
 
-            color: #173f2b;
+/* =====================================================
+   ORGANIZATION PROFILE
+===================================================== */
 
-            padding: 9px 14px;
+.organization-profile {
+    position: relative;
+}
 
-            border-radius: 8px;
+.organization-user {
+    display: flex;
+    align-items: center;
 
-            font-size: 11px;
+    gap: 9px;
 
-            font-weight: 600;
-        }
+    padding: 6px 10px;
 
-        /* ================= REQUEST CARD ================= */
+    min-width: 175px;
 
-        .request-card {
-            background: white;
+    border: 1px solid #e1e8e3;
+    border-radius: 10px;
 
-            border: 1px solid #e1e8e4;
+    background: white;
 
-            border-radius: 14px;
+    cursor: pointer;
 
-            padding: 20px;
+    font-family: inherit;
+    text-align: left;
+}
 
-            margin-bottom: 15px;
+.organization-user:hover {
+    background: #f8fbf9;
+}
 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
+.organization-icon {
+    width: 36px;
+    height: 36px;
 
-        .request-top {
-            display: flex;
+    min-width: 36px;
 
-            justify-content: space-between;
+    border-radius: 50%;
 
-            align-items: flex-start;
+    background: #e2f3e8;
 
-            gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            margin-bottom: 18px;
-        }
+    font-size: 19px;
+}
 
-        .food-info {
-            display: flex;
+.organization-user-info {
+    min-width: 0;
+}
 
-            align-items: center;
+.organization-user strong {
+    display: block;
 
-            gap: 13px;
-        }
+    font-size: 12px;
+    color: #173f2b;
 
-        .food-icon {
-            width: 52px;
-            height: 52px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-            border-radius: 11px;
+.organization-user span {
+    display: block;
 
-            background: #f0f5f1;
+    font-size: 10px;
+    color: #7b867f;
 
-            display: flex;
+    margin-top: 2px;
 
-            align-items: center;
-            justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-            font-size: 25px;
-        }
+.arrow {
+    margin-left: auto;
 
-        .food-name {
-            font-size: 17px;
+    font-size: 17px;
+    color: #173f2b;
+}
 
-            font-weight: 700;
 
-            color: #173f2b;
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
 
-            margin-bottom: 5px;
-        }
+.profile-dropdown {
+    position: absolute;
 
-        .restaurant-name {
-            font-size: 10px;
+    top: calc(100% + 8px);
+    right: 0;
 
-            color: #718078;
-        }
+    width: 230px;
 
-        /* ================= STATUS ================= */
+    background: white;
 
-        .status {
-            padding: 6px 11px;
+    border: 1px solid #e1e8e3;
+    border-radius: 12px;
 
-            border-radius: 20px;
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.12);
 
-            font-size: 10px;
+    padding: 8px;
 
-            font-weight: 700;
+    opacity: 0;
+    visibility: hidden;
 
-            white-space: nowrap;
-        }
+    transform: translateY(-8px);
 
-        .status-pending {
-            background: #fff4df;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
 
-            color: #9a6715;
-        }
+    z-index: 3000;
+}
 
-        .status-approved {
-            background: #e5f6ea;
+.profile-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
 
-            color: #18733f;
-        }
 
-        .status-rejected {
-            background: #ffeaea;
+/* =====================================================
+   DROPDOWN HEADER
+===================================================== */
 
-            color: #a53d3d;
-        }
+.dropdown-header {
+    display: flex;
+    align-items: center;
 
-        /* ================= DETAILS ================= */
+    gap: 9px;
+    padding: 9px;
+}
 
-        .details {
-            border-top: 1px solid #edf1ee;
+.dropdown-icon {
+    width: 38px;
+    height: 38px;
 
-            padding-top: 14px;
+    min-width: 38px;
 
-            display: grid;
+    border-radius: 50%;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+    background: #e2f3e8;
 
-            gap: 15px;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .detail-label {
-            display: block;
+    font-size: 18px;
+}
 
-            font-size: 9px;
+.dropdown-header strong {
+    display: block;
 
-            color: #7a847e;
+    font-size: 11px;
+    color: #173f2b;
+}
 
-            margin-bottom: 5px;
-        }
+.dropdown-header span {
+    display: block;
 
-        .detail-value {
-            display: block;
+    font-size: 9px;
+    color: #7b867f;
 
-            font-size: 11px;
+    margin-top: 3px;
 
-            font-weight: 600;
+    max-width: 145px;
 
-            color: #173f2b;
-        }
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-        /* ================= EMPTY ================= */
+.dropdown-divider {
+    height: 1px;
 
-        .empty-card {
-            background: white;
+    background: #edf1ee;
 
-            border: 1px solid #e1e8e4;
+    margin: 5px 0;
+}
 
-            border-radius: 14px;
+.dropdown-item {
+    display: flex;
+    align-items: center;
 
-            padding: 50px 25px;
+    gap: 10px;
 
-            text-align: center;
-        }
+    width: 100%;
 
-        .empty-icon {
-            font-size: 40px;
+    padding: 10px;
 
-            margin-bottom: 12px;
-        }
+    border-radius: 8px;
 
-        .empty-card h3 {
-            font-size: 17px;
+    color: #173f2b;
 
-            margin-bottom: 7px;
-        }
+    text-decoration: none;
 
-        .empty-card p {
-            font-size: 11px;
+    font-size: 11px;
 
-            color: #718078;
+    transition: background 0.2s ease;
+}
 
-            margin-bottom: 18px;
-        }
+.dropdown-item span:first-child {
+    width: 20px;
 
-        .browse-button {
-            display: inline-block;
+    text-align: center;
 
-            background: #087642;
+    font-size: 15px;
+}
 
-            color: white;
+.dropdown-item:hover {
+    background: #edf7f0;
+}
 
-            text-decoration: none;
+.dropdown-item.logout-item {
+    color: #b33a3a;
+}
 
-            padding: 10px 17px;
+.dropdown-item.logout-item:hover {
+    background: #fff0f0;
+}
 
-            border-radius: 8px;
 
-            font-size: 11px;
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
-            font-weight: 700;
-        }
+.sidebar {
+    position: fixed;
 
-        .browse-button:hover {
-            background: #065f34;
-        }
+    top: 72px;
+    left: 0;
 
-        /* ================= MOBILE ================= */
+    width: 220px;
 
-        @media (max-width: 600px) {
+    height: calc(100vh - 72px);
 
-            .navbar {
-                padding: 0 12px;
-            }
+    background:
+        linear-gradient(
+            180deg,
+            #063d25,
+            #075331
+        );
 
-            .navbar-logo-text span {
-                display: none;
-            }
+    color: white;
 
-            .organization-user {
-                display: none;
-            }
+    padding: 18px 11px;
 
-            .content {
-                padding: 30px 16px;
-            }
+    display: flex;
+    flex-direction: column;
 
-            .request-top {
-                flex-direction: column;
-            }
+    z-index: 1000;
 
-            .details {
-                grid-template-columns: 1fr;
-            }
+    overflow-y: auto;
 
-        }
+    transform: translateX(0);
 
-    </style>
+    transition: transform 0.3s ease;
+}
+
+body.sidebar-closed .sidebar {
+    transform: translateX(-100%);
+}
+
+
+/* =====================================================
+   SIDEBAR NAVIGATION
+===================================================== */
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 40px;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    color: #e5f2e9;
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.12);
+    color: white;
+}
+
+.nav-item.active {
+    background: #16804d;
+    color: white;
+}
+
+.nav-icon {
+    width: 21px;
+    min-width: 21px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   SIDEBAR LOGOUT
+===================================================== */
+
+.logout {
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 10px;
+
+    width: 100%;
+    min-height: 40px;
+
+    padding: 10px 12px;
+
+    border-radius: 9px;
+
+    color: white;
+
+    text-decoration: none;
+
+    background: rgba(255,255,255,0.12);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: left;
+}
+
+.logout a:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.logout-icon {
+    width: 21px;
+    min-width: 21px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main {
+    margin-left: 220px;
+
+    padding-top: 72px;
+
+    min-height: 100vh;
+
+    width: calc(100% - 220px);
+
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease;
+}
+
+body.sidebar-closed .main {
+    margin-left: 0;
+    width: 100%;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content {
+    width: 100%;
+
+    padding: 25px 30px 30px;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+}
+
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.page-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 22px;
+
+    gap: 20px;
+}
+
+.header-text {
+    min-width: 0;
+}
+
+.header-text h1 {
+    font-size: 25px;
+
+    line-height: 1.2;
+
+    color: #173f2b;
+
+    margin-bottom: 6px;
+
+    font-weight: 700;
+}
+
+.header-text p {
+    color: #718078;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+.back-button {
+    min-width: 150px;
+
+    padding: 10px 16px;
+
+    border: 1px solid #d6dfd9;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #173f2b;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.back-button:hover {
+    background: #f2f8f4;
+
+    border-color: #b8c8be;
+}
+
+
+/* =====================================================
+   REQUEST CARD
+===================================================== */
+
+.request-card {
+    background: white;
+
+    border: 1px solid #e1e8e4;
+
+    border-radius: 11px;
+
+    padding: 25px 30px;
+
+    margin-bottom: 14px;
+
+    box-shadow:
+        0 2px 8px rgba(23,63,43,0.025);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.request-card:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 18px rgba(23,63,43,0.06);
+}
+
+
+/* =====================================================
+   REQUEST TOP
+===================================================== */
+
+.request-top {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.food-info {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+.food-icon {
+    width: 46px;
+    height: 46px;
+
+    min-width: 46px;
+
+    border-radius: 10px;
+
+    background: #f0f5f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.food-name {
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: #173f2b;
+
+    margin-bottom: 4px;
+
+    line-height: 1.4;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.restaurant-name {
+    font-size: 9px;
+
+    color: #718078;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 68px;
+
+    padding: 5px 9px;
+
+    border-radius: 8px;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
+}
+
+.status-pending {
+    background: #fff4d9;
+    color: #9a6900;
+}
+
+.status-approved {
+    background: #e5f6eb;
+    color: #167341;
+}
+
+.status-rejected {
+    background: #ffe8e8;
+    color: #a53d3d;
+}
+
+
+/* =====================================================
+   DETAILS
+===================================================== */
+
+.details {
+    border-top: 1px solid #edf1ee;
+
+    padding-top: 14px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.detail-item {
+    background: #f8faf9;
+
+    border: 1px solid #edf1ee;
+
+    border-radius: 9px;
+
+    padding: 11px 12px;
+
+    min-width: 0;
+}
+
+.detail-label {
+    display: block;
+
+    font-size: 8px;
+
+    color: #7a847e;
+
+    margin-bottom: 5px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+
+    font-weight: 700;
+}
+
+.detail-value {
+    display: block;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #173f2b;
+
+    line-height: 1.4;
+
+    word-break: break-word;
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty-card {
+    background: white;
+
+    border: 1px solid #e1e8e4;
+
+    border-radius: 11px;
+
+    padding: 50px 25px;
+
+    text-align: center;
+
+    box-shadow:
+        0 2px 8px rgba(23,63,43,0.025);
+}
+
+.empty-icon {
+    font-size: 40px;
+
+    margin-bottom: 12px;
+}
+
+.empty-card h3 {
+    font-size: 17px;
+
+    line-height: 1.3;
+
+    color: #173f2b;
+
+    margin-bottom: 7px;
+}
+
+.empty-card p {
+    font-size: 10px;
+
+    color: #718078;
+
+    margin-bottom: 18px;
+
+    line-height: 1.5;
+}
+
+.browse-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #087642,
+            #16804d
+        );
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px 17px;
+
+    border-radius: 9px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.browse-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 15px rgba(8,118,66,0.18);
+}
+
+
+/* =====================================================
+   SIDEBAR SCROLLBAR
+===================================================== */
+
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.25);
+
+    border-radius: 10px;
+}
+
+
+/* =====================================================
+   SHORT LAPTOP
+===================================================== */
+
+@media (min-width: 851px) and (max-height: 750px) {
+
+    .navbar {
+        height: 66px;
+    }
+
+    .sidebar {
+        top: 66px;
+
+        height: calc(100vh - 66px);
+    }
+
+    .main {
+        padding-top: 66px;
+    }
+
+    .content {
+        padding-top: 14px;
+    }
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) and (min-width: 851px) {
+
+    .content {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .details {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 850px) {
+
+    .navbar {
+        height: 65px;
+
+        padding: 0 15px;
+    }
+
+    .navbar-left {
+        gap: 7px;
+    }
+
+    .navbar-logo-text strong {
+        font-size: 18px;
+    }
+
+    .navbar-logo-text span {
+        font-size: 8px;
+    }
+
+    .navbar-logo-icon {
+        width: 35px;
+        height: 35px;
+
+        font-size: 21px;
+    }
+
+    .hamburger {
+        width: 38px;
+        height: 38px;
+
+        font-size: 23px;
+    }
+
+    .sidebar {
+        top: 65px;
+
+        height: calc(100vh - 65px);
+
+        width: 230px;
+
+        box-shadow:
+            4px 0 18px rgba(0,0,0,0.12);
+    }
+
+    .main {
+        margin-left: 0;
+
+        width: 100%;
+
+        padding-top: 65px;
+    }
+
+    .content {
+        padding: 22px 18px;
+    }
+
+    .organization-user {
+        min-width: auto;
+
+        border: none;
+
+        padding: 4px;
+    }
+
+    .organization-user-info,
+    .arrow {
+        display: none;
+    }
+
+    .request-card {
+        padding: 20px;
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        padding: 0 10px;
+    }
+
+    .navbar-left {
+        gap: 5px;
+    }
+
+    .navbar-logo {
+        gap: 6px;
+    }
+
+    .navbar-logo-text strong {
+        font-size: 17px;
+    }
+
+    .navbar-logo-text span {
+        display: none;
+    }
+
+    .navbar-right {
+        gap: 8px;
+    }
+
+    .notification-link {
+        width: 32px;
+        height: 32px;
+
+        font-size: 19px;
+    }
+
+    .content {
+        padding: 18px 12px;
+    }
+
+    .page-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .header-text h1 {
+        font-size: 22px;
+    }
+
+    .back-button {
+        width: 100%;
+    }
+
+    .request-top {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .request-card {
+        padding: 18px;
+    }
+
+    .details {
+        grid-template-columns: 1fr;
+    }
+
+    .empty-card {
+        padding: 40px 18px;
+    }
+
+    .browse-button {
+        width: 100%;
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -399,49 +1206,143 @@
 <body>
 
 
-<!-- ================= NAVBAR ================= -->
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
 
 <header class="navbar">
 
-    <a
-        href="{% url 'organization_dashboard' %}"
-        class="navbar-logo"
-    >
+    <div class="navbar-left">
 
-        <div class="navbar-logo-icon">
-            🌱
-        </div>
+        <a
+            href="{% url 'organization_dashboard' %}"
+            class="navbar-logo"
+        >
 
-        <div class="navbar-logo-text">
+            <div class="navbar-logo-icon">
+                🌱
+            </div>
 
-            <strong>
-                FoodWise
-            </strong>
+            <div class="navbar-logo-text">
 
-            <span>
-                Surplus meets Purpose.
-            </span>
+                <strong>
+                    FoodWise
+                </strong>
 
-        </div>
+                <span>
+                    Surplus meets Purpose.
+                </span>
 
-    </a>
+            </div>
+
+        </a>
+
+
+        <button
+            class="hamburger"
+            id="sidebarToggle"
+            type="button"
+            aria-label="Toggle sidebar"
+            aria-expanded="true"
+        >
+            ☰
+        </button>
+
+    </div>
 
 
     <div class="navbar-right">
 
-        <div class="organization-icon">
-            🏢
-        </div>
+        <!-- ORGANIZATION PROFILE -->
 
-        <div class="organization-user">
+        <div class="organization-profile">
 
-            <strong>
-                {{ user.username }}
-            </strong>
+            <button
+                type="button"
+                class="organization-user"
+                id="organizationProfileButton"
+                aria-expanded="false"
+            >
 
-            <span>
-                {{ organization.organization_name }}
-            </span>
+                <div class="organization-icon">
+                    🏢
+                </div>
+
+                <div class="organization-user-info">
+                    <strong>
+                        {{ user.username }}
+                    </strong>
+
+                    <span>
+                        {{ organization.organization_name }}
+                    </span>
+
+                </div>
+
+                <div class="arrow">
+                    ⌄
+                </div>
+
+            </button>
+
+
+            <!-- PROFILE DROPDOWN -->
+
+            <div
+                class="profile-dropdown"
+                id="profileDropdown"
+            >
+
+                <div class="dropdown-header">
+
+                    <div class="dropdown-icon">
+                        🏢
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ user.username }}
+                        </strong>
+
+                        <span>
+                            {{ organization.organization_name }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="dropdown-divider"></div>
+
+                <!-- ONLY PROFILE -->
+                <a
+                    href="{% url 'organization_profile' %}"
+                    class="dropdown-item"
+                >
+                    <span>👤</span>
+                    <span>
+                        Profile
+                    </span>
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <!-- LOGOUT -->
+
+                <a
+                    href="{% url 'organization_logout' %}"
+                    class="dropdown-item logout-item">
+
+                    <span>⇥</span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </a>
+
+            </div>
 
         </div>
 
@@ -450,44 +1351,230 @@
 </header>
 
 
-<!-- ================= MAIN ================= -->
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <nav class="nav-menu">
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'organization_dashboard' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                📅
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- SURPLUS FOOD -->
+
+        <a
+            href="{% url 'browse_surplus_food' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                🍱
+            </span>
+
+            <span>
+                Surplus Food
+            </span>
+
+        </a>
+
+
+        <!-- MY REQUESTS -->
+
+        <a
+            href="{% url 'my_requests' %}"
+            class="nav-item active"
+        >
+
+            <span class="nav-icon">
+                📋
+            </span>
+
+            <span>
+                My Requests
+            </span>
+
+        </a>
+
+
+        <!-- FOOD RECEIVED -->
+
+        <a
+            href="{% url 'food_received' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                🎁
+            </span>
+
+            <span>
+                Food Received
+            </span>
+
+        </a>
+
+
+        <!-- IMPACT -->
+
+        <a
+            href="{% url 'organization_impact' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                📊
+            </span>
+
+            <span>
+                Impact
+            </span>
+
+        </a>
+
+
+        <!-- PROFILE -->
+
+        <a
+            href="{% url 'organization_profile' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                👤
+            </span>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+
+        <!-- NOTIFICATIONS -->
+
+        <a
+            href="{% url 'organization_notifications' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                🔔
+            </span>
+
+            <span>
+                Notifications
+            </span>
+
+        </a>
+
+
+        <!-- CHANGE PASSWORD -->
+
+        <a
+            href="{% url 'organization_change_password' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                🔒
+            </span>
+
+            <span>
+                Change Password
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <!-- LOGOUT -->
+
+    <div class="logout">
+
+        <a href="{% url 'organization_logout' %}">
+
+            <span class="logout-icon">
+                🔙
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
 
 <main class="main">
 
     <section class="content">
 
 
-        <a
-            href="{% url 'organization_dashboard' %}"
-            class="back-button"
-        >
-            ← Back to Dashboard
-        </a>
-
+        <!-- PAGE HEADER -->
 
         <div class="page-header">
 
-            <h1>
-                My Requests
-            </h1>
+            <div class="header-text">
 
-            <p>
-                View and track the food requests submitted by your organization.
-            </p>
+                <h1>
+                    My Requests
+                </h1>
+
+                <p>
+                    View and track the food requests submitted by your organization.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'organization_dashboard' %}"
+                class="back-button"
+            >
+                ← Back to Dashboard
+            </a>
 
         </div>
 
 
-        {% if requests %}
+        <!-- REQUESTS -->
 
+        {% if requests %}
 
             {% for request in requests %}
 
                 <div class="request-card">
 
 
-                    <div class="request-top">
+                    <!-- REQUEST HEADER -->
 
+                    <div class="request-top">
 
                         <div class="food-info">
 
@@ -499,18 +1586,25 @@
                             <div>
 
                                 <div class="food-name">
+
                                     {{ request.leftover_record.food_item.dish_name }}
+
                                 </div>
 
+
                                 <div class="restaurant-name">
+
                                     📍
                                     {{ request.leftover_record.restaurant.restaurant_name }}
+
                                 </div>
 
                             </div>
 
                         </div>
 
+
+                        <!-- STATUS -->
 
                         {% if request.status == 'PENDING' %}
 
@@ -532,14 +1626,15 @@
 
                         {% endif %}
 
-
                     </div>
 
+
+                    <!-- REQUEST DETAILS -->
 
                     <div class="details">
 
 
-                        <div>
+                        <div class="detail-item">
 
                             <span class="detail-label">
                                 Quantity Requested
@@ -556,7 +1651,7 @@
                         </div>
 
 
-                        <div>
+                        <div class="detail-item">
 
                             <span class="detail-label">
                                 Requested On
@@ -571,7 +1666,7 @@
                         </div>
 
 
-                        <div>
+                        <div class="detail-item">
 
                             <span class="detail-label">
                                 Request Status
@@ -588,7 +1683,6 @@
 
                     </div>
 
-
                 </div>
 
             {% endfor %}
@@ -596,6 +1690,8 @@
 
         {% else %}
 
+
+            <!-- EMPTY STATE -->
 
             <div class="empty-card">
 
@@ -620,7 +1716,6 @@
 
             </div>
 
-
         {% endif %}
 
 
@@ -629,6 +1724,119 @@
 </main>
 
 
-</body>
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+<script>
+/* =====================================================
+   SIDEBAR TOGGLE
+===================================================== */
 
+const sidebarToggle =
+    document.getElementById("sidebarToggle");
+
+sidebarToggle.addEventListener(
+    "click",
+    function () {
+
+        document.body.classList.toggle(
+            "sidebar-closed"
+        );
+
+        const isClosed =
+            document.body.classList.contains(
+                "sidebar-closed"
+            );
+
+        sidebarToggle.setAttribute(
+            "aria-expanded",
+            String(!isClosed)
+        );
+    }
+);
+
+/* =====================================================
+   ORGANIZATION PROFILE DROPDOWN
+===================================================== */
+const organizationProfileButton =
+    document.getElementById(
+        "organizationProfileButton"
+    );
+
+const profileDropdown =
+    document.getElementById(
+        "profileDropdown"
+    );
+
+organizationProfileButton.addEventListener(
+    "click",
+    function (event) {
+        event.stopPropagation();
+
+        const isOpen =
+            profileDropdown.classList.toggle(
+                "show"
+            );
+
+        organizationProfileButton.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+
+    }
+);
+
+/* =====================================================
+   CLOSE DROPDOWN OUTSIDE
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function (event) {
+        if (
+            !profileDropdown.contains(
+                event.target
+            ) &&
+            !organizationProfileButton.contains(
+                event.target
+            )
+        ) {
+
+            profileDropdown.classList.remove(
+                "show"
+            );
+
+            organizationProfileButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+    }
+);
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            profileDropdown.classList.remove(
+                "show"
+            );
+
+            organizationProfileButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    }
+);
+
+</script>
+</body>
 </html>

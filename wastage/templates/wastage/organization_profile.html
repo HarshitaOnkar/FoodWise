@@ -1,0 +1,2190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Organization Profile - FoodWise</title>
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6faf7;
+    color: #173f2b;
+    overflow-x: hidden;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 72px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e4ebe6;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 25px;
+
+    z-index: 2000;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    text-decoration: none;
+    color: #173f2b;
+
+    white-space: nowrap;
+}
+
+.navbar-logo-icon {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 10px;
+
+    background: #e5f5e9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+
+    flex-shrink: 0;
+}
+
+.navbar-logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-logo-text strong {
+    font-size: 21px;
+    line-height: 1.1;
+
+    color: #17452e;
+}
+
+.navbar-logo-text span {
+    font-size: 9px;
+    color: #708077;
+
+    margin-top: 2px;
+}
+
+
+/* =====================================================
+   HAMBURGER
+===================================================== */
+
+.hamburger {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    background: transparent;
+
+    border-radius: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    font-size: 25px;
+    color: #173f2b;
+
+    flex-shrink: 0;
+}
+
+.hamburger:hover {
+    background: #edf5ef;
+}
+
+
+/* =====================================================
+   NAVBAR RIGHT
+===================================================== */
+
+.navbar-right {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+}
+
+
+/* =====================================================
+   NOTIFICATION
+===================================================== */
+
+.notification-link {
+    position: relative;
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+.notification-link:hover {
+    opacity: 0.8;
+}
+
+.notification-badge {
+    position: absolute;
+
+    top: -2px;
+    right: -3px;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: #168044;
+    color: white;
+
+    font-size: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =====================================================
+   ORGANIZATION PROFILE
+===================================================== */
+
+.organization-profile {
+    position: relative;
+}
+
+.organization-user {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 6px 10px;
+
+    min-width: 175px;
+
+    border: 1px solid #e1e8e3;
+
+    border-radius: 10px;
+
+    background: white;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    text-align: left;
+}
+
+.organization-user:hover {
+    background: #f8fbf9;
+}
+
+.organization-icon {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    border-radius: 50%;
+
+    background: #e2f3e8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+}
+
+.organization-user-info {
+    min-width: 0;
+}
+
+.organization-user strong {
+    display: block;
+
+    font-size: 12px;
+    color: #173f2b;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.organization-user span {
+    display: block;
+
+    font-size: 10px;
+    color: #7b867f;
+
+    margin-top: 2px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.arrow {
+    margin-left: auto;
+
+    font-size: 17px;
+    color: #173f2b;
+}
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 230px;
+
+    background: white;
+
+    border: 1px solid #e1e8e3;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.12);
+
+    padding: 8px;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease,
+        visibility .2s ease;
+
+    z-index: 3000;
+}
+
+.profile-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+/* =====================================================
+   DROPDOWN HEADER
+===================================================== */
+
+.dropdown-header {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px;
+}
+
+.dropdown-icon {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 50%;
+
+    background: #e2f3e8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+.dropdown-header strong {
+    display: block;
+
+    font-size: 11px;
+    color: #173f2b;
+}
+
+.dropdown-header span {
+    display: block;
+
+    font-size: 9px;
+    color: #7b867f;
+
+    margin-top: 3px;
+
+    max-width: 145px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #edf1ee;
+
+    margin: 5px 0;
+}
+
+
+/* =====================================================
+   DROPDOWN ITEMS
+===================================================== */
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    color: #173f2b;
+
+    text-decoration: none;
+
+    font-size: 11px;
+}
+
+.dropdown-item span:first-child {
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+.dropdown-item:hover {
+    background: #edf7f0;
+}
+
+.dropdown-item.logout-item {
+    color: #b33a3a;
+}
+
+.dropdown-item.logout-item:hover {
+    background: #fff0f0;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar {
+    position: fixed;
+
+    top: 72px;
+    left: 0;
+
+    width: 220px;
+
+    height: calc(100vh - 72px);
+
+    background:
+        linear-gradient(
+            180deg,
+            #063d25,
+            #075331
+        );
+
+    color: white;
+
+    padding: 18px 11px;
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 1000;
+
+    overflow-y: auto;
+
+    transform: translateX(0);
+
+    transition: transform .3s ease;
+}
+
+body.sidebar-closed .sidebar {
+    transform: translateX(-100%);
+}
+
+
+/* =====================================================
+   SIDEBAR NAVIGATION
+===================================================== */
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 40px;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    color: #e5f2e9;
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    transition:
+        background .2s ease,
+        color .2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,.12);
+    color: white;
+}
+
+.nav-item.active {
+    background: #16804d;
+    color: white;
+}
+
+.nav-icon {
+    width: 21px;
+    min-width: 21px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   SIDEBAR LOGOUT
+===================================================== */
+
+.logout {
+    margin-top: auto;
+
+    padding-top: 15px;
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    min-height: 40px;
+
+    padding: 10px 12px;
+
+    border-radius: 9px;
+
+    color: white;
+
+    text-decoration: none;
+
+    background: rgba(255,255,255,.12);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.logout a:hover {
+    background: rgba(255,255,255,.2);
+}
+
+.logout-icon {
+    width: 21px;
+    min-width: 21px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main {
+    margin-left: 220px;
+
+    padding-top: 72px;
+
+    min-height: 100vh;
+
+    width: calc(100% - 220px);
+
+    transition:
+        margin-left .3s ease,
+        width .3s ease;
+}
+
+body.sidebar-closed .main {
+    margin-left: 0;
+    width: 100%;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content {
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 25px 30px 30px;
+}
+
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.page-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+}
+
+.header-text {
+    min-width: 0;
+}
+
+.header-text h1 {
+    font-size: 25px;
+
+    line-height: 1.2;
+
+    color: #173f2b;
+
+    margin-bottom: 6px;
+}
+
+.header-text p {
+    color: #718078;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.back-button,
+.edit-button {
+    min-width: 150px;
+
+    padding: 10px 16px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.back-button {
+    border: 1px solid #d6dfd9;
+
+    background: white;
+
+    color: #173f2b;
+}
+
+.back-button:hover {
+    background: #f2f8f4;
+
+    border-color: #b8c8be;
+}
+
+.edit-button {
+    border: 1px solid #16804d;
+
+    background: #16804d;
+
+    color: white;
+}
+
+.edit-button:hover {
+    background: #116b40;
+}
+
+
+/* =====================================================
+   PROFILE CARD
+===================================================== */
+
+.profile-card {
+    width: min(950px, 100%);
+
+    margin: 0 auto;
+
+    background: white;
+
+    border: 1px solid #e1e8e4;
+
+    border-radius: 11px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 8px rgba(23,63,43,.025);
+}
+
+
+/* =====================================================
+   PROFILE HEADER
+===================================================== */
+
+.profile-header {
+    background:
+        linear-gradient(
+            135deg,
+            #063d25,
+            #087642
+        );
+
+    color: white;
+
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+}
+
+.profile-icon {
+    width: 58px;
+    height: 40px;
+
+    min-width: 58px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.18);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+}
+
+.profile-header h2 {
+    font-size: 20px;
+
+    margin-bottom: 5px;
+}
+
+.profile-header p {
+    font-size: 10px;
+
+    opacity: .85;
+}
+
+
+/* =====================================================
+   PROFILE DETAILS
+===================================================== */
+
+.details {
+    padding: 25px;
+}
+
+.details-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px 25px;
+}
+
+.detail {
+    padding-bottom: 13px;
+
+    border-bottom: 1px solid #edf1ee;
+}
+
+.detail-label {
+    font-size: 9px;
+
+    color: #77827b;
+
+    margin-bottom: 5px;
+}
+
+.detail-value {
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #173f2b;
+
+    word-break: break-word;
+}
+
+.organization-type {
+    display: inline-block;
+
+    background: #e7f5eb;
+
+    color: #087642;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+}
+
+.detail.address {
+    grid-column: 1 / -1;
+}
+
+
+/* =====================================================
+   EDIT FORM
+===================================================== */
+
+.edit-form {
+    padding: 25px;
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-size: 9px;
+
+    color: #77827b;
+
+    margin-bottom: 6px;
+
+    font-weight: 600;
+}
+
+.edit-form input,
+.edit-form select,
+.edit-form textarea {
+    width: 100%;
+
+    padding: 10px 11px;
+
+    border: 1px solid #d9e2dc;
+
+    border-radius: 8px;
+
+    background: white;
+
+    color: #173f2b;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 12px;
+
+    outline: none;
+}
+
+.edit-form input:focus,
+.edit-form select:focus,
+.edit-form textarea:focus {
+    border-color: #16804d;
+
+    box-shadow:
+        0 0 0 3px rgba(22,128,77,.08);
+}
+
+.edit-form textarea {
+    min-height: 90px;
+
+    resize: vertical;
+}
+
+.field-error {
+    margin-top: 5px;
+
+    font-size: 9px;
+
+    color: #c0392b;
+}
+
+.non-field-errors {
+    margin-bottom: 18px;
+
+    padding: 10px 12px;
+
+    border-radius: 8px;
+
+    background: #fff1f0;
+
+    border: 1px solid #f0cdca;
+
+    color: #a93226;
+
+    font-size: 10px;
+}
+
+.form-actions {
+    margin-top: 25px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid #edf1ee;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+.cancel-button,
+.save-button {
+    min-width: 125px;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.cancel-button {
+    border: 1px solid #d6dfd9;
+
+    background: white;
+
+    color: #173f2b;
+}
+
+.cancel-button:hover {
+    background: #f0f7f2;
+}
+
+.save-button {
+    border: 1px solid #16804d;
+
+    background: #16804d;
+
+    color: white;
+}
+
+.save-button:hover {
+    background: #116b40;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.profile-footer {
+    padding: 16px 25px;
+
+    background: #f8fbf9;
+
+    border-top: 1px solid #e6ece8;
+
+    font-size: 9px;
+
+    color: #758078;
+}
+
+
+/* =====================================================
+   SIDEBAR SCROLLBAR
+===================================================== */
+
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.25);
+
+    border-radius: 10px;
+}
+
+
+/* =====================================================
+   SHORT LAPTOP
+===================================================== */
+
+@media (min-width: 851px) and (max-height: 750px) {
+
+    .navbar {
+        height: 66px;
+    }
+
+    .sidebar {
+        top: 66px;
+
+        height: calc(100vh - 66px);
+    }
+
+    .main {
+        padding-top: 66px;
+    }
+
+    .content {
+        padding-top: 14px;
+    }
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 850px) {
+
+    .navbar {
+        height: 65px;
+
+        padding: 0 15px;
+    }
+
+    .navbar-logo-icon {
+        width: 35px;
+        height: 35px;
+
+        font-size: 21px;
+    }
+
+    .navbar-logo-text strong {
+        font-size: 18px;
+    }
+
+    .navbar-logo-text span {
+        font-size: 8px;
+    }
+
+    .hamburger {
+        width: 38px;
+        height: 38px;
+
+        font-size: 23px;
+    }
+
+    .sidebar {
+        top: 65px;
+
+        width: 230px;
+
+        height: calc(100vh - 65px);
+
+        box-shadow:
+            4px 0 18px rgba(0,0,0,.12);
+    }
+
+    .main {
+        margin-left: 0;
+
+        width: 100%;
+
+        padding-top: 65px;
+    }
+
+    .content {
+        padding: 22px 18px;
+    }
+
+    .organization-user {
+        min-width: auto;
+
+        border: none;
+
+        padding: 4px;
+    }
+
+    .organization-user-info,
+    .arrow {
+        display: none;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        padding: 0 10px;
+    }
+
+    .navbar-left {
+        gap: 5px;
+    }
+
+    .navbar-logo {
+        gap: 6px;
+    }
+
+    .navbar-logo-text strong {
+        font-size: 17px;
+    }
+
+    .navbar-logo-text span {
+        display: none;
+    }
+
+    .navbar-right {
+        gap: 8px;
+    }
+
+    .notification-link {
+        width: 32px;
+        height: 32px;
+
+        font-size: 19px;
+    }
+
+    .content {
+        padding: 18px 12px;
+    }
+
+    .page-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .header-text h1 {
+        font-size: 22px;
+    }
+
+    .header-actions {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .back-button,
+    .edit-button {
+        width: 100%;
+    }
+
+    .details {
+        padding: 20px;
+    }
+
+    .details-grid,
+    .form-grid {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+    .detail.address,
+    .form-group.full-width {
+        grid-column: auto;
+    }
+
+    .edit-form {
+        padding: 20px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-button,
+    .save-button {
+        width: 100%;
+    }
+
+    .profile-header {
+        padding: 20px;
+    }
+
+    .profile-header h2 {
+        font-size: 17px;
+    }
+
+    .profile-footer {
+        padding: 14px 20px;
+
+        line-height: 1.5;
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 400px) {
+
+    .navbar {
+        padding: 0 10px;
+    }
+
+    .profile-header {
+        gap: 12px;
+    }
+
+    .profile-icon {
+        width: 50px;
+        height: 50px;
+
+        min-width: 50px;
+
+        font-size: 24px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="navbar-left">
+
+        <a
+            href="{% url 'organization_dashboard' %}"
+            class="navbar-logo"
+        >
+
+            <div class="navbar-logo-icon">
+                🌱
+            </div>
+
+            <div class="navbar-logo-text">
+
+                <strong>
+                    FoodWise
+                </strong>
+
+                <span>
+                    Surplus meets Purpose.
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <button
+            type="button"
+            class="hamburger"
+            id="sidebarToggle"
+            aria-label="Toggle sidebar"
+            aria-expanded="true"
+        >
+            ☰
+        </button>
+
+    </div>
+
+
+    <div class="navbar-right">
+
+        <!-- ORGANIZATION PROFILE -->
+
+        <div class="organization-profile">
+
+            <button
+                type="button"
+                class="organization-user"
+                id="organizationProfileButton"
+                aria-expanded="false"
+            >
+
+                <div class="organization-icon">
+                    🏢
+                </div>
+
+                <div class="organization-user-info">
+
+                    <strong>
+                        {{ user.username }}
+                    </strong>
+
+                    <span>
+                        {{ organization.organization_name }}
+                    </span>
+
+                </div>
+
+                <div class="arrow">
+                    ⌄
+                </div>
+
+            </button>
+
+
+            <div
+                class="profile-dropdown"
+                id="profileDropdown"
+            >
+
+                <div class="dropdown-header">
+
+                    <div class="dropdown-icon">
+                        🏢
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ user.username }}
+                        </strong>
+
+                        <span>
+                            {{ organization.organization_name }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dropdown-divider"></div>
+
+
+                <a
+                    href="{% url 'organization_profile' %}"
+                    class="dropdown-item"
+                >
+
+                    <span>👤</span>
+
+                    <span>Profile</span>
+
+                </a>
+
+
+                <div class="dropdown-divider"></div>
+
+
+                <a
+                    href="{% url 'organization_logout' %}"
+                    class="dropdown-item logout-item"
+                >
+
+                    <span>⇥</span>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <nav class="nav-menu">
+
+
+        <a
+            href="{% url 'organization_dashboard' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📅</span>
+            <span>Dashboard</span>
+        </a>
+
+
+        <a
+            href="{% url 'browse_surplus_food' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🍱</span>
+            <span>Surplus Food</span>
+        </a>
+
+
+        <a
+            href="{% url 'my_requests' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📋</span>
+            <span>My Requests</span>
+        </a>
+
+
+        <a
+            href="{% url 'food_received' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🎁</span>
+            <span>Food Received</span>
+        </a>
+
+
+        <a
+            href="{% url 'organization_impact' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">📊</span>
+            <span>Impact</span>
+        </a>
+
+
+        <a
+            href="{% url 'organization_profile' %}"
+            class="nav-item active"
+        >
+            <span class="nav-icon">👤</span>
+            <span>Profile</span>
+        </a>
+
+
+        <a
+            href="{% url 'organization_notifications' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🔔</span>
+            <span>Notifications</span>
+        </a>
+
+
+        <a
+            href="{% url 'organization_change_password' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🔒</span>
+            <span>Change Password</span>
+        </a>
+
+    </nav>
+
+
+    <div class="logout">
+
+        <a href="{% url 'organization_logout' %}">
+
+            <span class="logout-icon">
+                🔙
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+    <section class="content">
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================= -->
+
+        <div class="page-header">
+
+            <div class="header-text">
+
+                <h1>
+                    Organization Profile 👤
+                </h1>
+
+                <p>
+                    View and manage your organization information.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <a
+                    href="{% url 'organization_dashboard' %}"
+                    class="back-button"
+                >
+                    ← Back to Dashboard
+                </a>
+
+                <button
+                    type="button"
+                    class="edit-button"
+                    id="editProfileButton"
+                    onclick="showEditForm()"
+                >
+                    ✏️ Edit Profile
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PROFILE VIEW
+        ================================================= -->
+
+        <div
+            class="profile-card"
+            id="profileView"
+        >
+
+            <div class="profile-header">
+
+                <div class="profile-icon">
+                    🏢
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ organization.organization_name }}
+                    </h2>
+
+                    <p>
+                        FoodWise Partner Organization
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+                <div class="details-grid">
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Organization Name
+                        </div>
+
+                        <div class="detail-value">
+                            {{ organization.organization_name }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Organization Type
+                        </div>
+
+                        <div class="detail-value">
+
+                            <span class="organization-type">
+                                {{ organization.get_organization_type_display }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Contact Person
+                        </div>
+
+                        <div class="detail-value">
+                            {{ organization.contact_person }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Owner Name
+                        </div>
+
+                        <div class="detail-value">
+                            {{ organization.owner_name }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Email
+                        </div>
+
+                        <div class="detail-value">
+                            {{ organization.email }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Phone
+                        </div>
+
+                        <div class="detail-value">
+                            {{ organization.phone }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            City
+                        </div>
+
+                        <div class="detail-value">
+                            {{ organization.city }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Account Status
+                        </div>
+
+                        <div class="detail-value">
+
+                            {% if organization.is_active %}
+
+                                <span class="organization-type">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="organization-type">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail address">
+
+                        <div class="detail-label">
+                            Address
+                        </div>
+
+                        <div class="detail-value">
+                            {{ organization.address }}
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-footer">
+
+                🌱 Thank you for helping FoodWise reduce food waste
+                and connect surplus food with communities.
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             EDIT PROFILE
+        ================================================= -->
+
+        <div
+            class="profile-card"
+            id="profileEdit"
+            style="display: none;"
+        >
+
+            <div class="profile-header">
+
+                <div class="profile-icon">
+                    ✏️
+                </div>
+
+                <div>
+
+                    <h2>
+                        Edit Organization Profile
+                    </h2>
+
+                    <p>
+                        Update your organization information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="edit-form">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+
+                    {% if form.non_field_errors %}
+
+                        <div class="non-field-errors">
+                            {{ form.non_field_errors }}
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.organization_name.id_for_label }}"
+                            >
+                                Organization Name
+                            </label>
+
+                            {{ form.organization_name }}
+
+                            {% for error in form.organization_name.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.organization_type.id_for_label }}"
+                            >
+                                Organization Type
+                            </label>
+
+                            {{ form.organization_type }}
+
+                            {% for error in form.organization_type.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.contact_person.id_for_label }}"
+                            >
+                                Contact Person
+                            </label>
+
+                            {{ form.contact_person }}
+
+                            {% for error in form.contact_person.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.owner_name.id_for_label }}"
+                            >
+                                Owner Name
+                            </label>
+
+                            {{ form.owner_name }}
+
+                            {% for error in form.owner_name.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.email.id_for_label }}"
+                            >
+                                Email
+                            </label>
+
+                            {{ form.email }}
+
+                            {% for error in form.email.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.phone.id_for_label }}"
+                            >
+                                Phone
+                            </label>
+
+                            {{ form.phone }}
+
+                            {% for error in form.phone.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.city.id_for_label }}"
+                            >
+                                City
+                            </label>
+
+                            {{ form.city }}
+
+                            {% for error in form.city.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="form-group full-width">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.address.id_for_label }}"
+                            >
+                                Address
+                            </label>
+
+                            {{ form.address }}
+
+                            {% for error in form.address.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="button"
+                            class="cancel-button"
+                            onclick="hideEditForm()"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="save-button"
+                        >
+                            💾 Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="profile-footer">
+
+                🌱 Keep your organization information up to date
+                so FoodWise can connect with you effectively.
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   SIDEBAR TOGGLE
+===================================================== */
+
+const sidebarToggle =
+    document.getElementById("sidebarToggle");
+
+sidebarToggle.addEventListener(
+    "click",
+    function () {
+
+        document.body.classList.toggle(
+            "sidebar-closed"
+        );
+
+        const isClosed =
+            document.body.classList.contains(
+                "sidebar-closed"
+            );
+
+        sidebarToggle.setAttribute(
+            "aria-expanded",
+            String(!isClosed)
+        );
+
+    }
+);
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+const organizationProfileButton =
+    document.getElementById(
+        "organizationProfileButton"
+    );
+
+const profileDropdown =
+    document.getElementById(
+        "profileDropdown"
+    );
+
+
+organizationProfileButton.addEventListener(
+    "click",
+    function (event) {
+
+        event.stopPropagation();
+
+        const isOpen =
+            profileDropdown.classList.toggle(
+                "show"
+            );
+
+        organizationProfileButton.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+
+    }
+);
+
+
+/* =====================================================
+   CLOSE DROPDOWN OUTSIDE
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            !profileDropdown.contains(
+                event.target
+            ) &&
+            !organizationProfileButton.contains(
+                event.target
+            )
+        ) {
+
+            profileDropdown.classList.remove(
+                "show"
+            );
+
+            organizationProfileButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            profileDropdown.classList.remove(
+                "show"
+            );
+
+            organizationProfileButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   EDIT PROFILE
+===================================================== */
+
+function showEditForm() {
+
+    document.getElementById(
+        "profileView"
+    ).style.display = "none";
+
+    document.getElementById(
+        "profileEdit"
+    ).style.display = "block";
+
+    document.getElementById(
+        "editProfileButton"
+    ).style.display = "none";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+function hideEditForm() {
+
+    document.getElementById(
+        "profileEdit"
+    ).style.display = "none";
+
+    document.getElementById(
+        "profileView"
+    ).style.display = "block";
+
+    document.getElementById(
+        "editProfileButton"
+    ).style.display = "block";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

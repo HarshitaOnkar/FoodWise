@@ -12,7 +12,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>History - FoodWise</title>
+    <title>Food Requests - FoodWise</title>
 
     <style>
 
@@ -322,11 +322,7 @@
             left: 0;
             width: 220px;
             height: calc(100vh - 72px);
-            background: linear-gradient(
-                180deg,
-                #063d25,
-                #075331
-            );
+            background: linear-gradient(180deg,#063d25,#075331);
             color: white;
             padding: 18px 11px;
             display: flex;
@@ -350,39 +346,22 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            border: none;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            width: 100%;
             min-height: 40px;
-            height: 40px;
             padding: 9px 12px;
-            margin: 0;
-            border: none;
             border-radius: 9px;
             color: #e5f2e9;
-            background: transparent;
             text-decoration: none;
             font-size: 12px;
             font-weight: 500;
-            line-height: normal;
-            box-shadow: none;
             transition:
                 background .2s ease,
                 color .2s ease;
-        }
-
-        .nav-item::before,
-        .nav-item::after {
-            content: none !important;
-            display: none !important;
         }
 
         .nav-item:hover {
@@ -398,12 +377,8 @@
         .nav-icon {
             width: 21px;
             min-width: 21px;
-            height: auto;
-            margin: 0;
-            padding: 0;
             text-align: center;
             font-size: 15px;
-            line-height: 1;
         }
 
 
@@ -414,10 +389,6 @@
         .logout {
             margin-top: auto;
             padding-top: 15px;
-            position: static;
-            left: auto;
-            right: auto;
-            bottom: auto;
         }
 
         .logout a {
@@ -427,9 +398,7 @@
             gap: 10px;
             width: 100%;
             min-height: 40px;
-            height: 40px;
             padding: 10px 12px;
-            margin: 0;
             border-radius: 9px;
             color: white;
             text-decoration: none;
@@ -437,7 +406,6 @@
             font-size: 12px;
             font-weight: 600;
             text-align: left;
-            border: none;
         }
 
         .logout a:hover {
@@ -480,7 +448,7 @@
 
         .content {
             width: 100%;
-            padding: 25px 30px 30px;
+            padding: 25px 30px 20px;
         }
 
 
@@ -500,7 +468,7 @@
             font-size: 25px;
             line-height: 1.2;
             color: #173f2b;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .page-title p {
@@ -511,20 +479,30 @@
 
         /* =====================================================
            BACK BUTTON
+           SAME SIZE AS ADD FOOD ITEM
         ===================================================== */
 
         .back-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             background: white;
+
             color: #173f2b;
+
             border: 1px solid #ccd7d0;
+
             padding: 10px 15px;
+
             border-radius: 10px;
+
             font-size: 11px;
+
             font-weight: 700;
+
             text-decoration: none;
+
             white-space: nowrap;
         }
 
@@ -534,133 +512,185 @@
 
 
         /* =====================================================
-           HISTORY CARD
+           REQUEST LIST
         ===================================================== */
 
-        .history-card {
-            width: min(1100px, 100%);
+        .requests-list {
+            width: min(1000px, 100%);
             margin: 0 auto;
-            background: #ffffff;
+        }
+
+
+        /* =====================================================
+           REQUEST CARD
+        ===================================================== */
+
+        .request-card {
+            background: #fff;
             border: 1px solid #e1e8e4;
             border-radius: 11px;
             padding: 25px 30px;
-            box-shadow: 0 2px 8px rgba(23, 63, 43, 0.025);
+            margin-bottom: 14px;
+            box-shadow:
+                0 2px 8px rgba(23,63,43,.025);
         }
 
-        .history-card-header {
-            margin-bottom: 20px;
-        }
-
-        .history-card-header h2 {
-            font-size: 17px;
-            color: #173f2b;
-            margin-bottom: 5px;
-        }
-
-        .history-card-header p {
-            font-size: 10px;
-            color: #7a8780;
-        }
-
-
-        /* =====================================================
-           TABLE
-        ===================================================== */
-
-        .history-table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid #e6ece8;
-            border-radius: 9px;
-        }
-
-        .history-table {
-            width: 100%;
-            min-width: 900px;
-            border-collapse: collapse;
-        }
-
-        .history-table th {
-            padding: 12px 14px;
-            background: #f6faf7;
-            color: #34423a;
-            border-bottom: 1px solid #e1e8e4;
-            text-align: left;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .history-table td {
-            padding: 13px 14px;
+        .request-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding-bottom: 16px;
+            margin-bottom: 18px;
             border-bottom: 1px solid #edf1ee;
-            color: #58665e;
-            text-align: left;
-            vertical-align: top;
-            font-size: 11px;
-        }
-
-        .history-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .history-table tbody tr:hover {
-            background: #fbfdfc;
         }
 
         .food-name {
+            font-size: 16px;
+            font-weight: 700;
             color: #173f2b;
-            font-weight: 600;
-        }
-
-        .quantity {
-            color: #34423a;
-            font-weight: 600;
         }
 
 
         /* =====================================================
-           ACTION BADGE
+           STATUS
         ===================================================== */
 
-        .action-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 5px 9px;
+        .status {
+            padding: 6px 11px;
             border-radius: 20px;
-            background: #eaf7ee;
-            color: #27864a;
-            font-size: 10px;
-            font-weight: 600;
+            font-size: 9px;
+            font-weight: 700;
             white-space: nowrap;
         }
 
+        .pending {
+            background: #fff5d9;
+            color: #856404;
+        }
+
+        .approved {
+            background: #e5f5e9;
+            color: #16804d;
+        }
+
+        .rejected {
+            background: #fff0f0;
+            color: #a33a3a;
+        }
+
 
         /* =====================================================
-           DETAILS
+           REQUEST DETAILS
         ===================================================== */
 
         .details {
-            min-width: 190px;
-            line-height: 1.7;
-            font-size: 10px;
-            color: #69766f;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px 14px;
         }
 
-        .details strong {
-            color: #34423a;
+        .detail-item {
+            padding: 12px;
+            background: #f7faf8;
+            border: 1px solid #edf1ee;
+            border-radius: 8px;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #7a827d;
+            font-size: 9px;
+        }
+
+        .detail-value {
+            display: block;
+            color: #304d3c;
+            font-size: 11px;
             font-weight: 600;
+            line-height: 1.4;
         }
 
 
         /* =====================================================
-           EMPTY STATE
+           ACTIONS
         ===================================================== */
 
-        .empty-history {
-            padding: 45px 20px;
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #edf1ee;
+        }
+
+        .actions form {
+            margin: 0;
+        }
+
+        .actions button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 9px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .approve {
+            background: linear-gradient(
+                135deg,
+                #087642,
+                #16804d
+            );
+            color: #fff;
+            box-shadow:
+                0 5px 13px rgba(8,118,66,.15);
+        }
+
+        .approve:hover {
+            background: #087642;
+        }
+
+        .reject {
+            background: #fff;
+            border: 1px solid #e0caca !important;
+            color: #a33a3a;
+        }
+
+        .reject:hover {
+            background: #fff4f4;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty {
+            width: min(1000px, 100%);
+            margin: 0 auto;
+            background: #fff;
+            padding: 45px 25px;
             text-align: center;
-            color: #7a8780;
-            font-size: 12px;
+            border: 1px solid #e1e8e4;
+            border-radius: 11px;
+            box-shadow:
+                0 2px 8px rgba(23,63,43,.025);
+        }
+
+        .empty h3 {
+            margin-bottom: 6px;
+            color: #304d3c;
+            font-size: 14px;
+        }
+
+        .empty p {
+            color: #7d857f;
+            font-size: 10px;
         }
 
 
@@ -729,7 +759,8 @@
                 top: 65px;
                 height: calc(100vh - 65px);
                 width: 230px;
-                box-shadow: 4px 0 18px rgba(0,0,0,.12);
+                box-shadow:
+                    4px 0 18px rgba(0,0,0,.12);
             }
 
             .main {
@@ -750,7 +781,7 @@
             }
 
             .content {
-                padding: 22px 18px 30px;
+                padding: 22px 18px;
             }
 
             .page-header {
@@ -790,10 +821,10 @@
                 gap: 8px;
             }
 
-            /* Notification remains visible */
+            /* Notification intentionally remains visible */
 
             .content {
-                padding: 18px 12px 25px;
+                padding: 18px 12px;
             }
 
             .page-header {
@@ -810,16 +841,30 @@
                 width: 100%;
             }
 
-            .history-card {
+            .request-card {
                 padding: 20px;
             }
 
-            .history-card-header h2 {
-                font-size: 16px;
+            .request-header {
+                align-items: flex-start;
+                flex-direction: column;
             }
 
-            .history-table-wrapper {
-                margin-top: 5px;
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .actions form {
+                width: 100%;
+            }
+
+            .actions button {
+                width: 100%;
             }
 
         }
@@ -879,7 +924,9 @@
 
     <div class="navbar-right">
 
-        <!-- PROFILE -->
+        <!-- =================================================
+             PROFILE
+        ================================================= -->
 
         <div class="organization-profile">
 
@@ -992,6 +1039,7 @@
 
     <nav class="nav-menu">
 
+
         <a
             href="{% url 'dashboard' %}"
             class="nav-item"
@@ -1039,7 +1087,7 @@
 
         <a
             href="{% url 'restaurant_food_requests' %}"
-            class="nav-item"
+            class="nav-item active"
         >
             <span class="nav-icon">📋</span>
             <span>Requests</span>
@@ -1048,7 +1096,7 @@
 
         <a
             href="{% url 'history' %}"
-            class="nav-item active"
+            class="nav-item"
         >
             <span class="nav-icon">🕘</span>
             <span>History</span>
@@ -1111,18 +1159,20 @@
     <section class="content">
 
 
-        <!-- PAGE HEADER -->
+        <!-- =================================================
+             PAGE HEADER
+        ================================================= -->
 
         <div class="page-header">
 
             <div class="page-title">
 
                 <h1>
-                    Food History
+                    Food Requests
                 </h1>
 
                 <p>
-                    View all surplus food activities recorded by your restaurant.
+                    Review food requests received from organizations.
                 </p>
 
             </div>
@@ -1138,240 +1188,189 @@
         </div>
 
 
-        <!-- HISTORY CARD -->
+        <!-- =================================================
+             FOOD REQUESTS
+        ================================================= -->
 
-        <div class="history-card">
+        {% if food_requests %}
 
-            <div class="history-card-header">
+        <div class="requests-list">
 
-                <h2>
-                    Activity History
-                </h2>
+            {% for food_request in food_requests %}
 
-                <p>
-                    Complete record of your restaurant's surplus food activities.
-                </p>
+            <div class="request-card">
+
+
+                <!-- REQUEST HEADER -->
+
+                <div class="request-header">
+
+                    <div class="food-name">
+
+                        {{ food_request.leftover_record.food_item.dish_name }}
+
+                    </div>
+
+
+                    <div class="status
+                        {% if food_request.status == 'PENDING' %}
+                            pending
+                        {% elif food_request.status == 'APPROVED' %}
+                            approved
+                        {% elif food_request.status == 'REJECTED' %}
+                            rejected
+                        {% endif %}
+                    ">
+
+                        {{ food_request.get_status_display }}
+
+                    </div>
+
+                </div>
+
+
+                <!-- REQUEST DETAILS -->
+
+                <div class="details">
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            Organization
+                        </span>
+
+                        <span class="detail-value">
+
+                            {{ food_request.organization.organization_name }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            Quantity Requested
+                        </span>
+
+                        <span class="detail-value">
+
+                            {{ food_request.quantity_requested }}
+                            {{ food_request.leftover_record.get_unit_display }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            Available Food
+                        </span>
+
+                        <span class="detail-value">
+
+                            {{ food_request.leftover_record.quantity }}
+                            {{ food_request.leftover_record.get_unit_display }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            Requested At
+                        </span>
+
+                        <span class="detail-value">
+
+                            {{ food_request.requested_at|date:"d M Y, h:i A" }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPROVE / REJECT -->
+
+                {% if food_request.status == 'PENDING' %}
+
+                <div class="actions">
+
+
+                    <form
+                        method="POST"
+                        action="{% url 'approve_food_request' food_request.id %}"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="approve"
+                        >
+                            Approve
+                        </button>
+
+                    </form>
+
+
+                    <form
+                        method="POST"
+                        action="{% url 'reject_food_request' food_request.id %}"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="reject"
+                        >
+                            Reject
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+                {% endif %}
+
 
             </div>
 
-
-            {% if records %}
-
-            <div class="history-table-wrapper">
-
-                <table class="history-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Food Item
-                            </th>
-
-                            <th>
-                                Quantity
-                            </th>
-
-                            <th>
-                                Unit
-                            </th>
-
-                            <th>
-                                Action
-                            </th>
-
-                            <th>
-                                Details
-                            </th>
-
-                            <th>
-                                Date
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {% for record in records %}
-
-                        <tr>
-
-                            <td class="food-name">
-                                {{ record.food_item.dish_name }}
-                            </td>
-
-
-                            <td class="quantity">
-                                {{ record.quantity }}
-                            </td>
-
-
-                            <td>
-                                {{ record.get_unit_display }}
-                            </td>
-
-
-                            <td>
-
-                                <span class="action-badge">
-                                    {{ record.get_action_display }}
-                                </span>
-
-                            </td>
-
-
-                            <td class="details">
-
-
-                                {% if record.action == 'DISCOUNTED' %}
-
-                                    {% for sale in record.discountedsale_set.all %}
-
-                                        <strong>
-                                            Sold:
-                                        </strong>
-
-                                        {{ sale.quantity_sold }}
-
-                                        <br>
-
-                                        <strong>
-                                            Original:
-                                        </strong>
-
-                                        ₹{{ sale.original_price }}
-
-                                        <br>
-
-                                        <strong>
-                                            Discounted:
-                                        </strong>
-
-                                        ₹{{ sale.discounted_price }}
-
-                                    {% empty %}
-
-                                        Sale details not recorded.
-
-                                    {% endfor %}
-
-
-                                {% elif record.action == 'DONATED' %}
-
-                                    {% if record.donation_organization %}
-
-                                        <strong>
-                                            Organization:
-                                        </strong>
-
-                                        {{ record.donation_organization.organization_name }}
-
-                                        <br>
-
-                                    {% endif %}
-
-                                    <strong>
-                                        People helped:
-                                    </strong>
-
-                                    {{ record.people_helped }}
-
-
-                                {% elif record.action == 'STORED' %}
-
-                                    {% for storage in record.storagerecord_set.all %}
-
-                                        <strong>
-                                            Method:
-                                        </strong>
-
-                                        {{ storage.storage_method }}
-
-                                        <br>
-
-                                        <strong>
-                                            Quantity stored:
-                                        </strong>
-
-                                        {{ storage.quantity_stored }}
-
-                                        <br>
-
-                                        <strong>
-                                            Use by:
-                                        </strong>
-
-                                        {{ storage.use_by_date|date:"d M, Y" }}
-
-                                    {% empty %}
-
-                                        Storage details not recorded.
-
-                                    {% endfor %}
-
-
-                                {% elif record.action == 'STAFF' %}
-
-                                    <strong>
-                                        People helped:
-                                    </strong>
-
-                                    {{ record.people_helped }}
-
-
-                                {% elif record.action == 'WASTED' %}
-
-                                    {% if record.waste_reason %}
-
-                                        <strong>
-                                            Reason:
-                                        </strong>
-
-                                        {{ record.get_waste_reason_display }}
-
-                                    {% else %}
-
-                                        Waste reason not recorded.
-
-                                    {% endif %}
-
-                                {% endif %}
-
-
-                            </td>
-
-
-                            <td>
-                                {{ record.recorded_at|date:"d M, Y" }}
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-            {% else %}
-
-            <div class="empty-history">
-
-                No food history recorded yet.
-
-            </div>
-
-            {% endif %}
-
+            {% endfor %}
 
         </div>
+
+
+        {% else %}
+
+
+        <!-- EMPTY STATE -->
+
+        <div class="empty">
+
+            <h3>
+                No Food Requests
+            </h3>
+
+            <p>
+                You don't have any food requests at the moment.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
 
     </section>
 
@@ -1394,9 +1393,9 @@ const profileDropdown =
     document.getElementById("profileDropdown");
 
 
-/* =========================
+/* =====================================================
    SIDEBAR TOGGLE
-========================= */
+===================================================== */
 
 sidebarToggle.addEventListener("click", function () {
 
@@ -1413,9 +1412,9 @@ sidebarToggle.addEventListener("click", function () {
 });
 
 
-/* =========================
+/* =====================================================
    PROFILE DROPDOWN
-========================= */
+===================================================== */
 
 profileButton.addEventListener("click", function (event) {
 
@@ -1432,9 +1431,9 @@ profileButton.addEventListener("click", function (event) {
 });
 
 
-/* =========================
-   CLOSE DROPDOWN
-========================= */
+/* =====================================================
+   CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+===================================================== */
 
 document.addEventListener("click", function (event) {
 
@@ -1455,9 +1454,9 @@ document.addEventListener("click", function (event) {
 });
 
 
-/* =========================
+/* =====================================================
    ESCAPE KEY
-========================= */
+===================================================== */
 
 document.addEventListener("keydown", function (event) {
 

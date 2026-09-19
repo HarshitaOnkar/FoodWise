@@ -1,633 +1,1317 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Organization Sign Up - FoodWise</title>
 
     <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #f4fbf6, #e8f5eb);
-            color: #173d2b;
-        }
-
-        .page {
+            font-family: Arial, Helvetica, sans-serif;
             min-height: 100vh;
-            padding: 25px 6%;
-        }
 
-        /* ---------- HEADER ---------- */
+            background: #f5f8f5;
+            color: #183d25;
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .brand-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #238b45;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 25px;
+
+            padding: 30px;
         }
 
-        .brand-text h2 {
-            margin: 0;
-            font-size: 24px;
-            color: #124d2d;
-        }
 
-        .brand-text p {
-            margin: 2px 0 0;
-            color: #7a827e;
-            font-size: 13px;
-        }
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
 
-        /* ---------- TITLE ---------- */
+        .signup-container {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 680px;
 
-        .heading {
-            margin-bottom: 18px;
-        }
-
-        .heading h1 {
-            margin: 0;
-            font-size: 38px;
-            font-weight: 700;
-            color: #124d2d;
-        }
-
-        .heading h1 span {
-            color: #3d9b60;
-        }
-
-        .heading p {
-            margin: 7px 0 0;
-            color: #68736d;
-            font-size: 16px;
-        }
-
-        .line {
-            width: 65px;
-            height: 5px;
-            background: #3d9b60;
-            border-radius: 10px;
-            margin-top: 12px;
-        }
-
-        /* ---------- FORM CARD ---------- */
-
-        .form-card {
             background: white;
-            border-radius: 25px;
-            padding: 24px 32px 20px;
-            box-shadow: 0 10px 35px rgba(30, 80, 50, 0.10);
-            max-width: 1150px;
-            margin: auto;
+
+            border-radius: 22px;
+            overflow: hidden;
+
+            display: grid;
+            grid-template-columns: 38% 62%;
+
+            box-shadow:
+                0 15px 45px rgba(0, 0, 0, 0.08);
         }
 
-        .welcome {
-            background: #eef8f0;
-            border-radius: 15px;
-            padding: 12px 18px;
-            margin-bottom: 17px;
+
+        /* =====================================================
+           LEFT GREEN PANEL
+           SAME GREEN AS ORGANIZATION HOMEPAGE
+        ===================================================== */
+
+        .welcome-panel {
+
+            position: relative;
+
+            background: #183d25;
+
+            color: white;
+
+            padding: 45px 42px;
+
+            overflow: hidden;
+        }
+
+
+        /* Decorative circles */
+
+        .welcome-panel::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.06);
+
+            top: -90px;
+            right: -100px;
+        }
+
+
+        .welcome-panel::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.05);
+
+            bottom: -100px;
+            left: -90px;
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo {
+
             display: flex;
             align-items: center;
+
+            gap: 12px;
+
+            position: relative;
+            z-index: 2;
+
+            margin-bottom: 75px;
+        }
+
+
+        .logo-icon {
+
+            width: 50px;
+            height: 50px;
+
+            border-radius: 13px;
+
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 29px;
+        }
+
+
+        .logo-text strong {
+
+            display: block;
+
+            font-size: 24px;
+
+            line-height: 1.1;
+        }
+
+
+        .logo-text span {
+
+            display: block;
+
+            font-size: 10px;
+
+            color: #e1ebe4;
+
+            margin-top: 4px;
+        }
+
+
+        /* =====================================================
+           WELCOME CONTENT
+        ===================================================== */
+
+        .welcome-content {
+
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .welcome-content h1 {
+
+            font-size: 34px;
+
+            line-height: 1.2;
+
+            margin-bottom: 15px;
+
+            color: white;
+        }
+
+
+        .welcome-content > p {
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            color: #e1ebe4;
+
+            max-width: 300px;
+
+            margin-bottom: 42px;
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .features {
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 20px;
+        }
+
+
+        .feature {
+
+            display: flex;
+            align-items: center;
+
             gap: 13px;
         }
 
-        .welcome-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #d9efdf;
+
+        .feature-icon {
+
+            width: 38px;
+            height: 38px;
+
+            min-width: 38px;
+
+            border-radius: 11px;
+
+            background: rgba(255, 255, 255, 0.12);
+
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-        }
 
-        .welcome h3 {
-            margin: 0;
             font-size: 18px;
-            color: #174c2e;
         }
 
-        .welcome p {
-            margin: 3px 0 0;
-            font-size: 13px;
-            color: #6b776f;
+
+        .feature span {
+
+            font-size: 11px;
+
+            color: #e8f0eb;
         }
 
-        /* ---------- FORM GRID ---------- */
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 13px 28px;
+        /* =====================================================
+           RIGHT FORM PANEL
+        ===================================================== */
+
+        .form-panel {
+
+            padding: 42px 48px;
+
+            overflow-y: auto;
+
+            background: white;
         }
 
-        .field {
+
+        /* =====================================================
+           FORM HEADER
+        ===================================================== */
+
+        .form-header {
+
+            margin-bottom: 28px;
+        }
+
+
+        .form-header h2 {
+
+            font-size: 29px;
+
+            font-weight: 700;
+
+            color: #183d25;
+
+            margin-bottom: 7px;
+        }
+
+
+        .form-header h2 span {
+
+            color: #183d25;
+        }
+
+
+        .form-header p {
+
+            font-size: 11px;
+
+            color: #666;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           GREEN LINE
+        ===================================================== */
+
+        .green-line {
+
+            width: 55px;
+            height: 4px;
+
+            border-radius: 10px;
+
+            background: #183d25;
+
+            margin-top: 13px;
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        form {
             width: 100%;
         }
 
-        .field.full {
+
+        /* =====================================================
+           FORM GRID
+        ===================================================== */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 17px 24px;
+        }
+
+
+        /* =====================================================
+           FIELD
+        ===================================================== */
+
+        .form-group {
+
+            display: flex;
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+
+        .form-group.full {
+
             grid-column: 1 / -1;
         }
 
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #294b39;
-            margin-bottom: 5px;
+
+        .form-group label {
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #183d25;
+
+            margin-bottom: 7px;
         }
 
-        .input-box {
+
+        /* =====================================================
+           INPUT
+        ===================================================== */
+
+        .input-wrapper {
+
             position: relative;
         }
 
-        .icon {
+
+        .input-icon {
+
             position: absolute;
+
             left: 13px;
             top: 50%;
+
             transform: translateY(-50%);
-            font-size: 16px;
-            z-index: 1;
-        }
 
-        input,
-        select,
-        textarea {
-            width: 100%;
-            border: 1px solid #dce5df;
-            border-radius: 10px;
-            padding: 10px 13px 10px 42px;
             font-size: 14px;
-            outline: none;
-            background: #fff;
-            color: #263d31;
-            transition: 0.2s;
+
+            z-index: 2;
         }
 
-        input,
-        select {
+
+        .form-control {
+
+            width: 100%;
+
             height: 42px;
-        }
 
-        textarea {
-            height: 55px;
-            resize: none;
-            padding-top: 10px;
-        }
+            border: 1px solid #dfe7e2;
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #3d9b60;
-            box-shadow: 0 0 0 3px rgba(61, 155, 96, 0.10);
-        }
-
-        /* ---------- ERRORS ---------- */
-
-        .error {
-            margin-top: 4px;
-            color: #d64545;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .input-error {
-            border-color: #e05a5a !important;
-        }
-
-        .non-field-error {
-            background: #fff0f0;
-            border: 1px solid #f0b5b5;
-            color: #c03939;
-            padding: 9px 12px;
             border-radius: 8px;
-            margin-bottom: 12px;
-            font-size: 13px;
-        }
 
-        /* ---------- BUTTON ---------- */
+            background: #fbfcfb;
 
-        .submit-btn {
-            width: 100%;
-            height: 46px;
-            border: none;
-            border-radius: 10px;
-            background: #176b3b;
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 15px;
+            padding: 0 12px 0 38px;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            font-size: 11px;
+
+            color: #183d25;
+
+            outline: none;
+
             transition: 0.2s;
         }
 
-        .submit-btn:hover {
-            background: #125a31;
-            transform: translateY(-1px);
+
+        .form-control:focus {
+
+            border-color: #183d25;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 3px rgba(24, 61, 37, 0.08);
         }
 
-        /* ---------- LOGIN ---------- */
 
-        .login {
-            text-align: center;
-            margin-top: 12px;
-            font-size: 14px;
-            color: #7a827e;
+        .form-control::placeholder {
+
+            color: #888;
         }
 
-        .login a {
-            color: #176b3b;
+
+        /* =====================================================
+           SELECT
+        ===================================================== */
+
+        select.form-control {
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           TEXTAREA
+        ===================================================== */
+
+        textarea.form-control {
+
+            height: 70px;
+
+            padding-top: 12px;
+
+            resize: vertical;
+        }
+
+
+        .textarea-icon {
+
+            top: 18px;
+
+            transform: none;
+        }
+
+
+        /* =====================================================
+           DJANGO ERRORS
+        ===================================================== */
+
+        .error-message {
+
+            color: #b33a3a;
+
+            background: #fff1f1;
+
+            border: 1px solid #f1d1d1;
+
+            border-radius: 7px;
+
+            padding: 9px 11px;
+
+            font-size: 10px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .field-error {
+
+            color: #b33a3a;
+
+            font-size: 9px;
+
+            margin-top: 4px;
+        }
+
+
+        /* =====================================================
+           CREATE BUTTON
+           SAME GREEN AS HOMEPAGE
+        ===================================================== */
+
+        .signup-button {
+
+            width: 100%;
+
+            height: 44px;
+
+            margin-top: 25px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #183d25;
+
+            color: white;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            font-size: 11px;
+
             font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .signup-button:hover {
+
+            background: #12301e;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 5px 15px rgba(24, 61, 37, 0.18);
+        }
+
+
+        /* =====================================================
+           LOGIN LINK
+        ===================================================== */
+
+        .login-link {
+
+            text-align: center;
+
+            margin-top: 17px;
+
+            font-size: 10px;
+
+            color: #666;
+        }
+
+
+        .login-link a {
+
+            color: #183d25;
+
+            font-weight: 700;
+
             text-decoration: none;
         }
 
-        .login a:hover {
+
+        .login-link a:hover {
+
+            color: #12301e;
+
             text-decoration: underline;
         }
 
-        /* ---------- MOBILE ---------- */
 
-        @media (max-width: 750px) {
+        /* =====================================================
+           BACK LINK
+        ===================================================== */
 
-            .page {
-                padding: 18px 12px;
+        .back-link {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 10px;
+
+            color: #666;
+
+            font-size: 9px;
+
+            text-decoration: none;
+        }
+
+
+        .back-link:hover {
+
+            color: #183d25;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            body {
+                padding: 18px;
             }
 
-            .heading h1 {
-                font-size: 30px;
-            }
 
-            .form-card {
-                padding: 20px 17px;
-                border-radius: 18px;
-            }
+            .signup-container {
 
-            .form-grid {
                 grid-template-columns: 1fr;
+
+                max-width: 650px;
+            }
+
+
+            .welcome-panel {
+
+                padding: 30px;
+
+                min-height: 330px;
+            }
+
+
+            .logo {
+
+                margin-bottom: 35px;
+            }
+
+
+            .welcome-content h1 {
+
+                font-size: 28px;
+            }
+
+
+            .welcome-content > p {
+
+                margin-bottom: 25px;
+            }
+
+
+            .features {
+
+                flex-direction: row;
+
+                flex-wrap: wrap;
+
                 gap: 12px;
             }
 
-            .field.full {
-                grid-column: auto;
+
+            .feature {
+
+                flex: 1;
+
+                min-width: 180px;
             }
 
-            .welcome {
-                padding: 10px;
+
+            .form-panel {
+
+                padding: 32px 28px;
             }
         }
+
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 10px;
+            }
+
+
+            .signup-container {
+
+                border-radius: 16px;
+            }
+
+
+            .welcome-panel {
+
+                padding: 25px;
+
+                min-height: auto;
+            }
+
+
+            .logo {
+
+                margin-bottom: 30px;
+            }
+
+
+            .logo-icon {
+
+                width: 43px;
+                height: 43px;
+
+                font-size: 24px;
+            }
+
+
+            .logo-text strong {
+
+                font-size: 21px;
+            }
+
+
+            .welcome-content h1 {
+
+                font-size: 25px;
+            }
+
+
+            .welcome-content > p {
+
+                font-size: 11px;
+            }
+
+
+            .features {
+
+                flex-direction: column;
+            }
+
+
+            .feature {
+
+                min-width: 0;
+            }
+
+
+            .form-panel {
+
+                padding: 28px 20px;
+            }
+
+
+            .form-header h2 {
+
+                font-size: 25px;
+            }
+
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 15px;
+            }
+
+
+            .form-group.full {
+
+                grid-column: auto;
+            }
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-<div class="page">
 
-    <!-- BRAND -->
-    <div class="brand">
-        <div class="brand-icon">🌱</div>
-
-        <div class="brand-text">
-            <h2>FoodWise</h2>
-            <p>Reduce Waste. Feed Lives.</p>
-        </div>
-    </div>
+<div class="signup-container">
 
 
-    <!-- HEADING -->
-    <div class="heading">
-        <h1>Organization <span>Sign Up</span></h1>
+    <!-- =====================================================
+         LEFT SIDE
+    ====================================================== -->
 
-        <p>
-            Create an account for your NGO, shelter, or animal welfare organization.
-        </p>
-
-        <div class="line"></div>
-    </div>
+    <section class="welcome-panel">
 
 
-    <!-- FORM CARD -->
-    <div class="form-card">
+        <div class="logo">
 
-        <!-- WELCOME MESSAGE -->
-        <div class="welcome">
-
-            <div class="welcome-icon">
-                🤝
+            <div class="logo-icon">
+                🌱
             </div>
 
-            <div>
-                <h3>Join us in making a difference!</h3>
+            <div class="logo-text">
 
-                <p>
-                    Together, we can reduce food waste and support communities in need.
-                </p>
+                <strong>
+                    FoodWise
+                </strong>
+
+                <span>
+                    Surplus meets Purpose.
+                </span>
+
             </div>
 
         </div>
 
 
-        <!-- FORM -->
+        <div class="welcome-content">
+
+            <h1>
+                Join us! 🌱
+            </h1>
+
+            <p>
+                Create your organization account and help
+                connect surplus food with people and communities
+                who need it.
+            </p>
+
+
+            <div class="features">
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🍱
+                    </div>
+
+                    <span>
+                        Discover available surplus food
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        💛
+                    </div>
+
+                    <span>
+                        Connect with food donors
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🌱
+                    </div>
+
+                    <span>
+                        Reduce food waste together
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RIGHT SIDE
+    ====================================================== -->
+
+    <section class="form-panel">
+
+
+        <div class="form-header">
+
+            <h2>
+                Organization <span>Sign Up</span>
+            </h2>
+
+            <p>
+                Create an account to start making a difference.
+            </p>
+
+            <div class="green-line"></div>
+
+        </div>
+
+
+        {% if form.non_field_errors %}
+
+            <div class="error-message">
+
+                {{ form.non_field_errors }}
+
+            </div>
+
+        {% endif %}
+
+
         <form method="POST">
 
             {% csrf_token %}
-
-            {% if form.non_field_errors %}
-                <div class="non-field-error">
-                    {% for error in form.non_field_errors %}
-                        {{ error }}
-                    {% endfor %}
-                </div>
-            {% endif %}
 
 
             <div class="form-grid">
 
 
                 <!-- USERNAME -->
-                <div class="field">
 
-                    <label>Username</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">👤</span>
+                    <label>
+                        Username
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            👤
+                        </span>
 
                         <input
                             type="text"
                             name="username"
-                            value="{{ form.username.value|default:'' }}"
+                            class="form-control"
                             placeholder="Enter username"
-                            {% if form.username.errors %}class="input-error"{% endif %}
+                            value="{{ form.username.value|default:'' }}"
+                            required
                         >
+
                     </div>
 
-                    {% for error in form.username.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.username.errors %}
+                        <div class="field-error">
+                            {{ form.username.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
 
 
+
                 <!-- EMAIL -->
-                <div class="field">
 
-                    <label>Email</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">✉️</span>
+                    <label>
+                        Email
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            ✉️
+                        </span>
 
                         <input
                             type="email"
                             name="email"
-                            value="{{ form.email.value|default:'' }}"
+                            class="form-control"
                             placeholder="Organization email"
-                            {% if form.email.errors %}class="input-error"{% endif %}
+                            value="{{ form.email.value|default:'' }}"
+                            required
                         >
+
                     </div>
 
-                    {% for error in form.email.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.email.errors %}
+                        <div class="field-error">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
+
 
 
                 <!-- PASSWORD -->
-                <div class="field">
 
-                    <label>Password</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">🔒</span>
+                    <label>
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
 
                         <input
                             type="password"
-                            name="password1"
+                            name="password"
+                            class="form-control"
                             placeholder="Create password"
-                            {% if form.password1.errors %}class="input-error"{% endif %}
+                            required
                         >
+
                     </div>
 
-                    {% for error in form.password1.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.password.errors %}
+                        <div class="field-error">
+                            {{ form.password.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
+
 
 
                 <!-- PASSWORD CONFIRMATION -->
-                <div class="field">
 
-                    <label>Password Confirmation</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">🔒</span>
+                    <label>
+                        Password Confirmation
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
 
                         <input
                             type="password"
-                            name="password2"
+                            name="password_confirmation"
+                            class="form-control"
                             placeholder="Confirm password"
-                            {% if form.password2.errors %}class="input-error"{% endif %}
+                            required
                         >
+
                     </div>
 
-                    {% for error in form.password2.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.password_confirmation.errors %}
+                        <div class="field-error">
+                            {{ form.password_confirmation.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
 
 
+
                 <!-- ORGANIZATION NAME -->
-                <div class="field full">
 
-                    <label>Organization Name</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">🏢</span>
+                    <label>
+                        Organization Name
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🏢
+                        </span>
 
                         <input
                             type="text"
                             name="organization_name"
-                            value="{{ form.organization_name.value|default:'' }}"
+                            class="form-control"
                             placeholder="Enter organization name"
-                            {% if form.organization_name.errors %}class="input-error"{% endif %}
+                            value="{{ form.organization_name.value|default:'' }}"
+                            required
                         >
+
                     </div>
 
-                    {% for error in form.organization_name.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.organization_name.errors %}
+                        <div class="field-error">
+                            {{ form.organization_name.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
+
 
 
                 <!-- ORGANIZATION TYPE -->
-                <div class="field">
 
-                    <label>Organization Type</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">🏛️</span>
+                    <label>
+                        Organization Type
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🏛️
+                        </span>
 
                         <select
                             name="organization_type"
-                            {% if form.organization_type.errors %}class="input-error"{% endif %}
+                            class="form-control"
+                            required
                         >
 
-                            {% for value, text in form.organization_type.field.choices %}
+                            <option value="">
+                                Select organization type
+                            </option>
 
-                                <option
-                                    value="{{ value }}"
-                                    {% if form.organization_type.value == value %}
-                                        selected
-                                    {% endif %}
-                                >
-                                    {{ text }}
-                                </option>
+                            <option value="NGO">
+                                NGO / Food Rescue Organization
+                            </option>
 
-                            {% endfor %}
+                            <option value="SHELTER">
+                                Shelter
+                            </option>
+
+                            <option value="OTHER">
+                                Other
+                            </option>
 
                         </select>
+
                     </div>
 
-                    {% for error in form.organization_type.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.organization_type.errors %}
+                        <div class="field-error">
+                            {{ form.organization_type.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
 
-
-                <!-- OWNER NAME -->
-                <div class="field">
-
-                    <label>Owner Name</label>
-
-                    <div class="input-box">
-                        <span class="icon">👤</span>
-
-                        <input
-                            type="text"
-                            name="owner_name"
-                            value="{{ form.owner_name.value|default:'' }}"
-                            placeholder="Owner / founder name"
-                            {% if form.owner_name.errors %}class="input-error"{% endif %}
-                        >
-                    </div>
-
-                    {% for error in form.owner_name.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
-
-                </div>
 
 
                 <!-- CONTACT PERSON -->
-                <div class="field">
 
-                    <label>Contact Person</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">👤</span>
+                    <label>
+                        Contact Person
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            👤
+                        </span>
 
                         <input
                             type="text"
                             name="contact_person"
-                            value="{{ form.contact_person.value|default:'' }}"
+                            class="form-control"
                             placeholder="Person we can contact"
-                            {% if form.contact_person.errors %}class="input-error"{% endif %}
+                            value="{{ form.contact_person.value|default:'' }}"
+                            required
                         >
+
                     </div>
 
-                    {% for error in form.contact_person.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.contact_person.errors %}
+                        <div class="field-error">
+                            {{ form.contact_person.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
 
 
+
+                <!-- OWNER NAME -->
+
+                <div class="form-group">
+
+                    <label>
+                        Owner Name
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            👤
+                        </span>
+
+                        <input
+                            type="text"
+                            name="owner_name"
+                            class="form-control"
+                            placeholder="Owner / founder name"
+                            value="{{ form.owner_name.value|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+                    {% if form.owner_name.errors %}
+                        <div class="field-error">
+                            {{ form.owner_name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+
                 <!-- PHONE -->
-                <div class="field">
 
-                    <label>Phone</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">📞</span>
+                    <label>
+                        Phone
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            📞
+                        </span>
 
                         <input
                             type="text"
                             name="phone"
-                            value="{{ form.phone.value|default:'' }}"
+                            class="form-control"
                             placeholder="Phone number"
-                            {% if form.phone.errors %}class="input-error"{% endif %}
+                            value="{{ form.phone.value|default:'' }}"
+                            required
                         >
+
                     </div>
 
-                    {% for error in form.phone.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.phone.errors %}
+                        <div class="field-error">
+                            {{ form.phone.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
 
 
+
                 <!-- CITY -->
-                <div class="field">
 
-                    <label>City</label>
+                <div class="form-group">
 
-                    <div class="input-box">
-                        <span class="icon">🌆</span>
+                    <label>
+                        City
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🏙️
+                        </span>
 
                         <input
                             type="text"
                             name="city"
-                            value="{{ form.city.value|default:'' }}"
+                            class="form-control"
                             placeholder="City"
-                            {% if form.city.errors %}class="input-error"{% endif %}
+                            value="{{ form.city.value|default:'' }}"
+                            required
                         >
+
                     </div>
 
-                    {% for error in form.city.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.city.errors %}
+                        <div class="field-error">
+                            {{ form.city.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
 
 
+
                 <!-- ADDRESS -->
-                <div class="field full">
 
-                    <label>Address</label>
+                <div class="form-group full">
 
-                    <div class="input-box">
-                        <span class="icon">📍</span>
+                    <label>
+                        Address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon textarea-icon">
+                            📍
+                        </span>
 
                         <textarea
                             name="address"
+                            class="form-control"
                             placeholder="Complete organization address"
-                            {% if form.address.errors %}class="input-error"{% endif %}
+                            required
                         >{{ form.address.value|default:'' }}</textarea>
+
                     </div>
 
-                    {% for error in form.address.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if form.address.errors %}
+                        <div class="field-error">
+                            {{ form.address.errors }}
+                        </div>
+                    {% endif %}
 
                 </div>
 
@@ -635,25 +1319,42 @@
             </div>
 
 
-            <!-- SUBMIT -->
-            <button type="submit" class="submit-btn">
+            <button
+                type="submit"
+                class="signup-button"
+            >
                 ✨ Create Organization Account
             </button>
+
 
         </form>
 
 
-        <!-- LOGIN -->
-        <div class="login">
+        <div class="login-link">
+
             Already have an account?
+
             <a href="{% url 'organization_login' %}">
                 Login here →
             </a>
+
         </div>
 
-    </div>
+
+        <a
+            href="{% url 'organization_home' %}"
+            class="back-link"
+        >
+            ← Back to Organizations
+        </a>
+
+
+    </section>
+
 
 </div>
 
+
 </body>
+
 </html>
