@@ -1285,7 +1285,7 @@ body.sidebar-closed .main {
                 <div class="organization-user-info">
 
                     <strong>
-                        {{ user.username }}
+                        {{ organization.owner_name }}
                     </strong>
 
                     <span>
@@ -1583,7 +1583,7 @@ body.sidebar-closed .main {
                         <div class="food-top">
 
                             <div class="food-image">
-                                🍛
+                                🍱
                             </div>
 
 
@@ -1630,7 +1630,7 @@ body.sidebar-closed .main {
                                 </span>
 
                                 <span class="detail-value">
-                                    {{ food.get_food_type_display }}
+                                    {{ food.food_item.category }}
                                 </span>
 
                             </div>

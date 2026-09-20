@@ -1,3 +1,4 @@
+from types import SimpleNamespace
 from urllib import request
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -45,6 +46,8 @@ from django.db.models import (
     Sum,
     Value,
     DecimalField,
+    OuterRef,
+    Subquery,
 )
 
 from django.db.models.functions import Coalesce
@@ -369,39 +372,60 @@ def organization_dashboard(request):
     ).first()
 
     if not organization:
-
-        return redirect(
-            'organization_login'
-        )
+        return redirect('organization_login')
 
     # =========================================================
     # AVAILABLE SURPLUS FOOD
     #
-    # IMPORTANT:
-    # Only show food where:
+    # Available surplus =
     #
-    # quantity_used < quantity
+    # (quantity_prepared - quantity_sold)
+    #     - total quantity_used across ALL actions
     #
     # Example:
-    # quantity = 10
-    # quantity_used = 6
-    # available = 4
+    #
+    # Surplus = 20
+    # Used = 2 + 8 + 2 + 2 + 2 = 16
+    #
+    # Available = 4
     # =========================================================
 
     available_food_list = (
         LeftoverRecord.objects
         .filter(
-            action='DONATED',
-            quantity_used__lt=F('quantity')
+            action='DONATED'
         )
         .annotate(
-            available_quantity=ExpressionWrapper(
-                F('quantity') - F('quantity_used'),
+            total_surplus=ExpressionWrapper(
+                F('daily_record__quantity_prepared')
+                - F('daily_record__quantity_sold'),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            ),
+            total_used=Coalesce(
+                Sum(
+                    'daily_record__leftoverrecord__quantity_used'
+                ),
+                Value(0),
                 output_field=DecimalField(
                     max_digits=8,
                     decimal_places=2
                 )
             )
+        )
+        .annotate(
+            available_quantity=ExpressionWrapper(
+                F('total_surplus') - F('total_used'),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            )
+        )
+        .filter(
+            available_quantity__gt=0
         )
         .select_related(
             'food_item',
@@ -412,11 +436,46 @@ def organization_dashboard(request):
         )[:4]
     )
 
+    # =========================================================
+    # NUMBER OF AVAILABLE SURPLUS RECORDS
+    # =========================================================
+
     available_food = (
         LeftoverRecord.objects
         .filter(
-            action='DONATED',
-            quantity_used__lt=F('quantity')
+            action='DONATED'
+        )
+        .annotate(
+            total_surplus=ExpressionWrapper(
+                F('daily_record__quantity_prepared')
+                - F('daily_record__quantity_sold'),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            ),
+            total_used=Coalesce(
+                Sum(
+                    'daily_record__leftoverrecord__quantity_used'
+                ),
+                Value(0),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            )
+        )
+        .annotate(
+            available_quantity=ExpressionWrapper(
+                F('total_surplus') - F('total_used'),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            )
+        )
+        .filter(
+            available_quantity__gt=0
         )
         .count()
     )
@@ -439,26 +498,17 @@ def organization_dashboard(request):
         )
     )
 
-    # =========================================================
-    # PENDING REQUESTS
-    # =========================================================
-
-    pending_requests_list = (
-        my_requests_list
-        .filter(
-            status='PENDING'
-        )
+    pending_requests_list = my_requests_list.filter(
+        status='PENDING'
     )
 
-    pending_requests = (
-        pending_requests_list.count()
-    )
+    pending_requests = pending_requests_list.count()
 
     # =========================================================
-    # FOOD RECEIVED
+    # APPROVED REQUESTS
     # =========================================================
 
-    received_requests = (
+    approved_requests = (
         FoodRequest.objects
         .filter(
             organization=organization,
@@ -474,19 +524,51 @@ def organization_dashboard(request):
     )
 
     # =========================================================
+    # DIRECT DONATIONS TO THIS ORGANIZATION
+    # =========================================================
+
+    direct_donations = (
+        LeftoverRecord.objects
+        .filter(
+            donation_organization=organization,
+            action='DONATED',
+            quantity_used__gt=0
+        )
+        .select_related(
+            'food_item',
+            'restaurant'
+        )
+        .order_by(
+            '-recorded_at'
+        )
+    )
+
+    # =========================================================
     # TOTAL FOOD RECEIVED
+    #
+    # Approved requests + direct donations
     # =========================================================
 
     food_received_count = (
-        received_requests.count()
+        approved_requests.count()
+        + direct_donations.count()
     )
 
     # =========================================================
     # TOTAL PEOPLE HELPED
     # =========================================================
 
-    people_helped = (
-        received_requests
+    direct_people_helped = (
+        direct_donations.aggregate(
+            total=Sum('people_helped')
+        )['total'] or 0
+    )
+
+    approved_request_people_helped = (
+        approved_requests
+        .filter(
+            leftover_record__donation_organization__isnull=True
+        )
         .aggregate(
             total=Sum(
                 'leftover_record__people_helped'
@@ -494,6 +576,130 @@ def organization_dashboard(request):
         )['total'] or 0
     )
 
+    people_helped = (
+        direct_people_helped
+        + approved_request_people_helped
+    )
+
+    # =========================================================
+    # RECENT DONATIONS / FOOD RECEIVED
+    #
+    # IMPORTANT:
+    #
+    # A LeftoverRecord can contain:
+    #
+    #   2 direct donation
+    #   +
+    #   6 approved request
+    #
+    # quantity_used = 8
+    #
+    # But the dashboard must display:
+    #
+    #   2 Donated
+    #   6 Received
+    #
+    # Therefore approved request quantities are removed from
+    # quantity_used before displaying the direct donation.
+    # =========================================================
+
+    received_items = []
+
+    # ---------------------------------------------------------
+    # APPROVED REQUESTS
+    # ---------------------------------------------------------
+
+    for item in approved_requests:
+
+        received_items.append({
+            'food': item.leftover_record.food_item,
+            'restaurant': item.leftover_record.restaurant,
+            'quantity': item.quantity_requested,
+            'unit': item.leftover_record.get_unit_display(),
+            'date': item.requested_at,
+            'type': 'REQUEST',
+        })
+
+    # ---------------------------------------------------------
+    # DIRECT DONATIONS
+    # ---------------------------------------------------------
+
+    for item in direct_donations:
+
+        approved_quantity = (
+            FoodRequest.objects
+            .filter(
+                leftover_record=item,
+                status='APPROVED'
+            )
+            .aggregate(
+                total_quantity=Sum(
+                    'quantity_requested'
+                )
+            )['total_quantity'] or 0
+        )
+
+        direct_donation_quantity = (
+            item.quantity_used - approved_quantity
+        )
+
+        if direct_donation_quantity > 0:
+
+            received_items.append({
+                'food': item.food_item,
+                'restaurant': item.restaurant,
+                'quantity': direct_donation_quantity,
+                'unit': item.get_unit_display(),
+                'date': item.recorded_at,
+                'type': 'DONATION',
+            })
+
+    # =========================================================
+    # SORT RECENT ITEMS
+    # =========================================================
+
+    received_items.sort(
+        key=lambda item: item['date'],
+        reverse=True
+    )
+
+    # =========================================================
+    # NOTIFICATIONS
+    # =========================================================
+
+    notifications_count = (
+        FoodRequest.objects
+        .filter(
+            organization=organization
+        )
+        .count()
+    )
+
+    # =========================================================
+    # RENDER
+    # =========================================================
+
+    return render(
+        request,
+        'wastage/organization_dashboard.html',
+        {
+            'organization': organization,
+
+            'available_food': available_food,
+            'available_food_list': available_food_list,
+
+            'pending_requests': pending_requests,
+            'pending_requests_list': pending_requests_list,
+            'my_requests_list': my_requests_list,
+
+            'food_received_count': food_received_count,
+            'people_helped': people_helped,
+
+            'received_items': received_items,
+
+            'notifications_count': notifications_count,
+        }
+    )
     # =========================================================
     # NOTIFICATIONS
     # =========================================================
@@ -521,7 +727,8 @@ def organization_dashboard(request):
 
             'food_received_count': food_received_count,
             'people_helped': people_helped,
-            'received_requests': received_requests,
+
+            'received_items': received_items,
 
             'notifications_count': notifications_count,
         }
@@ -617,6 +824,8 @@ def food_received(request):
             'food_item',
             'restaurant'
         )
+        .order_by(
+            '-recorded_at')
     )
 
     received_food = []
@@ -642,19 +851,31 @@ def food_received(request):
     # =========================================================
 
     for item in direct_donations:
-
-        received_food.append(
-            {
-                'food': item.food_item,
-                'restaurant': item.restaurant,
-
-                # Actual amount consumed/donated
-                'quantity': item.quantity_used,
-
-                'unit': item.get_unit_display(),
-                'date': item.recorded_at,
-            }
+        
+        approved_quantity = (
+            FoodRequest.objects
+            .filter(
+                leftover_record=item,
+                status='APPROVED'
+            )
+            .aggregate(
+                total_quantity=Sum('quantity_requested')
+            )['total_quantity'] or 0
         )
+        
+        direct_donation_quantity = (item.quantity_used - approved_quantity)
+        
+        if direct_donation_quantity > 0:
+            received_food.append(
+                {
+                    'food': item.food_item,
+                    'restaurant': item.restaurant,
+                    'quantity': direct_donation_quantity,
+                    'unit': item.get_unit_display(),
+                    'date': item.recorded_at,
+                    'type': 'DONATION',
+                }
+            )
 
     received_food.sort(
         key=lambda item: item['date'],
@@ -674,7 +895,6 @@ def food_received(request):
 # =============================================================
 # ORGANIZATION IMPACT
 # =============================================================
-
 @login_required
 def organization_impact(request):
 
@@ -683,12 +903,13 @@ def organization_impact(request):
     ).first()
 
     if not organization:
+        return redirect('organization_login')
 
-        return redirect(
-            'organization_login'
-        )
+    # =========================================================
+    # APPROVED REQUESTS
+    # =========================================================
 
-    received_food = (
+    approved_requests = (
         FoodRequest.objects
         .filter(
             organization=organization,
@@ -698,17 +919,99 @@ def organization_impact(request):
             'leftover_record__food_item',
             'leftover_record__restaurant'
         )
-        .order_by(
-            '-requested_at'
-        )
+        .order_by('-requested_at')
     )
+
+    # =========================================================
+    # DIRECT DONATIONS
+    # =========================================================
+
+    direct_donations = (
+        LeftoverRecord.objects
+        .filter(
+            donation_organization=organization,
+            action='DONATED',
+            quantity_used__gt=0
+        )
+        .select_related(
+            'food_item',
+            'restaurant'
+        )
+        .order_by('-recorded_at')
+    )
+
+    # =========================================================
+    # ACTUAL DIRECT DONATION QUANTITIES
+    #
+    # A DONATED LeftoverRecord can contain both:
+    #
+    # Direct donation
+    # +
+    # Approved request
+    #
+    # Example:
+    #
+    # quantity_used = 8
+    # approved request = 6
+    #
+    # Actual direct donation = 2
+    # =========================================================
+
+    direct_donation_data = []
+
+    for item in direct_donations:
+
+        approved_quantity = (
+            FoodRequest.objects
+            .filter(
+                leftover_record=item,
+                status='APPROVED'
+            )
+            .aggregate(
+                total_quantity=Sum(
+                    'quantity_requested'
+                )
+            )['total_quantity'] or 0
+        )
+
+        direct_donation_quantity = (
+            item.quantity_used - approved_quantity
+        )
+
+        if direct_donation_quantity > 0:
+
+            direct_donation_data.append({
+                'item': item,
+                'quantity': direct_donation_quantity,
+            })
+
+    # =========================================================
+    # TOTAL FOOD RECEIVED
+    #
+    # One entry for each:
+    # - Approved request
+    # - Direct donation
+    # =========================================================
 
     food_received_count = (
-        received_food.count()
+        approved_requests.count()
+        + len(direct_donation_data)
     )
 
-    people_helped = (
-        received_food
+    # =========================================================
+    # PEOPLE HELPED
+    # =========================================================
+
+    direct_people_helped = sum(
+        item['item'].people_helped
+        for item in direct_donation_data
+    )
+
+    approved_request_people_helped = (
+        approved_requests
+        .filter(
+            leftover_record__donation_organization__isnull=True
+        )
         .aggregate(
             total=Sum(
                 'leftover_record__people_helped'
@@ -716,47 +1019,179 @@ def organization_impact(request):
         )['total'] or 0
     )
 
-    restaurants_supported = (
-        received_food
-        .values(
-            'leftover_record__restaurant'
-        )
-        .distinct()
-        .count()
+    people_helped = (
+        direct_people_helped
+        + approved_request_people_helped
     )
 
-    quantity_by_unit = (
-        received_food
-        .values(
-            'leftover_record__unit'
-        )
-        .annotate(
-            total=Sum(
-                'quantity_requested'
-            )
-        )
-        .order_by(
-            'leftover_record__unit'
+    # =========================================================
+    # RESTAURANTS SUPPORTED
+    #
+    # Include restaurants from:
+    # - approved requests
+    # - direct donations
+    # =========================================================
+
+    restaurant_ids = set(
+        approved_requests.values_list(
+            'leftover_record__restaurant_id',
+            flat=True
         )
     )
+
+    restaurant_ids.update(
+        item['item'].restaurant_id
+        for item in direct_donation_data
+    )
+
+    restaurants_supported = len(
+        restaurant_ids
+    )
+
+    # =========================================================
+    # FOOD QUANTITY RECEIVED
+    #
+    # Include BOTH:
+    #
+    # Approved requests
+    # +
+    # Actual direct donations
+    #
+    # Example:
+    #
+    # 6 received
+    # + 2 donated
+    # = 8 pieces
+    # =========================================================
+
+    quantity_by_unit = {}
+
+    # ---------------------------------------------------------
+    # APPROVED REQUEST QUANTITIES
+    # ---------------------------------------------------------
+
+    for item in approved_requests:
+
+        unit = item.leftover_record.unit
+
+        quantity_by_unit[unit] = (
+            quantity_by_unit.get(unit, 0)
+            + item.quantity_requested
+        )
+
+    # ---------------------------------------------------------
+    # DIRECT DONATION QUANTITIES
+    # ---------------------------------------------------------
+
+    for data in direct_donation_data:
+
+        item = data['item']
+
+        unit = item.unit
+
+        quantity_by_unit[unit] = (
+            quantity_by_unit.get(unit, 0)
+            + data['quantity']
+        )
+
+    quantity_by_unit = [
+        {
+            'unit': unit,
+            'total': total,
+        }
+        for unit, total in quantity_by_unit.items()
+    ]
+
+    quantity_by_unit.sort(
+        key=lambda item: item['unit']
+    )
+
+    # =========================================================
+    # RECENT FOOD RECEIVED
+    #
+    # Include BOTH:
+    #
+    # REQUEST:
+    #     6 pieces → Received
+    #
+    # DONATION:
+    #     2 pieces → Donated
+    # =========================================================
+
+    received_food = []
+
+    # ---------------------------------------------------------
+    # APPROVED REQUESTS
+    # ---------------------------------------------------------
+
+    for item in approved_requests:
+
+        received_food.append({
+            'food': item.leftover_record.food_item,
+            'restaurant': item.leftover_record.restaurant,
+            'quantity': item.quantity_requested,
+            'unit': item.leftover_record.get_unit_display(),
+            'date': item.requested_at,
+            'type': 'REQUEST',
+        })
+
+    # ---------------------------------------------------------
+    # DIRECT DONATIONS
+    # ---------------------------------------------------------
+
+    for data in direct_donation_data:
+
+        item = data['item']
+
+        received_food.append({
+            'food': item.food_item,
+            'restaurant': item.restaurant,
+            'quantity': data['quantity'],
+            'unit': item.get_unit_display(),
+            'date': item.recorded_at,
+            'type': 'DONATION',
+        })
+
+    # =========================================================
+    # SORT RECENT FOOD
+    # =========================================================
+
+    received_food.sort(
+        key=lambda item: item['date'],
+        reverse=True
+    )
+
+    # =========================================================
+    # RENDER
+    # =========================================================
 
     return render(
         request,
         'wastage/organization_impact.html',
         {
             'organization': organization,
-            'food_received_count': food_received_count,
-            'people_helped': people_helped,
-            'restaurants_supported': restaurants_supported,
-            'quantity_by_unit': quantity_by_unit,
-            'received_food': received_food,
+
+            'food_received_count':
+                food_received_count,
+
+            'people_helped':
+                people_helped,
+
+            'restaurants_supported':
+                restaurants_supported,
+
+            'quantity_by_unit':
+                quantity_by_unit,
+
+            'received_food':
+                received_food,
         }
     )
-
 
 # =============================================================
 # ORGANIZATION PROFILE
 # =============================================================
+
 
 @login_required
 def organization_profile(request):
@@ -927,32 +1362,149 @@ def browse_surplus_food(request):
     ).first()
 
     if not organization:
-
         return redirect(
             'organization_login'
         )
 
-    available_food = (
+    # =========================================================
+    # SELECT ONLY ONE DONATION RECORD PER DAILY FOOD RECORD
+    #
+    # This prevents the same food from appearing multiple times
+    # when several LeftoverRecords belong to the same
+    # DailyFoodRecord.
+    # =========================================================
+
+    latest_donation = (
         LeftoverRecord.objects
         .filter(
-            action='DONATED',
-            quantity_used__lt=F('quantity')
+            daily_record=OuterRef('daily_record'),
+            action='DONATED'
         )
+        .order_by(
+            '-recorded_at'
+        )
+        .values('id')[:1]
+    )
+
+    # =========================================================
+    # AVAILABLE SURPLUS FOOD
+    #
+    # Available =
+    #
+    # quantity_prepared
+    # - quantity_sold
+    # - total quantity_used from ALL leftover records
+    #
+    # Example:
+    #
+    # Prepared = 100
+    # Sold     = 30
+    # Surplus  = 70
+    # Used     = 67
+    #
+    # Available = 3
+    # =========================================================
+
+    available_food = (
+        LeftoverRecord.objects
+
+        # Only DONATED records can represent food available
+        # for organizations.
+        .filter(
+            action='DONATED'
+        )
+
+        # Keep only ONE donation record for each
+        # DailyFoodRecord.
+        .filter(
+            id=Subquery(
+                latest_donation
+            )
+        )
+
+        # =====================================================
+        # ORIGINAL DAILY SURPLUS
+        # =====================================================
+
         .annotate(
-            available_quantity=ExpressionWrapper(
-                F('quantity') - F('quantity_used'),
+            total_surplus=ExpressionWrapper(
+                F(
+                    'daily_record__quantity_prepared'
+                )
+                -
+                F(
+                    'daily_record__quantity_sold'
+                ),
                 output_field=DecimalField(
                     max_digits=8,
                     decimal_places=2
                 )
             )
         )
+
+        # =====================================================
+        # TOTAL FOOD USED
+        #
+        # IMPORTANT:
+        # This sums quantity_used from ALL LeftoverRecords
+        # belonging to the same DailyFoodRecord.
+        #
+        # Therefore:
+        #
+        # DONATED
+        # DISCOUNTED
+        # STORED
+        # STAFF
+        # WASTED
+        #
+        # are all included.
+        # =====================================================
+
+        .annotate(
+            total_used=Coalesce(
+                Sum(
+                    'daily_record__leftoverrecord__quantity_used'
+                ),
+                Value(0),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            )
+        )
+
+        # =====================================================
+        # REMAINING AVAILABLE FOOD
+        # =====================================================
+
+        .annotate(
+            available_quantity=ExpressionWrapper(
+                F('total_surplus')
+                -
+                F('total_used'),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            )
+        )
+
+        # Only food that actually remains available.
+        .filter(
+            available_quantity__gt=0
+        )
+
         .select_related(
             'food_item',
-            'restaurant'
+            'restaurant',
+            'daily_record'
         )
+
+        # IMPORTANT:
+        # Sort using the actual food record date,
+        # not the leftover creation date.
         .order_by(
-            '-recorded_at'
+            '-daily_record__date'
         )
     )
 
@@ -964,8 +1516,7 @@ def browse_surplus_food(request):
             'available_food': available_food,
         }
     )
-
-
+    
 # =============================================================
 # REQUEST FOOD
 # =============================================================
@@ -1126,10 +1677,10 @@ def dashboard(request):
     )
 
     # =========================================================
-    # RECENT SURPLUS FOOD
+    # RECENT SURPLUS FOOD ACTIONS
     # =========================================================
 
-    recent_surplus = (
+    recent_surplus_records = list(
         LeftoverRecord.objects
         .filter(
             restaurant=restaurant
@@ -1139,8 +1690,66 @@ def dashboard(request):
         )
         .order_by(
             '-recorded_at'
-        )[:4]
+        )[:10]
     )
+
+    # Approved organization food requests
+    approved_requests = (
+        FoodRequest.objects
+        .filter(
+            leftover_record__restaurant=restaurant,
+            status='APPROVED'
+        )
+        .select_related(
+            'leftover_record',
+            'leftover_record__food_item'
+        )
+        .order_by(
+            '-requested_at'
+        )[:10]
+    )
+
+    # Convert approved requests into the same structure
+    # used by the Recent Surplus Food Actions template.
+    approved_request_items = []
+
+    for food_request in approved_requests:
+        approved_request_items.append(
+            SimpleNamespace(
+                food_item=food_request.leftover_record.food_item,
+
+                action='DONATED',
+
+                quantity=food_request.quantity_requested,
+
+                quantity_used=food_request.quantity_requested,
+
+                unit=food_request.leftover_record.unit,
+
+                recorded_at=food_request.requested_at,
+
+                get_unit_display=lambda unit=food_request.leftover_record.unit:
+                    dict(LeftoverRecord.UNIT_CHOICES).get(
+                        unit,
+                        unit
+                    )
+            )
+        )
+
+    # Combine normal actions + approved organization donations
+    recent_surplus = (
+        recent_surplus_records +
+        approved_request_items
+    )
+
+    # Most recent actions first
+    recent_surplus.sort(
+        key=lambda item: item.recorded_at,
+        reverse=True
+    )
+
+    # Show only the latest 4
+    recent_surplus = recent_surplus[:4]
 
     # =========================================================
     # RECENT DONATIONS
@@ -1157,13 +1766,14 @@ def dashboard(request):
             'donation_organization'
         )
         .order_by(
-            '-recorded_at'
+           '-recorded_at'
         )[:4]
     )
 
     # =========================================================
     # DONATION GRAPH
     # =========================================================
+
 
     donation_data = (
         LeftoverRecord.objects
@@ -1176,14 +1786,14 @@ def dashboard(request):
         .values(
             'recorded_at__day'
         )
-        .annotate(
-            total=Count('id')
-        )
-        .order_by(
-            'recorded_at__day'
-        )
-    )
-
+       .annotate(
+           total=Count('id')
+       )
+       .order_by(
+           'recorded_at__day'
+       )
+     )
+    
     graph_days = 28
 
     donation_counts = [0] * graph_days
@@ -1539,7 +2149,7 @@ def add_surplus(request):
             )
 
             # =================================================
-            # SURPLUS ALREADY ALLOCATED/USED
+            # SURPLUS ALREADY ALLOCATED / USED
             # =================================================
 
             used_quantity = (
@@ -1580,6 +2190,39 @@ def add_surplus(request):
                 )
 
                 leftover.restaurant = restaurant
+
+                # =================================================
+                # IMPORTANT
+                #
+                # For DONATED food:
+                #
+                # quantity = TOTAL surplus pool
+                # quantity_used = amount actually donated
+                #
+                # Example:
+                #
+                # Remaining surplus = 10 KG
+                # User wants to donate = 6 KG
+                #
+                # Store:
+                # quantity = 10
+                # quantity_used = 0
+                #
+                # Donation view then changes:
+                # quantity_used = 6
+                #
+                # Remaining = 10 - 6 = 4 KG
+                # =================================================
+
+                if action == 'DONATED':
+
+                    leftover.quantity = (
+                        unallocated_quantity
+                    )
+
+                else:
+
+                    leftover.quantity = quantity
 
                 # Nothing has been used yet.
                 leftover.quantity_used = 0
@@ -1640,10 +2283,10 @@ def add_surplus(request):
         }
     )
 
-
 # =============================================================
 # TRACK FOOD
 # =============================================================
+
 
 @login_required
 def track_food(request):
@@ -2234,18 +2877,65 @@ def impact(request):
 
     restaurant = request.user.restaurant
 
-    surplus_data = (
-        LeftoverRecord.objects
+
+    # =====================================================
+    # FOOD SURPLUS
+    # Actual leftover = quantity prepared - quantity sold
+    # =====================================================
+
+    surplus_by_unit = {}
+
+    daily_records = (
+        DailyFoodRecord.objects
         .filter(
             restaurant=restaurant
         )
-        .values(
-            'unit'
-        )
-        .annotate(
-            total=Sum('quantity')
-        )
+        .select_related('food_item')
     )
+
+    for daily_record in daily_records:
+
+        surplus = (
+            daily_record.quantity_prepared
+            - daily_record.quantity_sold
+        )
+
+        if surplus <= 0:
+            continue
+
+        # Get the unit used for this surplus food
+        leftover = (
+            LeftoverRecord.objects
+            .filter(
+                restaurant=restaurant,
+                daily_record=daily_record
+            )
+            .order_by('recorded_at')
+            .first()
+        )
+
+        if not leftover:
+            continue
+
+        unit = leftover.unit
+
+        surplus_by_unit[unit] = (
+            surplus_by_unit.get(unit, 0)
+            + surplus
+        )
+
+
+    # =====================================================
+    # FOOD RESCUED
+    #
+    # Only food actually handled through:
+    # DISCOUNTED
+    # DONATED
+    # STORED
+    # STAFF
+    #
+    # WASTED is deliberately excluded.
+    # =====================================================
 
     rescued_data = (
         LeftoverRecord.objects
@@ -2262,9 +2952,19 @@ def impact(request):
             'unit'
         )
         .annotate(
-            total=Sum('quantity')
+            total=Sum('quantity_used')
         )
     )
+
+    rescued_by_unit = {
+        item['unit']: item['total']
+        for item in rescued_data
+    }
+
+
+    # =====================================================
+    # FOOD WASTED
+    # =====================================================
 
     wasted_data = (
         LeftoverRecord.objects
@@ -2280,20 +2980,16 @@ def impact(request):
         )
     )
 
-    surplus_by_unit = {
-        item['unit']: item['total']
-        for item in surplus_data
-    }
-
-    rescued_by_unit = {
-        item['unit']: item['total']
-        for item in rescued_data
-    }
-
     wasted_by_unit = {
         item['unit']: item['total']
         for item in wasted_data
     }
+
+
+    # =====================================================
+    # WASTE REDUCTION
+    # Rescued / Surplus × 100
+    # =====================================================
 
     reduction_by_unit = {}
 
@@ -2310,6 +3006,11 @@ def impact(request):
             else 0
         )
 
+
+    # =====================================================
+    # PEOPLE HELPED
+    # =====================================================
+
     needy_people_helped = sum(
         donation.people_helped
         for donation in (
@@ -2321,6 +3022,11 @@ def impact(request):
         )
     )
 
+
+    # =====================================================
+    # STAFF HELPED
+    # =====================================================
+
     staff_people_helped = sum(
         staff.people_helped
         for staff in (
@@ -2331,6 +3037,7 @@ def impact(request):
             )
         )
     )
+
 
     return render(
         request,
@@ -2375,20 +3082,35 @@ def history(request):
         )
     )
 
+    approved_requests = (
+        FoodRequest.objects
+        .filter(
+            leftover_record__restaurant=restaurant,
+            status='APPROVED'
+        )
+        .select_related(
+            'organization',
+            'leftover_record',
+            'leftover_record__food_item'
+        )
+        .order_by(
+            '-requested_at'
+        )
+    )
+
     return render(
         request,
         'wastage/history.html',
         {
             'restaurant': restaurant,
             'records': records,
+            'approved_requests': approved_requests,
         }
     )
-
 
 # =============================================================
 # RESTAURANT FOOD REQUESTS
 # =============================================================
-
 @login_required
 def restaurant_food_requests(request):
 
@@ -2404,7 +3126,39 @@ def restaurant_food_requests(request):
         .select_related(
             'organization',
             'leftover_record',
-            'leftover_record__food_item'
+            'leftover_record__food_item',
+            'leftover_record__daily_record'
+        )
+        .annotate(
+            total_surplus=ExpressionWrapper(
+                F('leftover_record__daily_record__quantity_prepared')
+                - F('leftover_record__daily_record__quantity_sold'),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            )
+        )
+        .annotate(
+            total_used=Coalesce(
+                Sum(
+                    'leftover_record__daily_record__leftoverrecord__quantity_used'
+                ),
+                Value(0),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            )
+        )
+        .annotate(
+            available_food=ExpressionWrapper(
+                F('total_surplus') - F('total_used'),
+                output_field=DecimalField(
+                    max_digits=8,
+                    decimal_places=2
+                )
+            )
         )
         .order_by(
             '-requested_at'
@@ -2419,7 +3173,6 @@ def restaurant_food_requests(request):
             'food_requests': food_requests,
         }
     )
-
 
 # =============================================================
 # APPROVE FOOD REQUEST

@@ -906,6 +906,32 @@ body.sidebar-closed .main {
     line-height: 1.4;
 }
 
+.history-type {
+    display: inline-block;
+
+    margin-top: 4px;
+
+    padding: 3px 6px;
+
+    border-radius: 10px;
+
+    font-size: 7px;
+
+    font-weight: 700;
+}
+
+.history-type.received {
+    background: #e7f6ec;
+
+    color: #167346;
+}
+
+.history-type.donated {
+    background: #edf3ff;
+
+    color: #4267a8;
+}
+
 .history-date {
     font-size: 8px;
 
@@ -1330,7 +1356,7 @@ body.sidebar-closed .main {
                     <div>
 
                         <strong>
-                            {{ user.username }}
+                            {{ organization.owner_name }}
                         </strong>
 
                         <span>
@@ -1344,8 +1370,6 @@ body.sidebar-closed .main {
 
                 <div class="dropdown-divider"></div>
 
-
-                <!-- PROFILE -->
 
                 <a
                     href="{% url 'organization_profile' %}"
@@ -1365,8 +1389,6 @@ body.sidebar-closed .main {
 
                 <div class="dropdown-divider"></div>
 
-
-                <!-- LOGOUT -->
 
                 <a
                     href="{% url 'organization_logout' %}"
@@ -1706,26 +1728,25 @@ body.sidebar-closed .main {
 
                 {% if quantity_by_unit %}
 
-
                     {% for item in quantity_by_unit %}
 
                     <div class="quantity-row">
 
                         <div class="quantity-unit">
 
-                            {% if item.leftover_record__unit == 'KG' %}
+                            {% if item.unit == 'KG' %}
 
                                 ⚖️ Kilograms
 
-                            {% elif item.leftover_record__unit == 'G' %}
+                            {% elif item.unit == 'G' %}
 
                                 ⚖️ Grams
 
-                            {% elif item.leftover_record__unit == 'L' %}
+                            {% elif item.unit == 'L' %}
 
                                 🥛 Litres
 
-                            {% elif item.leftover_record__unit == 'ML' %}
+                            {% elif item.unit == 'ML' %}
 
                                 🥛 Millilitres
 
@@ -1740,7 +1761,7 @@ body.sidebar-closed .main {
 
                         <div class="quantity-value">
 
-                            {{ item.total }}
+                            {{ item.total|floatformat:2 }}
 
                         </div>
 
@@ -1748,9 +1769,7 @@ body.sidebar-closed .main {
 
                     {% endfor %}
 
-
                 {% else %}
-
 
                     <div class="empty">
 
@@ -1810,70 +1829,73 @@ body.sidebar-closed .main {
 
                 {% if received_food %}
 
-
                     {% for item in received_food|slice:":5" %}
 
                     <div class="history-item">
 
 
+                        <!-- ICON -->
+
                         <div class="history-icon">
-
-                            {% if forloop.counter == 1 %}
-
-                                🍛
-
-                            {% elif forloop.counter == 2 %}
-
-                                🍚
-
-                            {% elif forloop.counter == 3 %}
-
-                                🥪
-
-                            {% else %}
-
-                                🍝
-
-                            {% endif %}
-
+                            🎁
                         </div>
 
+
+                        <!-- INFORMATION -->
 
                         <div class="history-info">
 
                             <div class="history-food">
 
-                                {{ item.leftover_record.food_item.dish_name }}
+                                {{ item.food.dish_name }}
 
                             </div>
 
 
                             <div class="history-restaurant">
 
-                                {{ item.leftover_record.restaurant.restaurant_name }}
+                                {{ item.restaurant.restaurant_name }}
 
                                 •
-                                {{ item.quantity_requested }}
-                                {{ item.leftover_record.get_unit_display }}
+                                {{ item.quantity|floatformat:2 }}
+                                {{ item.unit }}
 
                             </div>
 
+
+                            <!-- TYPE -->
+
+                            {% if item.type == 'DONATION' %}
+
+                                <span class="history-type donated">
+                                    ✓ Donated
+                                </span>
+
+                            {% else %}
+
+                                <span class="history-type received">
+                                    ✓ Received
+                                </span>
+
+                            {% endif %}
+
                         </div>
 
+
+                        <!-- DATE -->
 
                         <div class="history-date">
 
-                            {{ item.requested_at|date:"d M Y" }}
+                            {{ item.date|date:"d M Y" }}
 
                         </div>
+
 
                     </div>
 
                     {% endfor %}
 
-
                 {% else %}
-
 
                     <div class="empty">
 

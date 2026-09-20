@@ -208,7 +208,8 @@ class StorageRecordForm(forms.ModelForm):
             self.fields['leftover_record'].queryset = (
                 LeftoverRecord.objects.filter(
                     restaurant=restaurant,
-                    action='STORED'
+                    action='STORED',
+                    quantity_used__lt=F('quantity')
                 )
             )
 
@@ -223,10 +224,15 @@ class StorageRecordForm(forms.ModelForm):
 
         widgets = {
             'quantity_stored': forms.NumberInput(
-                attrs={'min': 1}
+                attrs={
+                    'min': 0.01,
+                    'step': '0.01'
+                }
             ),
             'use_by_date': forms.DateInput(
-                attrs={'type': 'date'}
+                attrs={
+                    'type': 'date'
+                }
             ),
         }
 
@@ -238,21 +244,46 @@ class StorageRecordForm(forms.ModelForm):
 
         if leftover and quantity_stored:
 
-            already_stored = (
-                StorageRecord.objects
-                .filter(leftover_record=leftover)
-                .exclude(pk=self.instance.pk)
-                .aggregate(total=Sum('quantity_stored'))['total'] or 0
+            # ---------------------------------------------
+            # CURRENT UNALLOCATED QUANTITY
+            # ---------------------------------------------
+
+            available_quantity = (
+                leftover.quantity -
+                leftover.quantity_used
             )
 
-            if already_stored + quantity_stored > leftover.quantity:
+            # ---------------------------------------------
+            # CHECK THIS STORAGE RECORD'S PREVIOUS USE
+            # ---------------------------------------------
+
+            already_stored = (
+                StorageRecord.objects
+                .filter(
+                    leftover_record=leftover
+                )
+                .exclude(
+                    pk=self.instance.pk
+                )
+                .aggregate(
+                    total=Sum('quantity_stored')
+                )['total'] or 0
+            )
+
+            remaining_for_storage = (
+                available_quantity -
+                already_stored
+            )
+
+            if quantity_stored > remaining_for_storage:
+
                 raise forms.ValidationError(
-                    f"Only {leftover.quantity - already_stored} "
-                    f"of this leftover food is still available for storage."
+                    f'Only {remaining_for_storage} '
+                    f'{leftover.get_unit_display()} '
+                    f'is still available for storage.'
                 )
 
         return cleaned_data
-
 
 class DonationForm(forms.Form):
 

@@ -1725,7 +1725,7 @@ body.sidebar-closed .main {
                 <div class="organization-user-info">
 
                     <strong>
-                        {{ user.username }}
+                        {{ organization.owner_name }}
                     </strong>
 
                     <span>
@@ -1757,7 +1757,7 @@ body.sidebar-closed .main {
                     <div>
 
                         <strong>
-                            {{ user.username }}
+                            {{ organization.owner_name }}
                         </strong>
 
                         <span>
@@ -1882,7 +1882,7 @@ body.sidebar-closed .main {
             </span>
 
             <span>
-                Food Received
+                Food Received 
             </span>
 
         </a>
@@ -2168,17 +2168,7 @@ body.sidebar-closed .main {
                 <div class="food-item">
 
                     <div class="food-image">
-
-                        {% if forloop.counter == 1 %}
-                            🍛
-                        {% elif forloop.counter == 2 %}
-                            🍚
-                        {% elif forloop.counter == 3 %}
-                            🥪
-                        {% else %}
-                            🍝
-                        {% endif %}
-
+                        🍱
                     </div>
 
 
@@ -2190,7 +2180,7 @@ body.sidebar-closed .main {
 
                         <div class="food-details">
 
-                            {{ food.quantity }}
+                            {{ food.available_quantity|floatformat:2 }}
                             {{ food.get_unit_display }}
 
                             &nbsp; • &nbsp;
@@ -2275,17 +2265,7 @@ body.sidebar-closed .main {
                 <div class="food-item">
 
                     <div class="food-image">
-
-                        {% if forloop.counter == 1 %}
-                            🍛
-                        {% elif forloop.counter == 2 %}
-                            🍚
-                        {% elif forloop.counter == 3 %}
-                            🥪
-                        {% else %}
-                            🍝
-                        {% endif %}
-
+                        🍽️
                     </div>
 
 
@@ -2498,36 +2478,26 @@ body.sidebar-closed .main {
             </div>
 
 
-            {% if received_requests %}
+            {% if received_items %}
 
-                {% for received in received_requests|slice:":4" %}
+                {% for received in received_items|slice:":4" %}
 
                 <div class="recent-item">
 
                     <div class="food-image">
-
-                        {% if forloop.counter == 1 %}
-                            🍛
-                        {% elif forloop.counter == 2 %}
-                            🍚
-                        {% elif forloop.counter == 3 %}
-                            🥪
-                        {% else %}
-                            🍝
-                        {% endif %}
-
+                        🎁
                     </div>
 
 
                     <div class="recent-food">
 
                         <strong>
-                            {{ received.leftover_record.food_item.dish_name }}
+                            {{ received.food.dish_name }}
                         </strong>
 
                         <p>
                             📍
-                            {{ received.leftover_record.restaurant.restaurant_name }}
+                            {{ received.restaurant.restaurant_name }}
                         </p>
 
                     </div>
@@ -2535,23 +2505,25 @@ body.sidebar-closed .main {
 
                     <div class="recent-quantity">
 
-                        {{ received.quantity_requested }}
+                        {{ received.quantity|floatformat:2 }}
 
-                        {{ received.leftover_record.get_unit_display }}
+                        {{ received.unit }}
 
                     </div>
 
 
                     <span class="status received">
-
-                        Received
-
+                        {% if received.type == 'DONATION' %}
+                            Donated
+                        {% else %}
+                            Received
+                        {% endif %}
                     </span>
 
 
                     <div class="recent-date">
 
-                        {{ received.requested_at|date:"d M Y" }}
+                        {{ received.date|date:"d M Y" }}
 
                     </div>
 
@@ -2776,14 +2748,12 @@ document.addEventListener(
                 "aria-expanded",
                 "false"
             );
-
         }
 
     }
 );
 
 </script>
-
 
 </body>
 

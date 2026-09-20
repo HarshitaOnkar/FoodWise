@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -769,6 +770,33 @@ body.sidebar-closed .main {
     line-height: 1;
 }
 
+
+/* =====================================================
+   FOOD RESCUED MEASUREMENTS
+===================================================== */
+
+.rescued-measurements {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 2px;
+}
+
+.rescued-measurement-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 20px;
+    white-space: nowrap;
+}
+
+.rescued-measurement {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #173f2b;
+}
+
 .stat-title {
     font-size: 10px;
     font-weight: 700;
@@ -953,6 +981,11 @@ body.sidebar-closed .main {
     white-space: nowrap;
 }
 
+
+/* =====================================================
+   GENERAL REQUEST / FOOD STATUS
+===================================================== */
+
 .available,
 .approved,
 .received {
@@ -966,6 +999,52 @@ body.sidebar-closed .main {
 }
 
 .rejected {
+    background: #ffe8e8;
+    color: #a53d3d;
+}
+
+
+/* =====================================================
+   RECENT SURPLUS FOOD ACTION COLORS
+   SAME AS HISTORY PAGE
+===================================================== */
+
+
+/* DONATED */
+
+.action-donated {
+    background: #e5f6eb;
+    color: #167341;
+}
+
+
+/* STORED */
+
+.action-stored {
+    background: #e5f6eb;
+    color: #167341;
+}
+
+
+/* DISCOUNTED */
+
+.action-discounted {
+    background: #dceeff;
+    color: #1769aa;
+}
+
+
+/* GIVEN TO STAFF */
+
+.action-staff {
+    background: #fff4d9;
+    color: #9a6900;
+}
+
+
+/* WASTED */
+
+.action-wasted {
     background: #ffe8e8;
     color: #a53d3d;
 }
@@ -1241,24 +1320,10 @@ body.sidebar-closed .main {
 
 .chart-container {
     width: 100%;
-
-    /*
-       Enough height for:
-       graph
-       X-axis numbers
-       Day title
-    */
     height: 188px;
-
     position: relative;
-
     padding-left: 50px;
 }
-
-
-/* =====================================================
-   GRAPH ITSELF
-===================================================== */
 
 .donation-chart {
     position: absolute;
@@ -1277,32 +1342,15 @@ body.sidebar-closed .main {
     z-index: 1;
 }
 
-
-/* =====================================================
-   GRID LINES
-===================================================== */
-
 .chart-grid-line {
     stroke: #e7eeea;
-
     stroke-width: 1;
 }
 
-
-/* =====================================================
-   AXIS
-===================================================== */
-
 .chart-axis-line {
     stroke: #9eaea5;
-
     stroke-width: 1.5;
 }
-
-
-/* =====================================================
-   GRAPH LINE
-===================================================== */
 
 .chart-line {
     fill: none;
@@ -1316,21 +1364,10 @@ body.sidebar-closed .main {
     stroke-linejoin: round;
 }
 
-
-/* =====================================================
-   GRAPH AREA
-===================================================== */
-
 .chart-area {
     fill: #e8f6ed;
-
     opacity: .75;
 }
-
-
-/* =====================================================
-   Y AXIS NUMBERS
-===================================================== */
 
 .chart-y-labels {
     position: absolute;
@@ -1351,10 +1388,6 @@ body.sidebar-closed .main {
 
     align-items: flex-end;
 
-    /*
-       Smaller right padding brings the numbers
-       closer to the graph/Y-axis.
-    */
     padding-right: 5px;
 
     color: #596a61;
@@ -1380,17 +1413,9 @@ body.sidebar-closed .main {
     font-weight: 500;
 }
 
-
-/* =====================================================
-   Y AXIS TITLE
-===================================================== */
-
 .chart-y-title {
     position: absolute;
 
-    /*
-       Moved closer to the Y-axis numbers.
-    */
     left: -35px;
 
     top: 87px;
@@ -1410,11 +1435,6 @@ body.sidebar-closed .main {
     z-index: 5;
 }
 
-
-/* =====================================================
-   X AXIS NUMBERS
-===================================================== */
-
 .chart-labels {
     position: absolute;
 
@@ -1422,9 +1442,6 @@ body.sidebar-closed .main {
 
     right: 0;
 
-    /*
-       Directly below the graph axis.
-    */
     top: 158px;
 
     display: flex;
@@ -1440,11 +1457,6 @@ body.sidebar-closed .main {
     z-index: 5;
 }
 
-
-/* =====================================================
-   X AXIS TITLE
-===================================================== */
-
 .chart-x-title {
     position: absolute;
 
@@ -1452,12 +1464,6 @@ body.sidebar-closed .main {
 
     right: 0;
 
-    /*
-       Space between:
-       28
-       ↓
-       Day
-    */
     top: 174px;
 
     text-align: center;
@@ -1471,11 +1477,6 @@ body.sidebar-closed .main {
     z-index: 5;
 }
 
-
-/* =====================================================
-   DONATION SUMMARY
-===================================================== */
-
 .donation-summary {
     display: grid;
 
@@ -1486,10 +1487,6 @@ body.sidebar-closed .main {
 
     border-top: 1px solid #edf1ee;
 
-    /*
-       This creates a visible gap between
-       "Day" and the summary section.
-    */
     margin-top: 5px;
 
     padding-top: 13px;
@@ -1539,7 +1536,6 @@ body.sidebar-closed .main {
 
 .sidebar::-webkit-scrollbar-thumb {
     background: rgba(255,255,255,0.25);
-
     border-radius: 10px;
 }
 
@@ -1696,104 +1692,50 @@ body.sidebar-closed .main {
         width: min(300px, calc(100vw - 24px));
     }
 
-
-    /* =================================================
-       MOBILE DONATION GRAPH
-    ================================================= */
-
     .chart-container {
         width: 100%;
-
-        /*
-           Smaller left space on phone,
-           while keeping Y title + numbers comfortable.
-        */
         padding-left: 42px;
-
         height: 188px;
     }
 
-
     .donation-chart {
         left: 42px;
-
         width: calc(100% - 42px);
-
         height: 175px;
     }
 
-
-    /* -----------------------------
-       Y AXIS NUMBERS
-    ----------------------------- */
-
     .chart-y-labels {
         left: 0;
-
         top: 20px;
-
         width: 38px;
-
         height: 135px;
-
         padding-right: 3px;
-
         align-items: flex-end;
     }
 
-
-    /* -----------------------------
-       Y AXIS TITLE
-    ----------------------------- */
-
     .chart-y-title {
         left: -22px;
-
         top: 87px;
-
         font-size: 8px;
     }
-
-
-    /* -----------------------------
-       X AXIS NUMBERS
-    ----------------------------- */
 
     .chart-labels {
         left: 42px;
-
         right: 0;
-
         top: 158px;
-
         padding: 0 2px;
-
         font-size: 8px;
     }
-
-
-    /* -----------------------------
-       X AXIS TITLE
-    ----------------------------- */
 
     .chart-x-title {
         left: 42px;
-
         right: 0;
-
         top: 174px;
-
         font-size: 8px;
     }
 
-
-    /* -----------------------------
-       SUMMARY
-    ----------------------------- */
-
     .donation-summary {
         margin-top: 5px;
-
         padding-top: 13px;
     }
 
@@ -1806,10 +1748,10 @@ body.sidebar-closed .main {
     }
 }
 
+
 /* =====================================================
    SMALL MOBILE
 ===================================================== */
-
 
 @media (max-width: 600px) {
 
@@ -1863,11 +1805,6 @@ body.sidebar-closed .main {
         margin-left: auto;
     }
 
-
-    /* =================================================
-       SMALL PHONE GRAPH
-    ================================================= */
-
     .chart-container {
         padding-left: 40px;
         height: 188px;
@@ -1879,18 +1816,12 @@ body.sidebar-closed .main {
         height: 175px;
     }
 
-
-    /* Y numbers */
-
     .chart-y-labels {
         left: 0;
         top: 20px;
-
         width: 36px;
         height: 135px;
-
         padding-right: 2px;
-
         font-size: 8px;
     }
 
@@ -1898,42 +1829,25 @@ body.sidebar-closed .main {
         font-size: 8px;
     }
 
-
-    /* Y title */
-
     .chart-y-title {
         left: -20px;
         top: 87px;
-
         font-size: 8px;
     }
-
-
-    /* X numbers */
 
     .chart-labels {
         left: 40px;
         right: 0;
-
         top: 158px;
-
         font-size: 8px;
     }
-
-
-    /* Day */
 
     .chart-x-title {
         left: 40px;
         right: 0;
-
         top: 174px;
-
         font-size: 8px;
     }
-
-
-    /* Summary */
 
     .donation-summary {
         margin-top: 5px;
@@ -1948,6 +1862,13 @@ body.sidebar-closed .main {
         font-size: 8px;
     }
 
+    .rescued-measurement-row {
+        gap: 6px;
+    }
+
+    .rescued-measurement {
+        font-size: 16px;
+    }
 }
 
 </style>
@@ -2330,6 +2251,7 @@ body.sidebar-closed .main {
             <span>Profile</span>
         </a>
 
+
         <a
             href="{% url 'restaurant_change_password' %}"
             class="nav-item"
@@ -2405,6 +2327,8 @@ body.sidebar-closed .main {
     <div class="stats">
 
 
+        <!-- SURPLUS -->
+
         <div class="stat-card">
 
             <div class="stat-icon green">
@@ -2429,6 +2353,8 @@ body.sidebar-closed .main {
 
         </div>
 
+
+        <!-- DONATIONS -->
 
         <div class="stat-card">
 
@@ -2455,6 +2381,8 @@ body.sidebar-closed .main {
         </div>
 
 
+        <!-- PEOPLE HELPED -->
+
         <div class="stat-card">
 
             <div class="stat-icon blue">
@@ -2480,6 +2408,8 @@ body.sidebar-closed .main {
         </div>
 
 
+        <!-- FOOD RESCUED -->
+
         <div class="stat-card">
 
             <div class="stat-icon purple">
@@ -2488,28 +2418,85 @@ body.sidebar-closed .main {
 
             <div>
 
-                <div class="stat-number">
+                <div class="rescued-measurements">
 
-                    {% if rescued_by_unit.KG %}
-                        {{ rescued_by_unit.KG }} kg
+                    {% if rescued_by_unit.KG or rescued_by_unit.G %}
 
-                    {% elif rescued_by_unit.G %}
-                        {{ rescued_by_unit.G }} g
+                        <div class="rescued-measurement-row">
 
-                    {% elif rescued_by_unit.L %}
-                        {{ rescued_by_unit.L }} L
+                            {% if rescued_by_unit.KG %}
 
-                    {% elif rescued_by_unit.ML %}
-                        {{ rescued_by_unit.ML }} ml
+                                <span class="rescued-measurement">
+                                    {{ rescued_by_unit.KG|floatformat:2 }} kg
+                                </span>
 
-                    {% elif rescued_by_unit.PCS %}
-                        {{ rescued_by_unit.PCS }} pieces
+                            {% endif %}
 
-                    {% else %}
-                        0 kg
+                            {% if rescued_by_unit.G %}
+
+                                <span class="rescued-measurement">
+                                    {{ rescued_by_unit.G|floatformat:2 }} g
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if rescued_by_unit.L or rescued_by_unit.ML %}
+
+                        <div class="rescued-measurement-row">
+
+                            {% if rescued_by_unit.L %}
+
+                                <span class="rescued-measurement">
+                                    {{ rescued_by_unit.L|floatformat:2 }} L
+                                </span>
+
+                            {% endif %}
+
+                            {% if rescued_by_unit.ML %}
+
+                                <span class="rescued-measurement">
+                                    {{ rescued_by_unit.ML|floatformat:2 }} ml
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if rescued_by_unit.PCS %}
+
+                        <div class="rescued-measurement-row">
+
+                            <span class="rescued-measurement">
+                                {{ rescued_by_unit.PCS|floatformat:2 }} pieces
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if not rescued_by_unit.KG and not rescued_by_unit.G and not rescued_by_unit.L and not rescued_by_unit.ML and not rescued_by_unit.PCS %}
+
+                        <div class="rescued-measurement-row">
+
+                            <span class="rescued-measurement">
+                                0
+                            </span>
+
+                        </div>
+
                     {% endif %}
 
                 </div>
+
 
                 <div class="stat-title">
                     Food Rescued
@@ -2542,11 +2529,11 @@ body.sidebar-closed .main {
             <div class="card-header">
 
                 <h2>
-                    Recent Surplus Food
+                    Recent Surplus Food Actions
                 </h2>
 
                 <a
-                    href="{% url 'food_records' %}"
+                    href="{% url 'history' %}"
                     class="view-all"
                 >
                     View All
@@ -2571,7 +2558,7 @@ body.sidebar-closed .main {
                     </div>
 
                     <div class="food-details">
-                        {{ food.quantity }}
+                        {{ food.quantity_used|floatformat:2 }}
                         {{ food.get_unit_display }}
                     </div>
 
@@ -2586,31 +2573,31 @@ body.sidebar-closed .main {
 
                     {% if food.action == 'DONATED' %}
 
-                        <span class="status available">
+                        <span class="status action-donated">
                             Donated
                         </span>
 
                     {% elif food.action == 'STORED' %}
 
-                        <span class="status available">
+                        <span class="status action-stored">
                             Stored
                         </span>
 
                     {% elif food.action == 'DISCOUNTED' %}
 
-                        <span class="status approved">
+                        <span class="status action-discounted">
                             Discounted
                         </span>
 
                     {% elif food.action == 'STAFF' %}
 
-                        <span class="status pending">
+                        <span class="status action-staff">
                             Given to Staff
                         </span>
 
                     {% elif food.action == 'WASTED' %}
 
-                        <span class="status rejected">
+                        <span class="status action-wasted">
                             Wasted
                         </span>
 
@@ -2630,10 +2617,10 @@ body.sidebar-closed .main {
 
 
             <a
-                href="{% url 'food_records' %}"
+                href="{% url 'history' %}"
                 class="bottom-button"
             >
-                View All Surplus Food
+                View All Surplus Food Actions
             </a>
 
         </div>
@@ -2680,15 +2667,10 @@ body.sidebar-closed .main {
 
                 <div class="chart-container">
 
-
-                    <!-- Y AXIS TITLE -->
-
                     <div class="chart-y-title">
                         Number of Donations
                     </div>
 
-
-                    <!-- Y AXIS NUMBERS -->
 
                     <div class="chart-y-labels">
 
@@ -2702,8 +2684,6 @@ body.sidebar-closed .main {
 
                     </div>
 
-
-                    <!-- SVG GRAPH -->
 
                     <svg
                         class="donation-chart"
@@ -2759,7 +2739,6 @@ body.sidebar-closed .main {
                             y2="155"
                         />
 
-
                         <line
                             class="chart-axis-line"
                             x1="0"
@@ -2791,8 +2770,6 @@ body.sidebar-closed .main {
                     </svg>
 
 
-                    <!-- X AXIS NUMBERS -->
-
                     <div class="chart-labels">
 
                         <span>1</span>
@@ -2804,8 +2781,6 @@ body.sidebar-closed .main {
                     </div>
 
 
-                    <!-- X AXIS TITLE -->
-
                     <div class="chart-x-title">
                         Day
                     </div>
@@ -2813,8 +2788,6 @@ body.sidebar-closed .main {
 
                 </div>
 
-
-                <!-- CURRENT MONTH SUMMARY -->
 
                 <div class="donation-summary">
 
@@ -2987,7 +2960,7 @@ body.sidebar-closed .main {
 
                 <div class="recent-quantity">
 
-                    {{ donation.quantity }}
+                    {{ donation.quantity_used|floatformat:2 }}
                     {{ donation.get_unit_display }}
 
                 </div>
